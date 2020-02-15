@@ -3,8 +3,10 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { SharedModule } from './shared/shared.module';
 import { LoginModule } from './login/login.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { AppComponent } from './app.component';
 
 import {
   GoogleApiModule,
@@ -45,7 +47,9 @@ const gapiClientConfig: NgGapiClientConfig = {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    SharedModule,
     LoginModule,
+    DashboardModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig

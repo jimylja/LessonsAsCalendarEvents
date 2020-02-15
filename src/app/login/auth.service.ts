@@ -40,4 +40,12 @@ export class AuthService {
   private signInErrorHandler(err) {
     console.warn('signInError', err);
   }
+
+  public isUserSignedIn(): boolean {
+    if (sessionStorage.getItem(AuthService.SESSION_STORAGE_KEY)) {
+      return sessionStorage.getItem(AuthService.SESSION_STORAGE_KEY).length > 0;
+    }
+    return false;
+  }
+
 }
