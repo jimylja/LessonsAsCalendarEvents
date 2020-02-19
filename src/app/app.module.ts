@@ -22,6 +22,7 @@ import {
   NG_GAPI_CONFIG,
   GoogleApiConfig
 } from 'ng-gapi';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id: '187709823208-u52p9n3147kad6hf7pgirk52lauhmoo8.apps.googleusercontent.com',
@@ -67,6 +68,7 @@ const gapiClientConfig: NgGapiClientConfig = {
       maxAge: 25,
       logOnly: environment.production,
     }),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
