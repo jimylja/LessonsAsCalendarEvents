@@ -4,9 +4,15 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { LoginModule } from './login/login.module';
+import { UserModule } from './user/user.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AppComponent } from './app.component';
+
+// NgRx
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { environment } from '../environments/environment';
 
 import {
   GoogleApiModule,
@@ -48,11 +54,18 @@ const gapiClientConfig: NgGapiClientConfig = {
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
-    LoginModule,
+    UserModule,
     DashboardModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig
+    }),
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({
+      name: 'APM Demo App DevTools',
+      maxAge: 25,
+      logOnly: environment.production,
     }),
   ],
   providers: [],

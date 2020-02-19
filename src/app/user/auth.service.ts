@@ -3,6 +3,9 @@ import { GoogleAuthService } from 'ng-gapi';
 import { HttpClient } from '@angular/common/http';
 import GoogleUser = gapi.auth2.GoogleUser;
 import GoogleAuth = gapi.auth2.GoogleAuth;
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {Observable, from, throwError} from 'rxjs';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +13,6 @@ import GoogleAuth = gapi.auth2.GoogleAuth;
 export class AuthService {
 
   public static readonly SESSION_STORAGE_KEY: string = 'accessToken';
-  private user: GoogleUser = undefined;
-  token: string;
 
   constructor(
     private httpClient: HttpClient,
@@ -19,26 +20,45 @@ export class AuthService {
     private ngZone: NgZone
   ) { }
 
-  public signIn() {
-    this.googleAuthService.getAuth().subscribe((auth) => {
-      auth.signIn().then(
-        res => this.signInSuccessHandler(res),
-        err => this.signInErrorHandler(err)
-      );
-    });
+  static signInErrorHandler(err) {
+    throw Error(err);
   }
 
-  private signInSuccessHandler(res: GoogleUser) {
+  static parseUserData(user: GoogleUser): User {
+    const profile = user.getBasicProfile();
+    return {
+      id: profile.getId(),
+      firstName: profile.getGivenName(),
+      lastName: profile.getFamilyName(),
+      avatar: profile.getImageUrl(),
+      email: profile.getEmail()
+    };
+  }
+
+  public getUser(auth: GoogleAuth): Observable<any> {
+    return from(
+      auth.signIn().then(
+        res => this.signInSuccessHandler(res),
+        err => AuthService.signInErrorHandler(err)
+      )).pipe(
+        map(user => user),
+        catchError(() => throwError('login failed'))
+      );
+  }
+
+  public signIn(): Observable<User> {
+    return this.googleAuthService.getAuth().pipe(
+      switchMap(auth => this.getUser(auth))
+    );
+  }
+
+  private signInSuccessHandler(res: GoogleUser): User {
     this.ngZone.run(() => {
-      this.user = res;
       sessionStorage.setItem(
         AuthService.SESSION_STORAGE_KEY, res.getAuthResponse().access_token
       );
     });
-  }
-
-  private signInErrorHandler(err) {
-    console.warn('signInError', err);
+    return AuthService.parseUserData(res);
   }
 
   public isUserSignedIn(): boolean {

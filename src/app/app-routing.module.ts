@@ -6,7 +6,7 @@ import { DashboardGuard } from './dashboard/dashboard.guard';
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
   },
   {
     path: '',
