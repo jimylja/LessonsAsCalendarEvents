@@ -10,6 +10,8 @@ import { reducer } from './state/user.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './state/user.effects';
 
+import { MatButtonModule } from '@angular/material/button';
+
 @NgModule({
   declarations: [LoginComponent],
   imports: [
@@ -18,6 +20,7 @@ import { UserEffects } from './state/user.effects';
     UserRoutingModule,
     StoreModule.forFeature('user', reducer),
     EffectsModule.forFeature([UserEffects]),
+    MatButtonModule
   ]
 })
 export class UserModule { }
