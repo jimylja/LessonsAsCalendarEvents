@@ -5,7 +5,7 @@ import GoogleUser = gapi.auth2.GoogleUser;
 import GoogleAuth = gapi.auth2.GoogleAuth;
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {Observable, from, throwError} from 'rxjs';
-import { User } from '../models/user';
+import { User } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
