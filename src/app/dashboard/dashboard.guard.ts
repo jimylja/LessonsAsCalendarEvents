@@ -7,9 +7,7 @@ import { AuthService } from '../user/auth.service';
   providedIn: 'root'
 })
 export class DashboardGuard implements CanActivate, CanLoad {
-  constructor( private authService: AuthService, private router: Router) {
-    console.log('guard works');
-  }
+  constructor( private authService: AuthService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,

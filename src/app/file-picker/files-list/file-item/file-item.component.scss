@@ -1,0 +1,18 @@
+:host( .active) {
+  .file-item-card {
+    background-color: #69F0AE;
+  }
+}
+
+.file-item-card {
+  max-width: 400px;
+  margin: 20px auto;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.file-icon {
+  background-image: url('https://icons.iconarchive.com/icons/bokehlicia/captiva/256/web-google-sheets-icon.png');
+  background-size: cover;
+}
