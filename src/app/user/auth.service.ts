@@ -13,6 +13,7 @@ import { User } from '../models/user';
 export class AuthService {
 
   public static readonly SESSION_STORAGE_KEY: string = 'accessToken';
+  private token: string;
 
   constructor(
     private httpClient: HttpClient,
@@ -68,4 +69,11 @@ export class AuthService {
     return false;
   }
 
+  public getToken(): string {
+    this.token = sessionStorage.getItem(AuthService.SESSION_STORAGE_KEY);
+    if (!this.token) {
+      throw new Error('no token set, authentication required');
+    }
+    return sessionStorage.getItem(AuthService.SESSION_STORAGE_KEY);
+  }
 }

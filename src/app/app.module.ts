@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -23,6 +23,7 @@ import {
   GoogleApiConfig
 } from 'ng-gapi';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {TokenInterceptorService} from './core/token-interceptor.service';
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id: '187709823208-u52p9n3147kad6hf7pgirk52lauhmoo8.apps.googleusercontent.com',
@@ -70,7 +71,13 @@ const gapiClientConfig: NgGapiClientConfig = {
     }),
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

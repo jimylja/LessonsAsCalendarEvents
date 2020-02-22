@@ -1,0 +1,11 @@
+<ng-container *ngIf="filesData$|async as filesData; else loading">
+  <app-file-item *ngFor="let fileItem of filesData.filesList"
+                 (fileSelected)="fileSelectHandler($event)"
+                 [fileItem]="fileItem"
+                 [ngClass]="{'active': filesData.activeFile.id===fileItem.id}">
+  </app-file-item>
+</ng-container>
+
+<ng-template #loading>
+  loading data...
+</ng-template>
