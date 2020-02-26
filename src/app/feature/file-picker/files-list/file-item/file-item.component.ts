@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DriveFile} from '../../drive-file';
+import {DriveFile} from '../../../../models/drive-file';
 
 @Component({
   selector: 'app-file-item',

@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { DriveFile } from '../drive-file';
+import { DriveFile } from '../../../models/drive-file';
 
 export enum FileActionTypes {
   FileSelected = '[File] File Selected',

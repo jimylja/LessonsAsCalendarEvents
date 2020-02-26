@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+// import { AppState, getCurrentFile } from '../../../state/app.state';
+import {select, Store} from '@ngrx/store';
+import * as fromFile from '../../file-picker/state';
+import {Observable} from 'rxjs';
+import { DriveFile } from '../../../models/drive-file';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,10 +11,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
-  constructor() { }
+  activeFile$: Observable<DriveFile>;
+  constructor(
+    private store: Store<fromFile.State>
+  ) { }
 
   ngOnInit() {
+    this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));
   }
 
 }

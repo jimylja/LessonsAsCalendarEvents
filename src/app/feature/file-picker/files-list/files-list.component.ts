@@ -3,7 +3,7 @@ import {DriveResourcesService} from '../drive-resources.service';
 import {Router} from '@angular/router';
 import {combineLatest, Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
-import {DriveFile} from '../drive-file';
+import {DriveFile} from '../../../models/drive-file';
 import {select, Store} from '@ngrx/store';
 import * as fromFile from '../state';
 import * as FileActions from '../state/file.actions';

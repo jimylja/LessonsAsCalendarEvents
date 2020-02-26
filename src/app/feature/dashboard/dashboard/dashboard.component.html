@@ -1,4 +1,4 @@
-<div>
-  dashboard
-  <a routerLink="/select-file">Select the file</a>
-</div>
+<ng-container>
+  <app-active-file-widget [activeFile]="activeFile$|async"></app-active-file-widget>
+</ng-container>
+
