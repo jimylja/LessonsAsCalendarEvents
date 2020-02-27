@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActiveFileWidgetComponent } from './active-file-widget.component';
+import {MatCardModule} from '@angular/material';
 
 describe('ActiveFileWidgetComponent', () => {
   let component: ActiveFileWidgetComponent;
@@ -8,7 +9,8 @@ describe('ActiveFileWidgetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActiveFileWidgetComponent ]
+      declarations: [ ActiveFileWidgetComponent ],
+      imports: [ MatCardModule ]
     })
     .compileComponents();
   }));

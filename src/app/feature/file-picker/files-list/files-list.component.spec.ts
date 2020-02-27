@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FilesListComponent } from './files-list.component';
+import { FileItemComponent } from './file-item/file-item.component';
+import { MatCardModule } from '@angular/material';
+import { StoreModule } from '@ngrx/store';
 
 describe('FilesListComponent', () => {
   let component: FilesListComponent;
@@ -8,7 +13,13 @@ describe('FilesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FilesListComponent ]
+      declarations: [ FilesListComponent, FileItemComponent ],
+      imports: [
+        MatCardModule,
+        RouterTestingModule,
+        HttpClientTestingModule,
+        StoreModule.forRoot({})
+      ]
     })
     .compileComponents();
   }));
