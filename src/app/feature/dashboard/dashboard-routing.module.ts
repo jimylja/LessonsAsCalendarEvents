@@ -13,7 +13,11 @@ const routes: Routes = [
       },
       {
         path: 'select-file',
-        loadChildren: () => import('../file-picker/file-picker.module').then(m => m.FilePickerModule),
+        loadChildren: () => import('../file-picker/file-picker.module').then(m => m.FilePickerModule)
+      },
+      {
+        path: 'calendars',
+        loadChildren: () => import('../calendar/calendar.module').then(m => m.CalendarModule)
       },
       {
         path: '',

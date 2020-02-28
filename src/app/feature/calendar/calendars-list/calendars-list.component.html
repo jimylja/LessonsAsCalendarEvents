@@ -1,0 +1,9 @@
+<ng-container *ngIf="calendarList$|async as calendarList; else loading">
+  <app-calendar-item *ngFor="let calendarItem of calendarList"
+                 [calendarItem]="calendarItem">
+  </app-calendar-item>
+</ng-container>
+
+<ng-template #loading>
+  loading data...
+</ng-template>
