@@ -1,10 +1,10 @@
-:host( .active) {
-  .file-item-card {
+:host(.active) {
+  .item-card {
     background-color: #69F0AE;
   }
 }
 
-.file-item-card {
+.item-card {
   max-width: 400px;
   margin: 20px auto;
   &:hover {

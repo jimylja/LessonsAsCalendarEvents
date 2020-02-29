@@ -1,6 +1,6 @@
-<mat-card class="file-item-card">
+<mat-card class="item-card" (click)="selectCalendar(calendarItem)">
   <mat-card-header>
-    <div mat-card-avatar class="file-icon"></div>
+    <div mat-card-avatar class="item-icon calendar-icon"></div>
     <mat-card-title>{{ calendarItem?.summary }}</mat-card-title>
   </mat-card-header>
 </mat-card>

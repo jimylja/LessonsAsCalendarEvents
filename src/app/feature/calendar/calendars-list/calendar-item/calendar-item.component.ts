@@ -1,5 +1,13 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {CalendarEntry} from '../../../../models/calendar-entry';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  EventEmitter,
+  Output
+} from '@angular/core';
+import { CalendarEntry } from '../../../../models/calendar-entry';
+
 
 @Component({
   selector: 'app-calendar-item',
@@ -9,9 +17,13 @@ import {CalendarEntry} from '../../../../models/calendar-entry';
 })
 export class CalendarItemComponent implements OnInit {
   @Input() calendarItem: CalendarEntry;
+  @Output() calendarSelected = new EventEmitter<CalendarEntry>();
   constructor() { }
 
   ngOnInit() {
   }
 
+  selectCalendar(calendar: CalendarEntry) {
+    this.calendarSelected.emit(calendar);
+  }
 }

@@ -2,7 +2,12 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.file-icon {
-  background-image: url('./assets/web-google-sheets-icon.png');
+.item-icon {
+  &.file-icon {
+    background-image: url('./assets/web-google-sheets-icon.png');
+  }
+  &.calendar-icon {
+    background-image: url('./assets/web-google-calendar-icon.png');
+  }
   background-size: cover;
 }
