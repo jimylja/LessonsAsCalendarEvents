@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('../calendar/calendar.module').then(m => m.CalendarModule)
       },
       {
+        path: 'spreadsheet',
+        loadChildren: () => import('../spreadsheet/spreadsheet.module').then(m => m.SpreadsheetModule)
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
