@@ -1,12 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromRoot from '../../../state/app.state';
-import * as fromCalendar from './calendar.reducer';
+import {CalendarEntry} from '../../../models/calendar-entry';
 
 export interface State extends fromRoot.AppState {
-  calendar: fromCalendar.CalendarState;
+  calendar: CalendarEntry;
 }
 
-const getCalendarFeatureState = createFeatureSelector<fromCalendar.CalendarState>('calendar');
+const getCalendarFeatureState = createFeatureSelector<CalendarEntry>('calendar');
 
 export const getCurrentCalendar = createSelector(
   getCalendarFeatureState,
