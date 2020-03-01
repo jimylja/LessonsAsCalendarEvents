@@ -7,6 +7,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {DriveFile} from '../../../models/drive-file';
 import {CalendarEntry} from '../../../models/calendar-entry';
 import {map, switchMap} from 'rxjs/operators';
+import {Sheet} from '../../../models/sheet';
 
 @Component({
   selector: 'app-spreadsheet',
@@ -17,26 +18,21 @@ export class SpreadsheetComponent implements OnInit {
 
   activeFile$: Observable<DriveFile>;
   activeCalendar$: Observable<CalendarEntry>;
-  activeComponents$: Observable<any>;
+  spreadsheetData$: Observable<Sheet[]>;
 
   constructor(
     private store: Store<fromFile.State>,
     private spreadsheetService: SpreadsheetService) { }
-
+    displayedColumns: string[] = ['number', 'date', 'order', 'location', 'topic', 'hwTheory', 'hwPractice'];
   ngOnInit() {
     this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));
     this.activeCalendar$ = this.store.pipe(select(fromCalendar.getCurrentCalendar));
 
-    // @ts-ignore
-    this.activeComponents$ = this.activeFile$.pipe(
+    this.spreadsheetData$ = this.activeFile$.pipe(
       switchMap( (file: DriveFile) => {
-       return this.spreadsheetService.getSpreadsheet(file.id).pipe(
-          map(
-            data => console.log(data)
-          )
-        );
+       return this.spreadsheetService.getSpreadsheetData(file.id);
       }
-    )).subscribe();
+    ));
   }
 
 }
