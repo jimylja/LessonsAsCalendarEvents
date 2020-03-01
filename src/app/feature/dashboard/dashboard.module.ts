@@ -7,9 +7,10 @@ import { DashboardShellComponent } from './dashboard-shell/dashboard-shell.compo
 import { SharedModule } from '../../shared/shared.module';
 import { MatCardModule, MatButtonModule } from '@angular/material';
 import { ActiveFileWidgetComponent } from './dashboard/active-file-widget/active-file-widget.component';
+import { ActiveCalendarWidgetComponent } from './dashboard/active-calendar-widget/active-calendar-widget.component';
 
 @NgModule({
-  declarations: [DashboardComponent, DashboardShellComponent, ActiveFileWidgetComponent],
+  declarations: [DashboardComponent, DashboardShellComponent, ActiveFileWidgetComponent, ActiveCalendarWidgetComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,

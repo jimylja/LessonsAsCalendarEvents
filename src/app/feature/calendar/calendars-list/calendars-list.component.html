@@ -1,0 +1,11 @@
+<ng-container *ngIf="calendarsData$|async as calendarsData; else loading">
+  <app-calendar-item *ngFor="let calendarItem of calendarsData.calendarsList"
+                     (calendarSelected)="calendarSelectHandler($event)"
+                     [calendarItem]="calendarItem"
+                     [ngClass]="{'active': calendarsData.activeCalendar.id===calendarItem.id}">
+  </app-calendar-item>
+</ng-container>
+
+<ng-template #loading>
+  loading data...
+</ng-template>
