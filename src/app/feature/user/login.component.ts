@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
           const routerService = this.injector.get(Router);
           const ngZone = this.injector.get(NgZone);
           ngZone.run(() => {
-            routerService.navigate(['/'], { skipLocationChange: true });
+            routerService.navigate(['/'], );
           });
           // this.router.navigate(['/dashboard'], { relativeTo: this.route });
         }
