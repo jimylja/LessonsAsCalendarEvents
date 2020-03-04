@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SpreadsheetService } from '../spreadsheet.service';
+import { Observable } from 'rxjs';
+import { DriveFile } from '../../../models/drive-file';
+import { CalendarEntry } from '../../../models/calendar-entry';
+import { switchMap } from 'rxjs/operators';
+import { Sheet } from '../../../models/sheet';
 import { select, Store } from '@ngrx/store';
 import * as fromFile from '../../file-picker/state';
 import * as fromCalendar from '../../calendar/state';
-import {combineLatest, Observable} from 'rxjs';
-import {DriveFile} from '../../../models/drive-file';
-import {CalendarEntry} from '../../../models/calendar-entry';
-import {map, switchMap} from 'rxjs/operators';
-import {Sheet} from '../../../models/sheet';
 
 @Component({
   selector: 'app-spreadsheet',

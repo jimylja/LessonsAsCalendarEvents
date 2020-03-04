@@ -23,8 +23,7 @@ const routes: Routes = [
       {
         path: 'spreadsheet',
         loadChildren: () => import('../spreadsheet/spreadsheet.module').then(m => m.SpreadsheetModule),
-        canActivate: [SpreadsheetGuard],
-        canLoad: [SpreadsheetGuard]
+        canActivate: [SpreadsheetGuard]
       },
       {
         path: '',

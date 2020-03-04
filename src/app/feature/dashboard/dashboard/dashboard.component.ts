@@ -14,9 +14,7 @@ import { CalendarEntry } from '../../../models/calendar-entry';
 export class DashboardComponent implements OnInit {
   activeFile$: Observable<DriveFile>;
   activeCalendar$: Observable<CalendarEntry>;
-  constructor(
-    private store: Store<fromFile.State>
-  ) { }
+  constructor(private store: Store<fromFile.State>) { }
 
   ngOnInit() {
     this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));
