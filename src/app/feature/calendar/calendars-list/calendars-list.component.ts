@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CalendarApiService } from '../calendar-api.service';
 import { Observable, combineLatest } from 'rxjs';
-import { CalendarEntry } from '../../../models/calendar-entry';
+import { CalendarEntry } from '../../../models/calendar';
 import { select, Store } from '@ngrx/store';
 import * as fromCalendar from '../state';
 import * as CalendarActions from '../state/calendar.actions';

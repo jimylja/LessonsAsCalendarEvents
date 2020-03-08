@@ -17,6 +17,10 @@
   <button (click)="exportToCalendar()">Export to Calendar</button>
 </ng-container>
 
+<ng-container *ngIf="exportStatus$|async as exportStatus">
+  export data {{exportStatus | json}}
+</ng-container>
+
 <ng-template #loading>
   loading data...
 </ng-template>

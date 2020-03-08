@@ -1,12 +1,18 @@
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
-import { TokenInterceptorService } from './token-interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { TokenInterceptorService } from './token-interceptor.service';
 import { ErrorInterceptor } from './error-interceptor.service';
+import { MessageService } from './message.service';
 import { MatSnackBarModule } from '@angular/material';
 
 @NgModule({
-  imports: [ MatSnackBarModule ],
+  imports: [
+    CommonModule,
+    MatSnackBarModule,
+  ],
   providers: [
+    MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

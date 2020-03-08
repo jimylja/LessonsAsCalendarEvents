@@ -4,7 +4,7 @@ import * as fromFile from '../../file-picker/state';
 import * as fromCalendar from '../../calendar/state';
 import { Observable } from 'rxjs';
 import { DriveFile } from '../../../models/drive-file';
-import { CalendarEntry } from '../../../models/calendar-entry';
+import { CalendarEntry } from '../../../models/calendar';
 
 @Component({
   selector: 'app-dashboard',

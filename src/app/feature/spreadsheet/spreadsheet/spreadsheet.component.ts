@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SpreadsheetService } from '../spreadsheet.service';
 import { Observable } from 'rxjs';
 import { DriveFile } from '../../../models/drive-file';
-import { CalendarEntry } from '../../../models/calendar-entry';
+import { CalendarEntry, ExportStatus } from '../../../models/calendar';
 import {mergeMap, switchMap} from 'rxjs/operators';
 import { Sheet } from '../../../models/sheet';
 import { select, Store } from '@ngrx/store';
@@ -21,6 +21,7 @@ export class SpreadsheetComponent implements OnInit {
   activeCalendar$: Observable<CalendarEntry>;
   spreadSheetData: Sheet[];
   activeCalendar: CalendarEntry;
+  exportStatus$: Observable<ExportStatus> = null;
   constructor(
     private store: Store<fromFile.State>,
     private spreadsheetService: SpreadsheetService,
