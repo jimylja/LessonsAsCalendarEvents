@@ -1,0 +1,9 @@
+<mat-table [dataSource]="dataSource">
+  <ng-container *ngFor="let column of displayedColumns" [matColumnDef]=column>
+    <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

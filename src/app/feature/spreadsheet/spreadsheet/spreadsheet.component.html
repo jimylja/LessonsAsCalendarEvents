@@ -1,20 +1,11 @@
-<ng-container *ngIf="spreadSheetData; else loading">
+<ng-container *ngIf="spreadSheetData$|async as spreadSheetData; else loading">
   <mat-tab-group>
     <mat-tab *ngFor="let tab of spreadSheetData">
       <ng-template mat-tab-label>{{tab.title}}</ng-template>
-      <mat-table [dataSource]="tab.lessons" class="mat-elevation-z8">
-
-        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]=column>
-          <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
-      </mat-table>
+      <app-lessons-tab [lessons]="tab.lessons"></app-lessons-tab>
     </mat-tab>
   </mat-tab-group>
-  <button (click)="exportToCalendar()">Export to Calendar</button>
+  <button (click)="exportToCalendar(spreadSheetData)">Export to Calendar</button>
 </ng-container>
 
 <ng-container *ngIf="exportStatus$|async as exportStatus">

@@ -3,7 +3,7 @@ import { SpreadsheetService } from '../spreadsheet.service';
 import { Observable } from 'rxjs';
 import { DriveFile } from '../../../models/drive-file';
 import { CalendarEntry, ExportStatus } from '../../../models/calendar';
-import {mergeMap, switchMap} from 'rxjs/operators';
+import { mergeMap, switchMap } from 'rxjs/operators';
 import { Sheet } from '../../../models/sheet';
 import { select, Store } from '@ngrx/store';
 import * as fromFile from '../../file-picker/state';
@@ -19,19 +19,18 @@ export class SpreadsheetComponent implements OnInit {
 
   activeFile$: Observable<DriveFile>;
   activeCalendar$: Observable<CalendarEntry>;
-  spreadSheetData: Sheet[];
+  spreadSheetData$: Observable<Sheet[]>;
   activeCalendar: CalendarEntry;
   exportStatus$: Observable<ExportStatus> = null;
   constructor(
     private store: Store<fromFile.State>,
     private spreadsheetService: SpreadsheetService,
     private calendarService: CalendarApiService) { }
-    displayedColumns: string[] = ['number', 'date', 'order', 'location', 'topic', 'hwTheory', 'hwPractice'];
   ngOnInit() {
     this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));
     this.activeCalendar$ = this.store.pipe(select(fromCalendar.getCurrentCalendar));
 
-    this.activeCalendar$.pipe(
+    this.spreadSheetData$ = this.activeCalendar$.pipe(
       mergeMap((calendar: CalendarEntry) => {
         this.activeCalendar = calendar;
         return this.activeFile$.pipe(
@@ -40,11 +39,11 @@ export class SpreadsheetComponent implements OnInit {
           })
         );
       })
-    ).subscribe(lessons => this.spreadSheetData = lessons);
+    );
   }
 
-  exportToCalendar() {
-    this.calendarService.exportLessonsToCalendar(this.spreadSheetData, this.activeCalendar);
+  exportToCalendar(spreadSheetData: Sheet[]) {
+    this.calendarService.exportLessonsToCalendar(spreadSheetData, this.activeCalendar);
   }
 
 }
