@@ -3,10 +3,10 @@
     <ng-container [formGroupName]="tabIndex">
       <div class="common_details">
         <div class="common_details__attenders">
-          <mat-checkbox #attendersCheckbox (change)="changeAttendersPermission($event.checked)">
+          <mat-checkbox #attendeesCheckbox (change)="changeAttendeesPermission($event.checked)">
             Додати отримувачів
           </mat-checkbox>
-          <mat-form-field *ngIf="attendersCheckbox.checked">
+          <mat-form-field *ngIf="attendeesCheckbox.checked">
             <mat-label>Email</mat-label>
             <input matInput formControlName="attendeesEmail" placeholder="email класу">
             <mat-error *ngIf="!form.controls.classesData.hasError('email')">
@@ -17,8 +17,14 @@
       </div>
       <mat-table [dataSource]="dataSource">
         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]=column>
-          <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
+          <ng-container *ngIf="column !== 'date'">
+            <mat-header-cell *matHeaderCellDef [innerHTML]="column|columnTitle"></mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
+          </ng-container>
+          <ng-container *ngIf="column === 'date'">
+            <mat-header-cell *matHeaderCellDef [innerHTML]="column|columnTitle"></mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element[column] | date:'dd.MM'}} </mat-cell>
+          </ng-container>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>

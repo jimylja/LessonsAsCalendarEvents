@@ -12,9 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
 import { LessonsTabComponent } from './spreadsheet/lessons-tab/lessons-tab.component';
+import { ColumnTitlePipe } from './column-title.pipe';
 
 @NgModule({
-  declarations: [SpreadsheetComponent, LessonsTabComponent],
+  declarations: [SpreadsheetComponent, LessonsTabComponent, ColumnTitlePipe],
   imports: [
     CommonModule,
     SpreadsheetRoutingModule,

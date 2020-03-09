@@ -35,6 +35,10 @@ export class CalendarApiService {
     private httpClient: HttpClient,
     private messageService: MessageService) {}
 
+  static getDateString(date: Date) {
+    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+  }
+
   /**
    * Method makes request, that takes list of user calendars
    * @returns array, list of calendars
@@ -96,7 +100,8 @@ export class CalendarApiService {
   private generateEvents(classTab: Sheet, timeZone: string): Array<GoogleEvent> {
     return classTab.lessons.map(
       lesson => {
-        const lessonDate = moment(`${lesson.date}T${this.LESSONS_START_SCHEDULE[lesson.order]}`, 'DD.MM.YYYY HH:mm');
+        const lessonStartTime = `${CalendarApiService.getDateString(lesson.date)}T${this.LESSONS_START_SCHEDULE[lesson.order]}`;
+        const lessonDate = moment(lessonStartTime, 'DD.MM.YYYY HH:mm');
         const lessonEvent = {
           summary: `${lesson.order} урок: ${classTab.title}`,
           location: lesson.location,

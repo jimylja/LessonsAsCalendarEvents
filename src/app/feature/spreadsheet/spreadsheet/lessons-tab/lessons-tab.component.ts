@@ -30,8 +30,7 @@ export class LessonsTabComponent implements OnChanges, OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  private changeAttendersPermission(isChecked: boolean): void {
+  private changeAttendeesPermission(isChecked: boolean): void {
     this.attendersChanged.emit(isChecked);
   }
-
 }

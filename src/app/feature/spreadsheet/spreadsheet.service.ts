@@ -8,18 +8,27 @@ import { Lesson, Sheet } from '../../models/sheet';
   providedIn: 'root'
 })
 export class SpreadsheetService {
-  static keys = ['number', 'date', 'order', 'location', 'topic', 'hwTheory', 'hwPractice'];
+  private keys = ['number', 'date', 'order', 'location', 'topic', 'hwTheory', 'hwPractice'];
   private readonly API_URL: string = 'https://sheets.googleapis.com/v4/spreadsheets';
 
   constructor(private httpClient: HttpClient) { }
 
-  static getRowValues(rowsData): Array<Lesson> {
+  static convertFromSerialToMoment(excelDate: number): Date {
+    const unixTimestamp = (excelDate - 25569) * 86400;
+    return new Date(unixTimestamp * 1000);
+  }
+
+  private getRowValues(rowsData): Array<Lesson> {
     return rowsData.map(
       row => {
         const lesson = {};
         row.values.forEach(
           (value, index) => {
-            lesson[this.keys[index]] = value.formattedValue;
+            if (index !== 1) {
+              lesson[this.keys[index]] = value.formattedValue;
+            } else {
+              lesson[this.keys[index]] = SpreadsheetService.convertFromSerialToMoment(value.effectiveValue.numberValue);
+            }
           }
         );
         return lesson;
@@ -36,7 +45,7 @@ export class SpreadsheetService {
               title: sheet.properties.title,
               color: sheet.properties.tabColor,
               attendeesEmail: sheet.data[0].rowData[0].values[2].formattedValue,
-              lessons: SpreadsheetService.getRowValues(sheet.data[0].rowData.slice(3))
+              lessons: this.getRowValues(sheet.data[0].rowData.slice(3))
             };
           }
         );
