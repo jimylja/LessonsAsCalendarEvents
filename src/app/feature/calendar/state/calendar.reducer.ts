@@ -1,5 +1,5 @@
 import { CalendarActions, CalendarActionTypes } from './calendar.actions';
-import { CalendarEntry } from '../../../models/calendar-entry';
+import { CalendarEntry } from '../../../models/calendar';
 
 const initialState: CalendarEntry = {
   id: null,

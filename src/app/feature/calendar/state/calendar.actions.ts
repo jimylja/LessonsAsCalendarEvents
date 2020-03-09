@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { CalendarEntry } from '../../../models/calendar-entry';
+import { CalendarEntry } from '../../../models/calendar';
 
 export enum CalendarActionTypes {
   CalendarSelected = '[Calendar] Calendar Selected',

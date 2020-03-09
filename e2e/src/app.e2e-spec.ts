@@ -8,7 +8,7 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display welcome snack-message', () => {
     page.navigateTo();
     expect(page.getTitleText()).toEqual('lessons-shedule app is running!');
   });

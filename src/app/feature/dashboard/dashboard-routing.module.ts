@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardShellComponent } from './dashboard-shell/dashboard-shell.component';
+import { SpreadsheetGuard } from '../spreadsheet/spreadsheet.guard';
 const routes: Routes = [
   {
     path: '',
@@ -20,10 +21,14 @@ const routes: Routes = [
         loadChildren: () => import('../calendar/calendar.module').then(m => m.CalendarModule)
       },
       {
+        path: 'spreadsheet',
+        loadChildren: () => import('../spreadsheet/spreadsheet.module').then(m => m.SpreadsheetModule),
+        canActivate: [SpreadsheetGuard]
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
-
       }
     ]
   }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, Input } from '@angular/core';
-import { CalendarEntry } from '../../../../models/calendar-entry';
+import { CalendarEntry } from '../../../../models/calendar';
 
 @Component({
   selector: 'app-active-calendar-widget',
