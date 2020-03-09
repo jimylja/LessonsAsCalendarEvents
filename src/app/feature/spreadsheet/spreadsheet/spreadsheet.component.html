@@ -1,15 +1,25 @@
 <ng-container *ngIf="spreadSheetData$|async as spreadSheetData; else loading">
-  <mat-tab-group>
-    <mat-tab *ngFor="let tab of spreadSheetData">
-      <ng-template mat-tab-label>{{tab.title}}</ng-template>
-      <app-lessons-tab [lessons]="tab.lessons"></app-lessons-tab>
+  <mat-tab-group [formGroup]="form">
+    <mat-tab *ngFor="let tab of spreadSheetData; let i = index">
+      <ng-template mat-tab-label>
+        <ng-container *ngIf="classesData.controls.length>0">
+          <mat-icon *ngIf="!classesData.controls[i].valid"
+                    class="error-icon">warning</mat-icon>
+        </ng-container>
+        {{tab.title}}
+      </ng-template>
+      <app-lessons-tab
+        [form]="form"
+        [tabIndex] = "i"
+        (tabCreated)="addClassToForm(tab)"
+        (attendersChanged)="changeAttendersForClass($event, i, tab)"
+        [lessons]="tab.lessons"></app-lessons-tab>
     </mat-tab>
   </mat-tab-group>
-  <button (click)="exportToCalendar(spreadSheetData)">Export to Calendar</button>
-</ng-container>
-
-<ng-container *ngIf="exportStatus$|async as exportStatus">
-  export data {{exportStatus | json}}
+  <button [disabled]="!form.valid"
+          (click)="exportToCalendar()">
+    Експортувати
+  </button>
 </ng-container>
 
 <ng-template #loading>

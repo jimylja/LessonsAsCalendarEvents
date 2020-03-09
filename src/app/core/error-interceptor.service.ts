@@ -32,13 +32,14 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor {
   }
 
   handleError(err: ErrorEvent) {
+    console.log(err);
     if (err instanceof Error) {
       const startMessagePos = err.message.indexOf('Error');
       const endMessagePos = err.message.indexOf('Error', startMessagePos + 1);
       const message = err.message.slice(startMessagePos, endMessagePos);
       this.zone.run(
         () => {
-          this.displaySnackBar(message);
+          this.displaySnackBar(message === '' ? err.message : message);
         }
       );
     }

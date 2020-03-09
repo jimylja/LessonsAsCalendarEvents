@@ -59,7 +59,6 @@ export class CalendarApiService {
       classTab => this.generateEvents(classTab, calendar.timeZone)
     );
     this.messageService.showMessage(this.exportEventsStatus$);
-
     from(lessons).pipe(
       concatMap(classLessons => from(classLessons).pipe(
         mergeMap(lesson => this.createEvent(lesson, calendar.id), 1)
@@ -98,7 +97,7 @@ export class CalendarApiService {
     return classTab.lessons.map(
       lesson => {
         const lessonDate = moment(`${lesson.date}T${this.LESSONS_START_SCHEDULE[lesson.order]}`, 'DD.MM.YYYY HH:mm');
-        return {
+        const lessonEvent = {
           summary: `${lesson.order} урок: ${classTab.title}`,
           location: lesson.location,
           description: `№ ${lesson.number}: <strong>${lesson.topic}</strong>, ${lesson.hwPractice},${lesson.hwTheory}`,
@@ -110,9 +109,14 @@ export class CalendarApiService {
             dateTime: lessonDate.clone().add(this.LESSONS_DURATION, 'minute').format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS),
             timeZone
           },
-          attendees: [{email: `${classTab.attendeesEmail}`}],
-          colorId: Number(Object.values(classTab.color)[0])
+          // colorId: Number(Object.values(classTab.color)[0])
         };
+        if (classTab.hasOwnProperty('attendeesEmail')) {
+          Object.defineProperty(lessonEvent, 'attendees', {
+            value: [{email: `${classTab.attendeesEmail}`}],
+          });
+        }
+        return lessonEvent;
       }
     );
   }

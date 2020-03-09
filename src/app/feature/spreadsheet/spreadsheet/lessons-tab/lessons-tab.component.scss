@@ -1,5 +1,17 @@
 :host {
   width: 100%;
+  .common_details {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    padding: 10px;
+    .common_details__attenders {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
   mat-table {
     min-width: 480px;
     overflow-x: auto;
