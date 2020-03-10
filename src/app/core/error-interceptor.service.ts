@@ -4,28 +4,44 @@ import {
   HttpHandler,
   HttpErrorResponse
 } from '@angular/common/http';
-import { ErrorHandler, Injectable, NgZone } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { ErrorHandler, Injectable, Injector, NgZone } from '@angular/core';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
+import { SnackMessage, MessageService } from './message.service';
 
 @Injectable()
 export class ErrorInterceptor implements ErrorHandler, HttpInterceptor {
-  constructor(
-    private readonly zone: NgZone,
-    private snackBar: MatSnackBar) {}
+  constructor(private inj: Injector, private readonly zone: NgZone) {
+    this.zone.run(() => {
+      setTimeout(() => {
+        this.messageService = this.inj.get(MessageService);
+      }, 0);
+    });
+  }
+
+  snackMessage: SnackMessage;
+  messageService: MessageService;
+  messageText = new BehaviorSubject(null);
+
+
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+        let redirectTo = '';
         const message = (error.error.hasOwnProperty('error')) ? error.error.error.message : error.error;
         let errorMessage = `Неможливо виконати: Помилка: ${message}. Код:${error.status}`;
         if (message === 'Bad Request') {
           errorMessage = 'Некоректний запит на сервер';
         } else if (message === 'Invalid Credentials') {
           errorMessage = 'Немає необхідних дозволів';
+          redirectTo = 'login';
         }
-        this.displaySnackBar(errorMessage);
+        if (redirectTo.length !== 0) {
+          this.displaySnackBar(errorMessage, redirectTo);
+        } else {
+          this.displaySnackBar(errorMessage);
+        }
         return throwError(error);
       })
     );
@@ -46,11 +62,12 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor {
     return throwError(`Message: ${err.message}`);
   }
 
-  private displaySnackBar(message: string): void {
-    const config = new MatSnackBarConfig();
-    config.panelClass = ['popup-error'];
-    config.duration = 3000;
-    config.verticalPosition = 'bottom';
-    this.snackBar.open(message, null, config);
+  private displaySnackBar(message: string, redirectTo?: string): void {
+    this.snackMessage = { data: {message: this.messageText, type: 'errorMessage'}};
+    this.snackMessage.panelClass = ['popup-error'];
+    if (redirectTo) { this.snackMessage.redirectTo = redirectTo; }
+    this.messageText.next(message);
+    this.messageService.showMessage(this.snackMessage);
+    this.messageText.complete();
   }
 }

@@ -3,8 +3,8 @@ import { GoogleAuthService } from 'ng-gapi';
 import { HttpClient } from '@angular/common/http';
 import GoogleUser = gapi.auth2.GoogleUser;
 import GoogleAuth = gapi.auth2.GoogleAuth;
-import {catchError, map, switchMap} from 'rxjs/operators';
-import {Observable, from, throwError} from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { Observable, from, throwError } from 'rxjs';
 import { User } from '../../models/user';
 
 @Injectable({

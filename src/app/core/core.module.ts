@@ -21,7 +21,7 @@ import { MatSnackBarModule } from '@angular/material';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: ErrorHandler,

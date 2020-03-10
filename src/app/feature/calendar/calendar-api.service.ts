@@ -62,7 +62,7 @@ export class CalendarApiService {
     const lessons = events.map(
       classTab => this.generateEvents(classTab, calendar.timeZone)
     );
-    this.messageService.showMessage(this.exportEventsStatus$);
+    this.messageService.showMessage({data: {message: this.exportEventsStatus$, type: 'exportMessage'}});
     from(lessons).pipe(
       concatMap(classLessons => from(classLessons).pipe(
         mergeMap(lesson => this.createEvent(lesson, calendar.id), 1)
