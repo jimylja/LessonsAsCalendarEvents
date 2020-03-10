@@ -32,6 +32,7 @@ export class MessageService {
     config.panelClass = [panelClass];
     config.duration = duration;
     config.verticalPosition = 'bottom';
+    config.data = this.getMessage();
     this.snackBarRef = this.snackBar.openFromComponent(SnackbarMessageComponent, config);
   }
 
