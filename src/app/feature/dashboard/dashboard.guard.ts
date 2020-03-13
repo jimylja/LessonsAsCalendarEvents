@@ -30,7 +30,9 @@ export class DashboardGuard implements CanActivate, CanLoad {
   }
 
   isLoggedIn(): boolean {
-    if (!this.authService.isUserSignedIn()) {
+    const token = this.authService.getToken();
+    const isUserSignedIn = (token && token.length > 0);
+    if (!isUserSignedIn) {
       this.router.navigate(['login']);
       return false;
     }

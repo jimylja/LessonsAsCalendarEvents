@@ -8,13 +8,15 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SnackbarMessageComponent } from './components/snack-message/snackbar-message.component';
+import { AvatarComponent } from './components/avatar/avatar.component';
 
 @NgModule({
   declarations: [
     NotFoundComponent,
     HeaderComponent,
     FooterComponent,
-    SnackbarMessageComponent
+    SnackbarMessageComponent,
+    AvatarComponent,
   ],
   entryComponents: [SnackbarMessageComponent],
   imports: [

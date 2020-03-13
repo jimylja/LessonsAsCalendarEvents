@@ -23,17 +23,16 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor {
   messageService: MessageService;
   messageText = new BehaviorSubject(null);
 
-
-
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         let redirectTo = '';
+        console.log('Http Error Handler', error);
         const message = (error.error.hasOwnProperty('error')) ? error.error.error.message : error.error;
         let errorMessage = `Неможливо виконати: Помилка: ${message}. Код:${error.status}`;
         if (message === 'Bad Request') {
           errorMessage = 'Некоректний запит на сервер';
-        } else if (message === 'Invalid Credentials') {
+        } else if (message === 'Invalid Credentials' || error.status === 401) {
           errorMessage = 'Немає необхідних дозволів';
           redirectTo = 'login';
         }
@@ -48,8 +47,9 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor {
   }
 
   handleError(err: ErrorEvent) {
-    console.log(err);
-    if (err instanceof Error) {
+    console.log('Global Error Handler', err);
+    const isErrorFromHttp = ((err instanceof Error) && (err instanceof HttpErrorResponse));
+    if (!isErrorFromHttp) {
       const startMessagePos = err.message.indexOf('Error');
       const endMessagePos = err.message.indexOf('Error', startMessagePos + 1);
       const message = err.message.slice(startMessagePos, endMessagePos);

@@ -10,7 +10,7 @@ const getUserFeatureState = createFeatureSelector<fromUser.UserState>('user');
 
 export const getCurrentUser = createSelector(
   getUserFeatureState,
-  state => state.isLoggedIn
+  state => state.userProfile
 );
 
 export const getLoginStatus = createSelector(
