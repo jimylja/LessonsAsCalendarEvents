@@ -1,43 +1,27 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import { Observable, from, BehaviorSubject} from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable, from, BehaviorSubject, Subject } from 'rxjs';
 import { CalendarEntry, ExportStatus } from '../../models/calendar';
-import { pluck, mergeMap, delay, tap, concatMap } from 'rxjs/operators';
+import { pluck, mergeMap, delay, tap, concatMap, map, takeUntil } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
 
-export interface GoogleEvent {
-  summary: string;
-  description: string;
-  location: string;
-  start: {
-    dateTime: string;
-    timeZone: string;
-  };
-  end: {
-    dateTime: string;
-    timeZone: string;
-  };
-  attendees?: [{email: string}];
-  colorId?: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
-export class CalendarApiService {
+export class CalendarApiService implements OnDestroy {
   private CALENDAR_API_URL = `https://www.googleapis.com/calendar/v3`;
   private LESSONS_START_SCHEDULE = ['8:00', '8:55', '10:00', '11:05', '12:00', '12:55', '13:45'];
   private LESSONS_DURATION = 45;
+  private readonly CALENDAR_COLORS = 'https://www.googleapis.com/calendar/v3/colors';
+  private calendarColors$ = new BehaviorSubject<string[]>(null);
   exportEventsStatus$ = new BehaviorSubject<ExportStatus|null>(null);
+  private onDestroy$ = new Subject();
+
   constructor(
     private httpClient: HttpClient,
     private messageService: MessageService) {}
-
-  static getDateString(date: Date) {
-    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
-  }
 
   /**
    * Method makes request, that takes list of user calendars
@@ -73,6 +57,17 @@ export class CalendarApiService {
   }
 
   /**
+   * Returns array, that contain hex colors for google events
+   * @returns - array of colors for events
+   */
+  getCalendarColors(): Observable<string[]> {
+    if (this.calendarColors$.value === null) {
+      this.fetchCalendarColors();
+    }
+    return this.calendarColors$.asObservable();
+  }
+
+  /**
    * Method makes request, that creates new event in Google Calendar
    * @returns response
    * @param event - Google Event object
@@ -100,22 +95,23 @@ export class CalendarApiService {
   private generateEvents(classTab: Sheet, timeZone: string): Array<GoogleEvent> {
     return classTab.lessons.map(
       lesson => {
-        const lessonStartTime = `${CalendarApiService.getDateString(lesson.date)}T${this.LESSONS_START_SCHEDULE[lesson.order]}`;
+        const dateFormat = 'YYYY-MM-DD[T]HH:mm:ssZ';
+        const lessonStartTime = `${moment(lesson.date).format('DD.MM.YYYY')}T${this.LESSONS_START_SCHEDULE[lesson.order]}`;
         const lessonDate = moment(lessonStartTime, 'DD.MM.YYYY HH:mm');
-        const lessonEvent = {
+        const lessonEvent: GoogleEvent = {
           summary: `${lesson.order} урок: ${classTab.title}`,
           location: lesson.location,
           description: `№ ${lesson.number}: <strong>${lesson.topic}</strong>, ${lesson.hwPractice},${lesson.hwTheory}`,
           start: {
-            dateTime: lessonDate.format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS),
+            dateTime: lessonDate.format(dateFormat),
             timeZone
           },
           end: {
-            dateTime: lessonDate.clone().add(this.LESSONS_DURATION, 'minute').format(moment.HTML5_FMT.DATETIME_LOCAL_SECONDS),
+            dateTime: lessonDate.clone().add(this.LESSONS_DURATION, 'minute').format(dateFormat),
             timeZone
           },
-          // colorId: Number(Object.values(classTab.color)[0])
         };
+        if (classTab.colorId) { lessonEvent.colorId = String(+classTab.colorId + 1); }
         if (classTab.hasOwnProperty('attendeesEmail')) {
           Object.defineProperty(lessonEvent, 'attendees', {
             value: [{email: `${classTab.attendeesEmail}`}],
@@ -126,6 +122,11 @@ export class CalendarApiService {
     );
   }
 
+  /**
+   * Update message for export events process,
+   * that contains info about succeed and failed requests
+   * @params - response from server for create event request
+   */
   private updateExportStatus(resp: HttpResponse<any>): void {
     const curStatus = this.exportEventsStatus$.value;
     if (resp.status === 200) {
@@ -145,4 +146,45 @@ export class CalendarApiService {
       });
     }
   }
+
+  /**
+   * Method fetches color values for google events
+   */
+  private fetchCalendarColors(): void {
+    this.httpClient.get(this.CALENDAR_COLORS).pipe(
+      map((data: {event: GoogleColor[]}) => {
+        return Object.entries(data.event).map(
+          color => color[1].background
+        );
+      }),
+      takeUntil(this.onDestroy$)
+    ).subscribe((colors: any) => this.calendarColors$.next(colors));
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+}
+export interface GoogleEvent {
+  summary: string;
+  description: string;
+  location: string;
+  start: {
+    dateTime: string;
+    timeZone: string;
+  };
+  end: {
+    dateTime: string;
+    timeZone: string;
+  };
+  attendees?: [{email: string}];
+  colorId?: string;
+}
+
+export interface GoogleColor {
+  [id: string]: {
+    foreground: string
+    background: string;
+  };
 }

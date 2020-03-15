@@ -5,11 +5,13 @@ import { TokenInterceptorService } from './token-interceptor.service';
 import { ErrorInterceptor } from './error-interceptor.service';
 import { MessageService } from './message.service';
 import { MatSnackBarModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
     CommonModule,
     MatSnackBarModule,
+    MatIconModule
   ],
   providers: [
     MessageService,

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -23,6 +24,7 @@ import { AvatarComponent } from './components/avatar/avatar.component';
     CommonModule,
     MatToolbarModule,
     MatIconModule,
+    MatMenuModule,
     MatProgressSpinnerModule
   ],
   exports: [
@@ -32,6 +34,8 @@ import { AvatarComponent } from './components/avatar/avatar.component';
     SnackbarMessageComponent,
     CommonModule,
     MatProgressSpinnerModule,
+    MatIconModule,
+    MatMenuModule,
   ],
 })
 export class SharedModule { }

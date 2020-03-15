@@ -13,6 +13,8 @@ import { FormGroup } from '@angular/forms';
 export class LessonsTabComponent implements OnChanges, OnInit {
   displayedColumns: string[] = ['number', 'date', 'order', 'location', 'topic', 'hwTheory', 'hwPractice'];
   dataSource: MatTableDataSource<Lesson>;
+  @Input() colorId: any;
+  @Input() colorsPalette: string[];
   @Input() lessons: Lesson[];
   @Input() form: FormGroup;
   @Input() tabIndex: number;

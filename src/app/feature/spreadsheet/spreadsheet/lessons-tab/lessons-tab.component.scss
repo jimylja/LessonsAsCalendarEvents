@@ -1,31 +1,96 @@
+.menu-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 10px;
+  width: 75px;
+  height: 36px;
+  background-color: #eae5e536;
+
+  &:hover {
+    background-color: #eae5e57d;
+    cursor: pointer;
+  }
+}
+.color_item {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin: 5px;
+  ::ng-deep .mat-radio-container  {
+    .mat-radio-inner-circle, .mat-radio-outer-circle {
+      border: none;
+      width: 0;
+    }
+    .mat-radio-ripple { display: none; }
+  }
+  &:hover:not(.menu-button__item)  {
+    box-shadow: 1px 2px 7px 0 rgba(0, 0, 0, 0.75);
+  }
+}
+.color-menu {
+  max-width: 125px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: 150px;
+  align-items: center;
+  .mat-menu-item {
+    width: 24px;
+    height: 24px;
+    padding: 5px;
+    border-radius: 50%;
+    margin: 5px;
+    &:hover {
+      box-shadow: 1px 2px 7px 0 rgba(0, 0, 0, 0.75);
+    }
+  }
+}
+
 :host {
   width: 100%;
   .common_details {
     display: flex;
     flex: 1;
-    justify-content: space-around;
     padding: 10px;
-    min-height: 75px;
+    justify-content: space-around;
+    @media (min-width: 481px)  {
+      margin: 15px auto;
+      width: 80%;
+    }
     .common_details__attenders {
       display: flex;
-      flex: 1;
       align-items: center;
-      justify-content: space-around;
+      flex-direction:column;
+      justify-content:flex-start;
+      mat-checkbox {
+        height:36px;
+        line-height:36px;
+        margin: 0 20px;
+      }
+      @media (min-width: 481px)  {
+        flex-direction: row;
+        flex-grow: 3;
+        height:36px;
+      }
     }
   }
-  mat-table {
-    min-width: 480px;
-    overflow-x: auto;
-
-    mat-header-cell, mat-cell {
-      justify-content: center;
-      flex-direction: column;
+  .lessons-table {
+    mat-table {
+      //min-width: 480px;
+      overflow-x: auto;
+      mat-header-cell, mat-cell {
+        justify-content: center;
+        flex-direction: column;
+      }
+      ::ng-deep mat-footer-row, mat-header-row, mat-row { min-width: 480px; }
+      mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type { padding: 0; }
     }
-
     mat-header-cell:nth-of-type(1), mat-cell:nth-of-type(1),
     mat-header-cell:nth-of-type(2), mat-cell:nth-of-type(2),
     mat-header-cell:nth-of-type(3), mat-cell:nth-of-type(3),
-    mat-header-cell:nth-of-type(4), mat-cell:nth-of-type(4){
+    mat-header-cell:nth-of-type(4), mat-cell:nth-of-type(4) {
       flex-shrink: 1;
     }
 
