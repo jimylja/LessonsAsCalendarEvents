@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export interface SnackMessage extends MatSnackBarConfig {
   data: {
     message: Subject<ExportStatus|string>;
-    type: 'errorMessage' | 'exportMessage';
+    type: 'customMessage' | 'exportMessage';
   };
   redirectTo?: string;
 }

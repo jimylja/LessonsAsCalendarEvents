@@ -7,7 +7,21 @@
 .item-card {
   max-width: 400px;
   margin: 20px auto;
-  &:hover {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .mat-card-header {
+    align-items: center;
+    mat-card-title {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+  }
+  button {
+    background-color: unset;
+    border: none;
+  }
+  .mat-card-header, button:hover {
     cursor: pointer;
   }
 }

@@ -25,24 +25,6 @@ export class SpreadsheetService {
     return new Date(unixTimestamp * 1000);
   }
 
-  private getRowValues(rowsData): Array<Lesson> {
-    return rowsData.map(
-      row => {
-        const lesson = {};
-        row.values.forEach(
-          (value, index) => {
-            if (index !== 1) {
-              lesson[this.keys[index]] = value.formattedValue;
-            } else {
-              lesson[this.keys[index]] = SpreadsheetService.convertFromSerialToMoment(value.effectiveValue.numberValue);
-            }
-          }
-        );
-        return lesson;
-      }
-    );
-  }
-
   public getSpreadsheetData(id: string): Observable<Sheet[]> {
     return combineLatest(
       this.fetchSpreadsheet(id),
@@ -72,6 +54,30 @@ export class SpreadsheetService {
   private fetchSpreadsheet(spreadsheetId: string): Observable<any> {
     return this.httpClient.get(this.API_URL + '/' + spreadsheetId + '/?includeGridData=true').pipe(
       pluck('sheets')
+    );
+  }
+
+  /**
+   * Method takes data from spreadsheet rows and generates lesson for each table row
+   * @params rowData - array, contains data of rows from table sheet
+   * @returns array of lessons
+   */
+  private getRowValues(rowsData): Array<Lesson> {
+    return rowsData.map(
+      row => {
+        const lesson = {};
+        row.values.forEach(
+          (value, index) => {
+            const isCellWithDate = index === 1;
+            if (!isCellWithDate) {
+              lesson[this.keys[index]] = value.formattedValue;
+            } else {
+              lesson[this.keys[index]] = SpreadsheetService.convertFromSerialToMoment(value.effectiveValue.numberValue);
+            }
+          }
+        );
+        return lesson;
+      }
     );
   }
 

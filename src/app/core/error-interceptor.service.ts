@@ -41,7 +41,7 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor, OnDestro
 
   private displaySnackBar(message: string): void {
     this.messageService = this.inj.get(MessageService);
-    this.snackMessage = {data: {message: this.messageText, type: 'errorMessage'}};
+    this.snackMessage = {data: {message: this.messageText, type: 'customMessage'}};
     this.snackMessage.panelClass = ['popup-error'];
     if (this.redirectTo.length !== 0) { this.snackMessage.redirectTo = this.redirectTo; }
     this.messageText.next(message);

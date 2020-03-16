@@ -7,6 +7,7 @@ import { CalendarItemComponent } from './calendars-list/calendar-item/calendar-i
 import { MatCardModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/calendar.reducer';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [CalendarsListComponent, CalendarItemComponent],
@@ -14,6 +15,7 @@ import { reducer } from './state/calendar.reducer';
     CommonModule,
     CalendarRoutingModule,
     MatCardModule,
+    SharedModule,
     StoreModule.forFeature('calendar', reducer),
   ]
 })

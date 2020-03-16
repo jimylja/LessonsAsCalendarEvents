@@ -18,6 +18,7 @@ import { CalendarEntry } from '../../../../models/calendar';
 export class CalendarItemComponent implements OnInit {
   @Input() calendarItem: CalendarEntry;
   @Output() calendarSelected = new EventEmitter<CalendarEntry>();
+  @Output() calendarCleared = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit() {
@@ -25,5 +26,9 @@ export class CalendarItemComponent implements OnInit {
 
   selectCalendar(calendar: CalendarEntry) {
     this.calendarSelected.emit(calendar);
+  }
+
+  clearCalendar(calendarId: string) {
+    this.calendarCleared.emit(calendarId);
   }
 }

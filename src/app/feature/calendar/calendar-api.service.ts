@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, from, BehaviorSubject, Subject } from 'rxjs';
 import { CalendarEntry, ExportStatus } from '../../models/calendar';
-import { pluck, mergeMap, delay, tap, concatMap, map, takeUntil } from 'rxjs/operators';
+import { pluck, mergeMap, delay, tap, concatMap, map, takeUntil, switchMap } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
@@ -17,6 +17,7 @@ export class CalendarApiService implements OnDestroy {
   private readonly CALENDAR_COLORS = 'https://www.googleapis.com/calendar/v3/colors';
   private calendarColors$ = new BehaviorSubject<string[]>(null);
   exportEventsStatus$ = new BehaviorSubject<ExportStatus|null>(null);
+  deleteEventStatus$: BehaviorSubject<string>;
   private onDestroy$ = new Subject();
 
   constructor(
@@ -159,6 +160,57 @@ export class CalendarApiService implements OnDestroy {
       }),
       takeUntil(this.onDestroy$)
     ).subscribe((colors: any) => this.calendarColors$.next(colors));
+  }
+
+  /**
+   * Method fetches all events from calendar
+   * @param calendarId id of google calendar
+   * @returns list of events for calendar
+   */
+   getCalendarEvents(calendarId: string): Observable<any> {
+      return this.httpClient.get(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?&maxResults=2500`);
+    }
+
+  /**
+   * Method fetches all events from calendar
+   * @param calendarId id of google calendar
+   * @param eventId id of event, that should be deleted
+   * @returns result of request
+   */
+  private deleteEvent(calendarId: string, eventId: string): Observable<boolean> {
+    return this.httpClient.delete(
+      `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
+      {observe: 'response'}).pipe(
+      map(resp => Boolean(resp.body))
+    );
+  }
+
+  /**
+   * Method deletes all events from calendar
+   * @param calendarId id of google calendar
+   */
+  clearCalendar(calendarId: string): void {
+    let deletedEvents = 0;
+    this.deleteEventStatus$ = new BehaviorSubject<string>('Видалено: 0');
+    this.messageService.showMessage({data: {message: this.deleteEventStatus$, type: 'customMessage'}});
+    this.getCalendarEvents(calendarId).pipe(
+      switchMap((events: {items: Array<any>}) => {
+        return from(events.items).pipe(
+          mergeMap(event =>
+            this.deleteEvent(calendarId, event.id).pipe(
+              map(data => {
+                if (!data) {
+                  deletedEvents++;
+                  this.deleteEventStatus$.next(`Видалено: ${deletedEvents}`);
+                }
+              })
+            ), 1
+          )
+        );
+      })
+    ).subscribe({complete: () => {
+      this.deleteEventStatus$.complete();
+    }});
   }
 
   ngOnDestroy(): void {

@@ -47,4 +47,7 @@ export class CalendarsListComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
+  calendarClearHandler(calendarId: string) {
+    this.calendarApi.clearCalendar(calendarId);
+  }
 }
