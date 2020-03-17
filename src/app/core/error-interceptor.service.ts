@@ -7,7 +7,8 @@ import {
 import {ErrorHandler, Injectable, Injector, OnDestroy} from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
-import { SnackMessage, MessageService } from './message.service';
+import { MessageService } from './message.service';
+import { SnackMessage } from '../models/snack-message';
 
 @Injectable()
 export class ErrorInterceptor implements ErrorHandler, HttpInterceptor, OnDestroy {
@@ -41,7 +42,7 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor, OnDestro
 
   private displaySnackBar(message: string): void {
     this.messageService = this.inj.get(MessageService);
-    this.snackMessage = {data: {message: this.messageText, type: 'customMessage'}};
+    this.snackMessage = {data: {message: this.messageText, title: 'Помилка'}};
     this.snackMessage.panelClass = ['popup-error'];
     if (this.redirectTo.length !== 0) { this.snackMessage.redirectTo = this.redirectTo; }
     this.messageText.next(message);

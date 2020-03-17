@@ -16,7 +16,7 @@ export class CalendarApiService implements OnDestroy {
   private LESSONS_DURATION = 45;
   private readonly CALENDAR_COLORS = 'https://www.googleapis.com/calendar/v3/colors';
   private calendarColors$ = new BehaviorSubject<string[]>(null);
-  exportEventsStatus$ = new BehaviorSubject<ExportStatus|null>(null);
+  exportEventsStatus$: BehaviorSubject<ExportStatus|null>;
   deleteEventStatus$: BehaviorSubject<string>;
   private onDestroy$ = new Subject();
 
@@ -40,14 +40,19 @@ export class CalendarApiService implements OnDestroy {
    * @param calendar - calendar that will contain new events
    */
   exportLessonsToCalendar(events: Sheet[], calendar: CalendarEntry): void {
-    this.exportEventsStatus$.next({
+    this.exportEventsStatus$ = new BehaviorSubject<ExportStatus|null>({
       exportSuccess: {total: 0, lastEvent: ''},
       exportFail: {total: 0, lastEvent: ''}
     });
     const lessons = events.map(
       classTab => this.generateEvents(classTab, calendar.timeZone)
     );
-    this.messageService.showMessage({data: {message: this.exportEventsStatus$, type: 'exportMessage'}});
+    this.messageService.showMessage({data: {
+      message: this.exportEventsStatus$,
+      type: 'exportMessage',
+      title: 'Експорт уроків',
+      displaySpinner: true
+    }});
     from(lessons).pipe(
       concatMap(classLessons => from(classLessons).pipe(
         mergeMap(lesson => this.createEvent(lesson, calendar.id), 1)
@@ -192,7 +197,7 @@ export class CalendarApiService implements OnDestroy {
   clearCalendar(calendarId: string): void {
     let deletedEvents = 0;
     this.deleteEventStatus$ = new BehaviorSubject<string>('Видалено: 0');
-    this.messageService.showMessage({data: {message: this.deleteEventStatus$, type: 'customMessage'}});
+    this.messageService.showMessage({data: {message: this.deleteEventStatus$, title: 'Очищення календаря', displaySpinner: true}});
     this.getCalendarEvents(calendarId).pipe(
       switchMap((events: {items: Array<any>}) => {
         return from(events.items).pipe(

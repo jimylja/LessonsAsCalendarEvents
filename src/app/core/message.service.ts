@@ -1,18 +1,11 @@
 import { Injectable, Injector, NgZone } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ExportStatus } from '../models/calendar';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material';
 import { SnackbarMessageComponent } from '../shared/components/snack-message/snackbar-message.component';
 import { Router } from '@angular/router';
-
-export interface SnackMessage extends MatSnackBarConfig {
-  data: {
-    message: Subject<ExportStatus|string>;
-    type: 'customMessage' | 'exportMessage';
-  };
-  redirectTo?: string;
-}
+import { SnackMessage } from '../models/snack-message';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +19,10 @@ export class MessageService {
     private snackBar: MatSnackBar) {}
   snackBarRef: MatSnackBarRef<SnackbarMessageComponent>;
   redirectTo: string;
-  messageConfig: MatSnackBarConfig = {panelClass: ['popup-success'], duration: 3000};
+  messageConfig: MatSnackBarConfig = new MatSnackBarConfig<any>();
 
   showMessage({redirectTo, ...config}: SnackMessage) {
+    this.initializePopupMessage();
     this.messageConfig = {...this.messageConfig, ...config};
     this.redirectTo = redirectTo;
     this.displaySnackBar();
@@ -69,5 +63,14 @@ export class MessageService {
         this.snackBarRef.dismiss();
       }, 3000);
     }
+  }
+
+  /**
+   * Generates new snackBar with basic parameters
+   */
+  private initializePopupMessage(): void {
+    this.messageConfig = new MatSnackBarConfig<any>();
+    this.messageConfig.duration = 3000;
+    this.messageConfig.panelClass = ['popup-success'];
   }
 }
