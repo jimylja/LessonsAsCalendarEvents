@@ -5,6 +5,7 @@ import { FilePickerRoutingModule } from './file-picker-routing.module';
 import { FilesListComponent } from './files-list/files-list.component';
 import { FileItemComponent } from './files-list/file-item/file-item.component';
 import { MatCardModule } from '@angular/material';
+import { SharedModule } from './../../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/file.reducer';
 
@@ -14,7 +15,8 @@ import { reducer } from './state/file.reducer';
     CommonModule,
     MatCardModule,
     StoreModule.forFeature('file', reducer),
-    FilePickerRoutingModule
+    FilePickerRoutingModule,
+    SharedModule,
   ]
 })
 export class FilePickerModule { }
