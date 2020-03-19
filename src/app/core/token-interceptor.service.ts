@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/common/http';
-import { AuthService } from '../user/auth.service';
+import { AuthService } from '../feature/user/auth.service';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -18,8 +18,7 @@ export class TokenInterceptorService implements HttpInterceptor {
     const token = this.authService.getToken();
     request = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`,
-        'Access-Control-Allow-Origin': '*'
+        Authorization: `Bearer ${token}`
       },
       url: request.url
     });

@@ -1,8 +1,11 @@
-import { UserState } from '../user/state/user.reducer';
-import { FileState } from '../file-picker/state/file.reducer';
+import { UserState } from '../feature/user/state/user.reducer';
+import { FileState } from '../feature/file-picker/state/file.reducer';
+import {CalendarEntry} from '../models/calendar-entry';
+
 // Representation of the entire app state
 // Extended by lazy loaded modules
-export interface State {
+export interface AppState {
   user: UserState;
   file: FileState;
+  calendar: CalendarEntry;
 }

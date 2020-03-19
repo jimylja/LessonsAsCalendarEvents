@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { UserModule } from './user/user.module';
-import { DashboardModule } from './dashboard/dashboard.module';
+import { UserModule } from './feature/user/user.module';
+import { DashboardModule } from './feature/dashboard/dashboard.module';
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
 
 // NgRx
 import { StoreModule } from '@ngrx/store';
@@ -16,7 +17,6 @@ import { environment } from '../environments/environment';
 
 import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {TokenInterceptorService} from './core/token-interceptor.service';
 
 const gApiClientConfig: NgGapiClientConfig = {
   ...environment.gApiClient,
@@ -25,13 +25,14 @@ const gApiClientConfig: NgGapiClientConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
+    CoreModule,
     UserModule,
     DashboardModule,
     GoogleApiModule.forRoot({
@@ -46,13 +47,6 @@ const gApiClientConfig: NgGapiClientConfig = {
       logOnly: environment.production,
     }),
     BrowserAnimationsModule,
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true
-    }
   ],
   bootstrap: [AppComponent]
 })
