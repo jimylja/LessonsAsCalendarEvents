@@ -5,6 +5,7 @@
 }
 router-outlet + ::ng-deep * {
   height: 100%;
+  padding: 10px;
   .wait-spinner {
     display: flex;
     flex: 1;

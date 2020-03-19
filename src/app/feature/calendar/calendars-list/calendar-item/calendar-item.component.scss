@@ -12,9 +12,13 @@
   align-items: center;
   .mat-card-header {
     align-items: center;
+    overflow: hidden;
     mat-card-title {
       padding-bottom: 0;
       margin-bottom: 0;
+      @media (max-width: 480px) {
+        font-size: 1rem;
+      }
     }
   }
   button {

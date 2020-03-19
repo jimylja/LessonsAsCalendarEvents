@@ -1,3 +1,8 @@
-<app-active-file-widget [activeFile]="activeFile$|async"></app-active-file-widget>
-<app-active-calendar-widget [activeCalendar]="activeCalendar$|async"></app-active-calendar-widget>
-<button routerLink="/spreadsheet" mat-raised-button color="primary">Spreadsheet</button>
+<div class="widget-container">
+  <app-feature-widget [data]="activeFile$|async" [featureType]="'file'" ></app-feature-widget>
+  <app-feature-widget [data]="activeCalendar$|async" [featureType]="'calendar'" ></app-feature-widget>
+</div>
+<button mat-raised-button color="primary"
+        [disabled]="(activeCalendar$|async)===null||(activeFile$|async)===null"
+        routerLink="/spreadsheet">Відкрити таблицю
+</button>

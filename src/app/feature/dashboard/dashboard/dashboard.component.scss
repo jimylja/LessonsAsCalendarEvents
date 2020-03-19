@@ -1,4 +1,16 @@
-.file-icon {
-  background-image: url('https://icons.iconarchive.com/icons/bokehlicia/captiva/256/web-google-sheets-icon.png');
-  background-size: cover;
+:host {
+  padding: 20px;
+  .widget-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    app-feature-widget {
+      flex: 1;
+      padding: 20px;
+    }
+  }
+  button {
+    display: block;
+    margin: 0 auto;
+  }
 }
