@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { pluck, map } from 'rxjs/operators';
 import { Lesson, Sheet } from '../../models/sheet';
 import { CalendarApiService } from '../calendar/calendar-api.service';
+import {environment} from '../../../environments/environment';
 
 export interface RgbObj {
   red: number;
@@ -15,8 +16,8 @@ export interface RgbObj {
   providedIn: 'root'
 })
 export class SpreadsheetService {
+  static readonly SPREADSHEET_API = environment.apiEndpoints.spreadsheet;
   private keys = ['number', 'date', 'order', 'location', 'topic', 'hwTheory', 'hwPractice'];
-  private readonly API_URL: string = 'https://sheets.googleapis.com/v4/spreadsheets';
 
   constructor(private httpClient: HttpClient, private calendarService: CalendarApiService) { }
 
@@ -52,7 +53,7 @@ export class SpreadsheetService {
    * @returns object, that contain array of data for each table sheet
    */
   private fetchSpreadsheet(spreadsheetId: string): Observable<any> {
-    return this.httpClient.get(this.API_URL + '/' + spreadsheetId + '/?includeGridData=true').pipe(
+    return this.httpClient.get(`${SpreadsheetService.SPREADSHEET_API}/${spreadsheetId}/?includeGridData=true`).pipe(
       pluck('sheets')
     );
   }

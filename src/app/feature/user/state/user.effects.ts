@@ -20,7 +20,7 @@ export class UserEffects {
   @Effect()
   user$: Observable<Action> = this.actions$.pipe(
     ofType(userActions.UserActionTypes.GetUser),
-    mergeMap(() => this.authService.getUser().pipe(
+    mergeMap(() => this.authService.getUserInfo().pipe(
       map(user => (new userActions.UserFetchedSuccessful(user))),
       catchError(() => of(new userActions.UserFetchFailed()))
     ))

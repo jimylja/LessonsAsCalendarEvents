@@ -6,18 +6,22 @@ import { pluck, mergeMap, delay, tap, concatMap, map, takeUntil, switchMap } fro
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarApiService implements OnDestroy {
-  private CALENDAR_API_URL = `https://www.googleapis.com/calendar/v3`;
-  private LESSONS_START_SCHEDULE = ['8:00', '8:55', '10:00', '11:05', '12:00', '12:55', '13:45'];
-  private LESSONS_DURATION = 45;
-  private readonly CALENDAR_COLORS = 'https://www.googleapis.com/calendar/v3/colors';
+  static readonly CALENDAR_API = environment.apiEndpoints.calendar;
+  static readonly COLORS_ENDPOINT = `${CalendarApiService.CALENDAR_API}/colors`;
+  static readonly LIST_ENDPOINT = `${CalendarApiService.CALENDAR_API}/users/me/calendarList`;
+  static readonly CALENDAR_ENDPOINT = `${CalendarApiService.CALENDAR_API}/calendars`;
+
+  private readonly LESSONS_START_SCHEDULE = environment.settings.lessonsStartSchedule;
+  private readonly LESSONS_DURATION = environment.settings.lessonDuration;
   private calendarColors$ = new BehaviorSubject<string[]>(null);
-  exportEventsStatus$: BehaviorSubject<ExportStatus|null>;
-  deleteEventStatus$: BehaviorSubject<string>;
+  private exportEventsStatus$: BehaviorSubject<ExportStatus|null>;
+  private deleteEventStatus$: BehaviorSubject<string>;
   private onDestroy$ = new Subject();
 
   constructor(
@@ -29,7 +33,7 @@ export class CalendarApiService implements OnDestroy {
    * @returns array, list of calendars
    */
   getCalendars(): Observable<CalendarEntry[]> {
-    return this.httpClient.get(`${this.CALENDAR_API_URL}/users/me/calendarList`).pipe(
+    return this.httpClient.get(CalendarApiService.LIST_ENDPOINT).pipe(
       pluck('items')
     );
   }
@@ -81,7 +85,7 @@ export class CalendarApiService implements OnDestroy {
    */
   private createEvent(event: GoogleEvent, calendarId: string): Observable<any> {
     return this.httpClient.post(
-      `${this.CALENDAR_API_URL}/calendars/${calendarId}/events`,
+      `${CalendarApiService.CALENDAR_ENDPOINT}/${calendarId}/events`,
       event,
       {observe: 'response'}
     ).pipe(
@@ -157,7 +161,7 @@ export class CalendarApiService implements OnDestroy {
    * Method fetches color values for google events
    */
   private fetchCalendarColors(): void {
-    this.httpClient.get(this.CALENDAR_COLORS).pipe(
+    this.httpClient.get(CalendarApiService.COLORS_ENDPOINT).pipe(
       map((data: {event: GoogleColor[]}) => {
         return Object.entries(data.event).map(
           color => color[1].background
@@ -173,7 +177,7 @@ export class CalendarApiService implements OnDestroy {
    * @returns list of events for calendar
    */
    getCalendarEvents(calendarId: string): Observable<any> {
-      return this.httpClient.get(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?&maxResults=2500`);
+      return this.httpClient.get(`${CalendarApiService.CALENDAR_ENDPOINT}/${calendarId}/events?&maxResults=2500`);
     }
 
   /**
@@ -184,7 +188,7 @@ export class CalendarApiService implements OnDestroy {
    */
   private deleteEvent(calendarId: string, eventId: string): Observable<boolean> {
     return this.httpClient.delete(
-      `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
+      `${CalendarApiService.CALENDAR_ENDPOINT}/${calendarId}/events/${eventId}`,
       {observe: 'response'}).pipe(
       map(resp => Boolean(resp.body))
     );
