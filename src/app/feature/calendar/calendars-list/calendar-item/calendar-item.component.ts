@@ -6,7 +6,7 @@ import {
   EventEmitter,
   Output
 } from '@angular/core';
-import { CalendarEntry } from '../../../../models/calendar-entry';
+import { CalendarEntry } from '../../../../models/calendar';
 
 
 @Component({

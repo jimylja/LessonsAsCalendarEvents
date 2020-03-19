@@ -1,0 +1,29 @@
+<ng-container [formGroup]="form">
+  <ng-container formArrayName="classesData">
+    <ng-container [formGroupName]="tabIndex">
+      <div class="common_details">
+        <div class="common_details__attenders">
+          <mat-checkbox #attendersCheckbox (change)="changeAttendersPermission($event.checked)">
+            Додати отримувачів
+          </mat-checkbox>
+          <mat-form-field *ngIf="attendersCheckbox.checked">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="attendeesEmail" placeholder="email класу">
+            <mat-error *ngIf="!form.controls.classesData.hasError('email')">
+              Введіть коректний email!
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <mat-table [dataSource]="dataSource">
+        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]=column>
+          <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </ng-container>
+  </ng-container>
+</ng-container>
