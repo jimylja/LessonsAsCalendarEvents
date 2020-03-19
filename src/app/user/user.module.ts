@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
     UserRoutingModule,
     StoreModule.forFeature('user', reducer),
     EffectsModule.forFeature([UserEffects]),
-    MatButtonModule
-  ]
+    MatButtonModule,
+  ],
 })
 export class UserModule { }
