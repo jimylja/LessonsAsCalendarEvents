@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, from, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, from, BehaviorSubject, Subject, iif } from 'rxjs';
 import { CalendarEntry, ExportStatus } from '../../models/calendar';
-import { pluck, mergeMap, delay, tap, concatMap, map, takeUntil, switchMap } from 'rxjs/operators';
+import { pluck, mergeMap, delay, tap, concatMap, map, switchMap } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
@@ -71,10 +71,11 @@ export class CalendarApiService implements OnDestroy {
    * @returns - array of colors for events
    */
   getCalendarColors(): Observable<string[]> {
-    if (this.calendarColors$.value === null) {
-      this.fetchCalendarColors();
-    }
-    return this.calendarColors$.asObservable();
+    return this.calendarColors$.pipe(
+      mergeMap(colors =>
+        iif(() => colors === null, this.fetchCalendarColors(), this.calendarColors$.asObservable())
+      )
+    );
   }
 
   /**
@@ -160,15 +161,16 @@ export class CalendarApiService implements OnDestroy {
   /**
    * Method fetches color values for google events
    */
-  private fetchCalendarColors(): void {
-    this.httpClient.get(CalendarApiService.COLORS_ENDPOINT).pipe(
+  private fetchCalendarColors(): Observable<string[]> {
+    return this.httpClient.get(CalendarApiService.COLORS_ENDPOINT).pipe(
       map((data: {event: GoogleColor[]}) => {
-        return Object.entries(data.event).map(
-          color => color[1].background
+        const colors: string[] = Object.entries(data.event).map(
+          color => String(color[1].background)
         );
+        this.calendarColors$.next(colors);
+        return colors;
       }),
-      takeUntil(this.onDestroy$)
-    ).subscribe((colors: any) => this.calendarColors$.next(colors));
+    );
   }
 
   /**
