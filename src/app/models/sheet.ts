@@ -10,7 +10,7 @@ export interface Lesson {
 
 export interface Sheet {
   title: string;
-  color: string;
+  colorId: number;
   attendeesEmail?: string;
   lessons?: Lesson[];
 }

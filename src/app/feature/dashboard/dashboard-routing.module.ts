@@ -13,7 +13,7 @@ const routes: Routes = [
         component: DashboardComponent,
       },
       {
-        path: 'select-file',
+        path: 'files',
         loadChildren: () => import('../file-picker/file-picker.module').then(m => m.FilePickerModule)
       },
       {

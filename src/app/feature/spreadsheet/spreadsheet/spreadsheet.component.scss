@@ -1,3 +1,9 @@
 .error-icon {
   color: red;
 }
+
+::ng-deep mat-tab-body {
+  .mat-tab-body-content {
+    overflow-x: hidden;
+  }
+}

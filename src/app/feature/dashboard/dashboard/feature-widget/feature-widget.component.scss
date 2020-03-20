@@ -1,0 +1,12 @@
+.widget-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 300px;
+  margin: 10px auto;
+  min-height: 100px;
+}
+
+mat-card-actions {
+  text-align: right;
+}

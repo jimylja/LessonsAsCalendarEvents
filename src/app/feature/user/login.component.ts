@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
           ngZone.run(() => {
             routerService.navigate(['/'], );
           });
-          // this.router.navigate(['/dashboard'], { relativeTo: this.route });
         }
       }
     );

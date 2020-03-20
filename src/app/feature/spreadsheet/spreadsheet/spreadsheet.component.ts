@@ -25,12 +25,14 @@ export class SpreadsheetComponent implements OnInit {
   activeCalendar: CalendarEntry;
   form: FormGroup;
   classesData: FormArray;
+  colorsPalette$: Observable<string[]>;
 
   constructor(
     private fb: FormBuilder,
     private store: Store<fromFile.State>,
     private spreadsheetService: SpreadsheetService,
-    private calendarService: CalendarApiService) {
+    private calendarService: CalendarApiService,
+    ) {
       this.form = this.fb.group({
         classesData: this.fb.array([]),
       });
@@ -39,6 +41,7 @@ export class SpreadsheetComponent implements OnInit {
     this.classesData = this.getClassesDataControls();
     this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));
     this.activeCalendar$ = this.store.pipe(select(fromCalendar.getCurrentCalendar));
+    this.colorsPalette$ = this.calendarService.getCalendarColors();
 
     this.spreadSheetData$ = this.activeCalendar$.pipe(
       mergeMap((calendar: CalendarEntry) => {
@@ -56,9 +59,10 @@ export class SpreadsheetComponent implements OnInit {
     this.calendarService.exportLessonsToCalendar(this.form.value.classesData, this.activeCalendar);
   }
 
-  addClassToForm({lessons, title}: Sheet): void {
+  addClassToForm({lessons, title, colorId}: Sheet): void {
     this.classesData.push(this.fb.group({
       lessons: [lessons],
+      colorId,
       title
     }));
   }

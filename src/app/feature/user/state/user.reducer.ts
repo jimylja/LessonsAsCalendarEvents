@@ -25,6 +25,16 @@ export function reducer(state = initialState, action: UserActions): UserState {
         ...state,
         isLoggedIn: false
       };
+    case UserActionTypes.UserFetchedSuccessful:
+      return {
+        ...state,
+        userProfile: action.payload
+      };
+    case UserActionTypes.UserFetchFailed:
+      return {
+        ...state,
+        userProfile: null
+      };
     case UserActionTypes.Login:
     default:
       return state;

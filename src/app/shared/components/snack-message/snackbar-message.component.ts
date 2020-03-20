@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { MessageService } from '../../../core/message.service';
+import { Component, Inject } from '@angular/core';
+import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { MessageData } from '../../../models/snack-message';
 
 @Component({
   selector: 'app-snackbar-message',
@@ -7,7 +8,5 @@ import { MessageService } from '../../../core/message.service';
   styleUrls: ['./snackbar-message.component.scss']
 })
 export class SnackbarMessageComponent {
-
-  message$ = this.messageService.getMessage();
-  constructor(private messageService: MessageService) { }
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public messageData: MessageData) { }
 }

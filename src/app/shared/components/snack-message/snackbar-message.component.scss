@@ -1,29 +1,41 @@
 :host {
   width: 100%;
-}
-.message-title {
-  margin: 10px;
-}
-
-.message-body {
   display: flex;
   align-items: center;
-  .message-spinner {
-    margin: 0 auto;
-  }
-  .message-content {
-    margin: 0 20px;
-    align-self: center;
-    flex: 1;
-    .event-title {
-      color: #504848;
-      font-size: 0.75rem;
-      font-style: italic;
-    }
-    .total {
-      margin: 0 10px;
-      font-weight: bold;
-    }
-  }
+}
+mat-spinner {
+  margin: 10px;
+  align-items: center;
+}
 
+.message-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 4;
+  .message-title {
+    text-align: center;
+    margin: 10px;
+  }
+  .message-body {
+    display: flex;
+    align-items: center;
+    .message-spinner {
+      margin: 0 auto;
+    }
+    .message-content {
+      margin: 0 20px;
+      align-self: center;
+      text-align: center;
+      flex: 1;
+      .event-title {
+        color: #504848;
+        font-size: 0.75rem;
+        font-style: italic;
+      }
+      .total {
+        margin: 0 10px;
+        font-weight: bold;
+      }
+    }
+  }
 }
