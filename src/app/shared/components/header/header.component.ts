@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import { User } from '../../../models/user';
 
 @Component({
@@ -10,5 +10,10 @@ import { User } from '../../../models/user';
 })
 export class HeaderComponent {
   @Input() user: User;
+  @Output() toggleSidenav = new EventEmitter<void>();
   constructor() { }
+
+  sidenavToggle(): void {
+    this.toggleSidenav.emit();
+  }
 }

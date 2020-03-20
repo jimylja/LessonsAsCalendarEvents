@@ -2,11 +2,14 @@
   padding: 20px;
   .widget-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     app-feature-widget {
       flex: 1;
       padding: 20px;
+    }
+    @media (min-width: 481px ) {
+      flex-direction: row;
     }
   }
   button {
