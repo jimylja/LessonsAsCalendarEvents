@@ -3,6 +3,6 @@
   <app-feature-widget [data]="activeCalendar$|async" [featureType]="'calendar'" ></app-feature-widget>
 </div>
 <button mat-raised-button color="primary"
-        [disabled]="(activeCalendar$|async)===null||(activeFile$|async)===null"
+        [disabled]="isSpreadsheetEnabled$|async"
         routerLink="/spreadsheet">Відкрити таблицю
 </button>

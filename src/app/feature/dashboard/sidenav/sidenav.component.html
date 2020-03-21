@@ -1,28 +1,29 @@
 <div class="sidenav-title">
-  Lessons App
-  <mat-divider></mat-divider>
+  <mat-icon class="sidenav-logo" color="primary">pages</mat-icon>
+  <div>Lessons App</div>
 </div>
 <mat-nav-list class="sidenav-menu">
-  <mat-list-item>
-    <mat-icon mat-list-icon>event_note</mat-icon>
-    <a matLine routerLink="/calendars">Календар</a>
-    <div mat-line>список доступних календарів</div>
-  </mat-list-item>
-  <mat-list-item>
-    <mat-icon mat-list-icon>grid_on</mat-icon>
-    <a matLine routerLink="/files">Таблиця</a>
-    <div mat-line>список доступних таблиць</div>
-  </mat-list-item>
+  <ng-container *ngFor="let item of menuItems.mainMenu">
+    <mat-list-item
+      routerLink="/{{item.route}}"
+      routerLinkActive="active"
+      [class.disabled]="(isSpreadsheetEnabled$|async) && item.title==='Експортувати'">
+      <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
+      <a matLine>{{item.title}}</a>
+      <i mat-line *ngIf="item?.description">{{item.description}}</i>
+    </mat-list-item>
+  </ng-container>
 </mat-nav-list>
 <mat-nav-list class="sidenav-footer">
   <mat-divider></mat-divider>
   <div mat-subheader>Налаштування</div>
-  <mat-list-item>
-    <mat-icon mat-list-icon>person</mat-icon>
-    <a matLine routerLink="/">Профіль</a>
-  </mat-list-item>
-  <mat-list-item>
-    <mat-icon mat-list-icon>settings</mat-icon>
-    <a matLine routerLink="/">Загальні</a>
-  </mat-list-item>
+  <ng-container *ngFor="let item of menuItems.footerMenu">
+    <mat-list-item
+      routerLink="/{{item.route}}"
+      routerLinkActive="active">
+      <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
+      <a matLine >{{item.title}}</a>
+      <i mat-line *ngIf="item?.description">{{item.description}}</i>
+    </mat-list-item>
+  </ng-container>
 </mat-nav-list>
