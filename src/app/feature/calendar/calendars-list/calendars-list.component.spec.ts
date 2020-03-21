@@ -4,8 +4,8 @@ import { CalendarsListComponent } from './calendars-list.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSnackBarModule } from '@angular/material';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('CalendarsListComponent', () => {
   let component: CalendarsListComponent;
