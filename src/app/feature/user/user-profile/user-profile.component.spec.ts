@@ -14,7 +14,7 @@ export interface UserState {
   };
 }
 
-fdescribe('UserProfileComponent', () => {
+describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
   let fixture: ComponentFixture<UserProfileComponent>;
   let store: MockStore<UserState>;

@@ -4,8 +4,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FilesListComponent } from './files-list.component';
 import { FileItemComponent } from './file-item/file-item.component';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatProgressSpinnerModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+
 
 describe('FilesListComponent', () => {
   let component: FilesListComponent;
@@ -15,11 +17,12 @@ describe('FilesListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ FilesListComponent, FileItemComponent ],
       imports: [
-        MatCardModule,
+        MatCardModule, MatProgressSpinnerModule,
         RouterTestingModule,
         HttpClientTestingModule,
         StoreModule.forRoot({})
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

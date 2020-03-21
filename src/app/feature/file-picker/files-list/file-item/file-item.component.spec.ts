@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileItemComponent } from './file-item.component';
 import { MatCardModule } from '@angular/material';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('FileItemComponent', () => {
   let component: FileItemComponent;
@@ -10,7 +11,8 @@ describe('FileItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FileItemComponent ],
-      imports: [ MatCardModule ]
+      imports: [ MatCardModule ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
