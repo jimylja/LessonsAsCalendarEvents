@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 import { FeatureWidgetComponent } from './feature-widget/feature-widget.component';
 import { MatCardModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -15,7 +16,8 @@ describe('DashboardComponent', () => {
       imports: [
         MatCardModule,
         StoreModule.forRoot({})
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
