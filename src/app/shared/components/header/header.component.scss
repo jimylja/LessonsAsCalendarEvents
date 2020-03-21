@@ -1,7 +1,15 @@
-.example-icon {
-  padding: 0 14px;
+.header-title {
+  display: block;
+  position: relative;
+  mat-icon {
+    position: absolute;
+    right: -15px;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
 }
 
-.example-spacer {
+.toolbar-spacer {
   flex: 1 1 auto;
 }
