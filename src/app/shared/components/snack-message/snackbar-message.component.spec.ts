@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SnackbarMessageComponent } from './snackbar-message.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MAT_SNACK_BAR_DATA, MatProgressSpinnerModule, MatSnackBarModule} from '@angular/material';
 
 describe('SnackbarMessageComponent', () => {
   let component: SnackbarMessageComponent;
@@ -8,7 +10,13 @@ describe('SnackbarMessageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SnackbarMessageComponent ]
+      declarations: [ SnackbarMessageComponent ],
+      imports: [MatProgressSpinnerModule, MatSnackBarModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{
+        provide: MAT_SNACK_BAR_DATA,
+        useValue: {}
+      }]
     })
     .compileComponents();
   }));

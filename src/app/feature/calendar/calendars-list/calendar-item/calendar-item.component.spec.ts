@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CalendarItemComponent } from './calendar-item.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {MatCardModule, MatMenuModule} from '@angular/material';
 
 describe('CalendarItemComponent', () => {
   let component: CalendarItemComponent;
@@ -8,7 +10,9 @@ describe('CalendarItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalendarItemComponent ]
+      declarations: [ CalendarItemComponent ],
+      imports: [MatCardModule, MatMenuModule],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
