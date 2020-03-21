@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeatureWidgetComponent } from './feature-widget.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatCardModule } from '@angular/material';
 
 describe('FeatureWidgetComponent', () => {
   let component: FeatureWidgetComponent;
@@ -8,7 +10,9 @@ describe('FeatureWidgetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FeatureWidgetComponent ]
+      declarations: [ FeatureWidgetComponent ],
+      imports: [MatCardModule],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

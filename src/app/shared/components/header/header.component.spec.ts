@@ -21,6 +21,13 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
+    component.user = {
+      id: null,
+      email: null,
+      lastName: null,
+      avatar: null,
+      firstName: null
+    };
     fixture.detectChanges();
   });
 

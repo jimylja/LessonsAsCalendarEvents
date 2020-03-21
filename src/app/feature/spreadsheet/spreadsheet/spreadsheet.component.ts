@@ -47,9 +47,7 @@ export class SpreadsheetComponent implements OnInit {
       mergeMap((calendar: CalendarEntry) => {
         this.activeCalendar = calendar;
         return this.activeFile$.pipe(
-          switchMap((file: DriveFile) => {
-            return this.spreadsheetService.getSpreadsheetData(file.id);
-          })
+          switchMap((file: DriveFile) => this.spreadsheetService.getSpreadsheetData(file.id))
         );
       })
     );
