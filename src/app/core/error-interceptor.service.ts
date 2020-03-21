@@ -62,7 +62,7 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor, OnDestro
       errorMessage = 'Некоректний запит на сервер';
     } else if (message === 'Invalid Credentials' || message === 'invalid_grant' || error.status === 401) {
       errorMessage = 'Немає необхідних дозволів';
-      this.redirectTo = 'login';
+      this.redirectTo = 'user/login';
     }
     return errorMessage;
   }

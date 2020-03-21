@@ -1,5 +1,5 @@
-import { UserActions, UserActionTypes } from './user.actions';
-import { User } from '../../../models/user';
+import {UserActions, UserActionTypes} from './user.actions';
+import {User} from '../../../models/user';
 
 // State for this feature (User)
 export interface UserState {
@@ -25,6 +25,12 @@ export function reducer(state = initialState, action: UserActions): UserState {
         ...state,
         isLoggedIn: false
       };
+    case UserActionTypes.LogoutSuccessful:
+      return {
+        ...state,
+        isLoggedIn: false,
+        userProfile: null
+      };
     case UserActionTypes.UserFetchedSuccessful:
       return {
         ...state,
@@ -36,6 +42,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
         userProfile: null
       };
     case UserActionTypes.Login:
+    case UserActionTypes.Logout:
     default:
       return state;
   }

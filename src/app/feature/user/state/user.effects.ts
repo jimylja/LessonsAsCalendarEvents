@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, tap } from 'rxjs/operators';
 
 import { AuthService } from '../auth.service';
 
@@ -35,5 +35,12 @@ export class UserEffects {
         catchError(() => of(new userActions.LoggedFailed()))
       )
     )
+  );
+
+  @Effect()
+  logout$: Observable<Action> = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.Logout),
+    tap(() => this.authService.logout()),
+    map(() => (new userActions.LogoutSuccessful()))
   );
 }

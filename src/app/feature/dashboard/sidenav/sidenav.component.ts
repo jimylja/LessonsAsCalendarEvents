@@ -21,8 +21,8 @@ export class SidenavComponent implements OnInit {
         {title: 'Експортувати', description: 'експорт уроків в календар', icon: 'double_arrow', route: 'spreadsheet'},
       ],
       footerMenu: [
-        {title: 'Профіль', icon: 'person', route: '#'},
-        {title: 'Загальні', icon: 'settings', route: '#'},
+        {title: 'Профіль', icon: 'person', route: 'user'},
+        {title: 'Загальні', icon: 'settings', route: 'settings'},
       ]
     };
   ngOnInit() {

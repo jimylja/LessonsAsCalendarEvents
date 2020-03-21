@@ -4,9 +4,11 @@ export enum UserActionTypes {
   Login = '[User] User Login',
   LoggedSuccessful = '[User] LoggedIn Successful',
   LoggedFailed = '[User] Logged Failed',
+  Logout = '[User ] Logout',
+  LogoutSuccessful = '[User] LogoutSuccessful',
   GetUser = '[User] Get User Data',
   UserFetchedSuccessful = '[User] User Fetched Successful',
-  UserFetchFailed = '[USER] User Fetch Failed',
+  UserFetchFailed = '[User] User Fetch Failed',
 }
 
 export class Login implements Action {
@@ -20,6 +22,14 @@ export class LoggedSuccessful implements Action {
 
 export class LoggedFailed implements Action {
   readonly type = UserActionTypes.LoggedFailed;
+}
+
+export class Logout implements Action {
+  readonly type = UserActionTypes.Logout;
+}
+
+export class LogoutSuccessful implements Action {
+  readonly type = UserActionTypes.LogoutSuccessful;
 }
 
 export class GetUser implements Action {
@@ -38,6 +48,8 @@ export class UserFetchFailed implements Action {
 export type UserActions = Login
   |LoggedSuccessful
   |LoggedFailed
+  |Logout
+  |LogoutSuccessful
   |GetUser
   |UserFetchedSuccessful
   |UserFetchFailed;

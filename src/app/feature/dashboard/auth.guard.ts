@@ -14,7 +14,7 @@ import { AuthService } from '../user/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardGuard implements CanActivate, CanLoad {
+export class AuthGuard implements CanActivate, CanLoad {
   constructor( private authService: AuthService, private router: Router) {}
 
   canActivate(
@@ -33,7 +33,7 @@ export class DashboardGuard implements CanActivate, CanLoad {
     const token = this.authService.accessToken;
     const isUserSignedIn = (token && token.length > 0);
     if (!isUserSignedIn) {
-      this.router.navigate(['login']);
+      this.router.navigate(['user/login']);
       return false;
     }
     return true;
