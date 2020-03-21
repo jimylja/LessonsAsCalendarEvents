@@ -3,7 +3,7 @@ import { StoreModule } from '@ngrx/store';
 import { SidenavComponent } from './sidenav.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-fdescribe('SidenavComponent', () => {
+describe('SidenavComponent', () => {
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
