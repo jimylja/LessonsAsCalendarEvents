@@ -78,6 +78,7 @@ export class AuthService implements OnDestroy {
    */
   public logout(): void {
     sessionStorage.removeItem(AuthService.SESSION_ST_ACCESS_TOKEN);
+    localStorage.removeItem(AuthService.LOCAL_ST_REFRESH_TOKEN);
     this.onDestroy$.next();
   }
 

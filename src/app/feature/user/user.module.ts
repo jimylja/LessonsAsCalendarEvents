@@ -11,16 +11,18 @@ import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/user.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './state/user.effects';
+import {SharedModule} from '../../shared/shared.module';
 
 @NgModule({
   declarations: [LoginComponent, UserProfileComponent],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    UserRoutingModule,
-    StoreModule.forFeature('user', reducer),
-    EffectsModule.forFeature([UserEffects]),
-    MatButtonModule,
-  ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        UserRoutingModule,
+        StoreModule.forFeature('user', reducer),
+        EffectsModule.forFeature([UserEffects]),
+        MatButtonModule,
+        SharedModule,
+    ],
 })
 export class UserModule { }
