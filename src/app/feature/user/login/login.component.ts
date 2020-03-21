@@ -2,8 +2,8 @@ import {ChangeDetectionStrategy, Component, Injector, NgZone, OnInit} from '@ang
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {select, Store} from '@ngrx/store';
-import * as fromUser from './state';
-import * as UserActions from './state/user.actions';
+import * as fromUser from '../state';
+import * as UserActions from '../state/user.actions';
 
 @Component({
   selector: 'app-login',

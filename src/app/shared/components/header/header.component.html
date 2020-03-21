@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <button (click)="sidenavToggle()" mat-icon-button><mat-icon>menu</mat-icon></button>
+  <button *ngIf="user" (click)="sidenavToggle()" mat-icon-button><mat-icon>menu</mat-icon></button>
   <span class="header-title">
     Lessons App
     <mat-icon class="sidenav-logo">pages</mat-icon>
