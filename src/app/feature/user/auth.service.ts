@@ -25,7 +25,7 @@ export class AuthService implements OnDestroy {
   private tokenRequestParams: TokenReqParams = {
     client_id: environment.gApiClient.clientId,
     client_secret: environment.gApiClient.clientSecret,
-    redirect_uri: 'http://localhost:4200',
+    redirect_uri: environment.gApiClient.redirect_uri,
     grant_type: 'authorization_code'
   };
 

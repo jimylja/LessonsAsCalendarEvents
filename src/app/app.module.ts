@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './feature/user/user.module';
 import { DashboardModule } from './feature/dashboard/dashboard.module';
@@ -15,9 +16,12 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from '../environments/environment';
 
-import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// Firebase
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
+// GoogleApi
+import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
 const gApiClientConfig: NgGapiClientConfig = {
   ...environment.gApiClient,
   ux_mode: 'popup'
@@ -31,6 +35,7 @@ const gApiClientConfig: NgGapiClientConfig = {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     SharedModule,
     CoreModule,
     UserModule,
@@ -46,7 +51,9 @@ const gApiClientConfig: NgGapiClientConfig = {
       maxAge: 25,
       logOnly: environment.production,
     }),
-    BrowserAnimationsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
+
   ],
   bootstrap: [AppComponent]
 })
