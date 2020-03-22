@@ -13,6 +13,8 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardComponent,
+        canActivate: [AuthGuard],
+        canLoad: [AuthGuard]
       },
       {
         path: 'files',

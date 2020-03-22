@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   isLoggedIn(): boolean {
-    const token = this.authService.accessToken;
+    const token = this.authService.refreshToken;
     const isUserSignedIn = (token && token.length > 0);
     if (!isUserSignedIn) {
       this.router.navigate(['user/login']);

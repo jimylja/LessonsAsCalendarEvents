@@ -15,6 +15,7 @@ const initialState: UserState = {
 export function reducer(state = initialState, action: UserActions): UserState {
   switch (action.type) {
     case UserActionTypes.LoggedSuccessful:
+    case UserActionTypes.UserFetchedSuccessful:
       return {
         ...state,
         isLoggedIn: true,
@@ -31,14 +32,10 @@ export function reducer(state = initialState, action: UserActions): UserState {
         isLoggedIn: false,
         userProfile: null
       };
-    case UserActionTypes.UserFetchedSuccessful:
-      return {
-        ...state,
-        userProfile: action.payload
-      };
     case UserActionTypes.UserFetchFailed:
       return {
         ...state,
+        isLoggedIn: false,
         userProfile: null
       };
     case UserActionTypes.Login:
