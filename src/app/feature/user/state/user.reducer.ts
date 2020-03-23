@@ -51,8 +51,15 @@ export function reducer(state = initialState, action: UserActions): UserState {
         ...state,
         settings: null
       };
+    case UserActionTypes.SettingsSaved:
+      return {
+        ...state,
+        settings: action.payload
+      };
     case UserActionTypes.GetUserSettings:
     case UserActionTypes.Login:
+    case UserActionTypes.SaveUserSettings:
+    case UserActionTypes.SettingsNotSaved:
     case UserActionTypes.Logout:
     default:
       return state;

@@ -3,17 +3,17 @@
   <form [formGroup]="form" (submit)="onSubmit(form)">
     <mat-form-field class="lessons-duration">
       <mat-label>Тривалість уроків</mat-label>
-      <input matInput formControlName="lessonsDuration" type="number" placeholder="тривалість заняття">
-      <mat-error *ngIf="form.controls.lessonsDuration.hasError('min')">
+      <input matInput formControlName="lessonDuration" type="number" placeholder="тривалість заняття">
+      <mat-error *ngIf="form.controls.lessonDuration.hasError('min')">
         Заняття надто коротке
       </mat-error>
-      <mat-error *ngIf="form.controls.lessonsDuration.hasError('max')">
+      <mat-error *ngIf="form.controls.lessonDuration.hasError('max')">
         Заняття надто довге
       </mat-error>
     </mat-form-field>
     <h3>Розклад дзвінків</h3>
-    <div formArrayName="lessonsStart" #a class="lessons-start-hours">
-      <div *ngFor="let lessons of form.controls.lessonsStart['controls']; let i = index" class="lesson-item">
+    <div formArrayName="lessonsStartSchedule" #a class="lessons-start-hours">
+      <div *ngFor="let lessons of form.controls.lessonsStartSchedule['controls']; let i = index" class="lesson-item">
         <div>Урок{{i}}</div>
         <mat-form-field>
           <mat-label>Початок уроку</mat-label>
@@ -21,7 +21,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Закінчення уроку</mat-label>
-          <input matInput disabled [value]="lessons.value|lessonEnd:form.value['lessonsDuration']:form" type="time">
+          <input matInput disabled [value]="lessons.value|lessonEnd:form.value['lessonDuration']:form" type="time">
         </mat-form-field>
       </div>
     </div>

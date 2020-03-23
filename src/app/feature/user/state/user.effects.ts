@@ -54,4 +54,13 @@ export class UserEffects {
       catchError(() => of(new userActions.SettingsFetchFailed()))
     ))
   );
+
+  @Effect()
+  saveSettings$: Observable<Action> = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.SaveUserSettings),
+    mergeMap((action: userActions.SaveUserSettings) => this.settingsService.saveUserSettings(action.payload).pipe(
+      map(settings => (new userActions.SettingsSaved(settings))),
+      catchError(() => of(new userActions.SettingsNotSaved()))
+    ))
+  );
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromUser from './state';
 import * as UserActions from './state/user.actions';
+import {LessonsSettings} from '../../models/lessonsSettings';
 
 @Injectable()
 export class UserFacade {
@@ -18,5 +19,9 @@ export class UserFacade {
 
   logout(): void {
     this.store.dispatch(new UserActions.Logout());
+  }
+
+  saveSettings(settings: LessonsSettings): void {
+    this.store.dispatch( new UserActions.SaveUserSettings(settings));
   }
 }

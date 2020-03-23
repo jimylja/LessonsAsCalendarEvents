@@ -14,6 +14,9 @@ export enum UserActionTypes {
   GetUserSettings = '[User] Get Settings',
   SettingsFetchedSuccessful = '[User] Settings Fetched Successful',
   SettingsFetchFailed = '[User] Settings Fetch Failed',
+  SaveUserSettings = '[User] Save User Settings',
+  SettingsSaved = '[User] Settings has been saved',
+  SettingsNotSaved = '[User] Settings not saved',
 }
 
 export class Login implements Action {
@@ -64,6 +67,20 @@ export class SettingsFetchFailed implements Action {
   readonly type = UserActionTypes.SettingsFetchFailed;
 }
 
+export class SaveUserSettings implements Action {
+  readonly type = UserActionTypes.SaveUserSettings;
+  constructor(public payload: LessonsSettings) {}
+}
+
+export class SettingsSaved implements Action {
+  readonly type = UserActionTypes.SettingsSaved;
+  constructor(public payload: LessonsSettings) {}
+}
+
+export class SettingsNotSaved implements Action {
+  readonly type = UserActionTypes.SettingsNotSaved;
+}
+
 export type UserActions = Login
   |LoggedSuccessful
   |LoggedFailed
@@ -74,4 +91,7 @@ export type UserActions = Login
   |UserFetchFailed
   |GetUserSettings
   |SettingsFetchedSuccessful
-  |SettingsFetchFailed;
+  |SettingsFetchFailed
+  |SaveUserSettings
+  |SettingsSaved
+  |SettingsNotSaved;

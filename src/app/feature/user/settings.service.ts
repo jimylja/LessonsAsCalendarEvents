@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {LessonsSettings} from '../../models/lessonsSettings';
+import {UserFacade} from './user.facade';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private userFacade: UserFacade, private db: AngularFirestore) { }
 
   /**
    * The method returns the settings of the user who was authorized
@@ -21,6 +22,23 @@ export class SettingsService {
   getUserSettings(id: string): Observable<LessonsSettings> {
     return this.db.collection('users').doc(id).valueChanges().pipe(
       map((userData: {settings: LessonsSettings}) => userData ? userData.settings : environment.settings)
+    );
+  }
+
+  /**
+   * The method update settings for active user
+   * if user absent creates new record for him in database
+   * @inputs settings - user lesson settings
+   * @returns - user settings
+   */
+  saveUserSettings(settings: LessonsSettings): Observable<any> {
+    return this.userFacade.user$.pipe(
+      switchMap(profile => this.db.collection('users')
+        .doc(profile.id)
+        .set({profile, settings}, {merge: true})
+        .then(() => settings)
+      ),
+      map(d => settings)
     );
   }
 }

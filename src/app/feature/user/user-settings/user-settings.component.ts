@@ -23,17 +23,17 @@ export class UserSettingsComponent implements OnInit {
     );
   }
 
-  onSubmit(f: FormGroup) {
-    console.log(f.value);
+  onSubmit(settingsForm: FormGroup) {
+    this.userFacade.saveSettings(settingsForm.value);
   }
 
   private getSettingsForm(settings: LessonsSettings): FormGroup {
     return this.fb.group({
-      lessonsDuration: this.fb.control(
+      lessonDuration: this.fb.control(
         settings.lessonDuration,
         [Validators.required, Validators.min(25), Validators.max(180)]
       ),
-      lessonsStart: this.fb.array(settings.lessonsStartSchedule.map(
+      lessonsStartSchedule: this.fb.array(settings.lessonsStartSchedule.map(
         time => (new FormControl(time, {validators: Validators.required}))
       ))
     });
