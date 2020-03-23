@@ -13,9 +13,10 @@ import { reducer } from './state/user.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './state/user.effects';
 import { UserFacade} from './user.facade';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 @NgModule({
-  declarations: [LoginComponent, UserProfileComponent],
+  declarations: [LoginComponent, UserProfileComponent, UserSettingsComponent],
   imports: [
       CommonModule,
       HttpClientModule,

@@ -46,7 +46,7 @@ export class FilesListComponent implements OnInit {
 
   fileSelectHandler(file: DriveFile) {
     this.store.dispatch(new FileActions.FileSelected(file));
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/']);
   }
 
 }

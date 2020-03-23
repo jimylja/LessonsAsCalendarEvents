@@ -7,6 +7,7 @@ import * as UserActions from './state/user.actions';
 export class UserFacade {
 
   user$ = this.store.select(fromUser.getCurrentUser);
+  settings$ = this.store.select(fromUser.getUserSettings);
   constructor(private store: Store<fromUser.State>) {
     this.store.dispatch(new UserActions.GetUser());
   }
@@ -18,5 +19,4 @@ export class UserFacade {
   logout(): void {
     this.store.dispatch(new UserActions.Logout());
   }
-
 }

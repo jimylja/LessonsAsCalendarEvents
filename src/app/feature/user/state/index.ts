@@ -10,10 +10,15 @@ const getUserFeatureState = createFeatureSelector<fromUser.UserState>('user');
 
 export const getCurrentUser = createSelector(
   getUserFeatureState,
-  state => state.userProfile
+  state => state.profile
 );
 
 export const getLoginStatus = createSelector(
   getUserFeatureState,
   state => state.isLoggedIn
+);
+
+export const getUserSettings = createSelector(
+  getUserFeatureState,
+  state => state.settings
 );

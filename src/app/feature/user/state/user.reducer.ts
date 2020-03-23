@@ -1,15 +1,18 @@
 import {UserActions, UserActionTypes} from './user.actions';
 import {User} from '../../../models/user';
+import {LessonsSettings} from '../../../models/lessonsSettings';
 
 // State for this feature (User)
 export interface UserState {
   isLoggedIn: boolean;
-  userProfile: User | null;
+  profile: User | null;
+  settings: LessonsSettings;
 }
 
 const initialState: UserState = {
   isLoggedIn: false,
-  userProfile: null
+  profile: null,
+  settings: null
 };
 
 export function reducer(state = initialState, action: UserActions): UserState {
@@ -19,7 +22,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
       return {
         ...state,
         isLoggedIn: true,
-        userProfile: action.payload
+        profile: action.payload
       };
     case UserActionTypes.LoggedFailed:
       return {
@@ -30,14 +33,25 @@ export function reducer(state = initialState, action: UserActions): UserState {
       return {
         ...state,
         isLoggedIn: false,
-        userProfile: null
+        profile: null
       };
     case UserActionTypes.UserFetchFailed:
       return {
         ...state,
         isLoggedIn: false,
-        userProfile: null
+        profile: null
       };
+    case UserActionTypes.SettingsFetchedSuccessful:
+      return  {
+        ...state,
+        settings: action.payload
+      };
+    case UserActionTypes.SettingsFetchFailed:
+      return {
+        ...state,
+        settings: null
+      };
+    case UserActionTypes.GetUserSettings:
     case UserActionTypes.Login:
     case UserActionTypes.Logout:
     default:
