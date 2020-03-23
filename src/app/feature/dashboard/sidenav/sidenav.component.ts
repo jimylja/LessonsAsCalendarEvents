@@ -22,7 +22,7 @@ export class SidenavComponent implements OnInit {
       ],
       footerMenu: [
         {title: 'Профіль', icon: 'person', route: 'user'},
-        {title: 'Загальні', icon: 'settings', route: 'settings'},
+        {title: 'Загальні', icon: 'settings', route: 'user/settings'},
       ]
     };
   ngOnInit() {

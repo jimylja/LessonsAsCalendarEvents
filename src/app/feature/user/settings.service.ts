@@ -20,7 +20,7 @@ export class SettingsService {
    */
   getUserSettings(id: string): Observable<LessonsSettings> {
     return this.db.collection('users').doc(id).valueChanges().pipe(
-      map((settings: LessonsSettings) => settings ? settings : environment.settings)
+      map((userData: {settings: LessonsSettings}) => userData ? userData.settings : environment.settings)
     );
   }
 }

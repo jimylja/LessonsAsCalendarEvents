@@ -14,17 +14,23 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './state/user.effects';
 import { UserFacade} from './user.facade';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule, MatInputModule} from '@angular/material';
+import { LessonEndPipe } from './lesson-end.pipe';
 
 @NgModule({
-  declarations: [LoginComponent, UserProfileComponent, UserSettingsComponent],
+  declarations: [LoginComponent, UserProfileComponent, UserSettingsComponent, LessonEndPipe],
   imports: [
-      CommonModule,
-      HttpClientModule,
-      UserRoutingModule,
-      StoreModule.forFeature('user', reducer),
-      EffectsModule.forFeature([UserEffects]),
-      MatButtonModule,
-      SharedModule,
+    CommonModule,
+    HttpClientModule,
+    UserRoutingModule,
+    StoreModule.forFeature('user', reducer),
+    EffectsModule.forFeature([UserEffects]),
+    MatButtonModule,
+    SharedModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [UserFacade]
 })
