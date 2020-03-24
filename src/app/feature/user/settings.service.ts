@@ -10,7 +10,7 @@ import {UserFacade} from './user.facade';
   providedIn: 'root'
 })
 export class SettingsService {
-  private userFacade: UserFacade
+  private userFacade: UserFacade;
   constructor(
     private inj: Injector,
     private db: AngularFirestore) { }
@@ -41,7 +41,7 @@ export class SettingsService {
         .set({profile, settings}, {merge: true})
         .then(() => settings)
       ),
-      map(d => settings)
+      map(() => settings)
     );
   }
 }
