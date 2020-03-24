@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { GoogleApiModule, GoogleApiService, GoogleAuthService, NG_GAPI_CONFIG, NgGapiClientConfig} from 'ng-gapi';
 import {environment} from '../../../../environments/environment';
+import {UserFacade} from '../user.facade';
 
 export interface UserState {
   user: {
@@ -32,7 +33,12 @@ describe('UserProfileComponent', () => {
         HttpClientTestingModule,
         GoogleApiModule.forRoot({provide: NG_GAPI_CONFIG, useValue: gApiClientConfig})
       ],
-      providers: [GoogleAuthService, GoogleApiService, provideMockStore({initialState})],
+      providers: [
+        GoogleAuthService,
+        GoogleApiService,
+        UserFacade,
+        provideMockStore({initialState})
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

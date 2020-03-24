@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserSettingsComponent } from './user-settings.component';
+import { LessonEndPipe} from '../lesson-end.pipe';
+import { UserFacade} from '../user.facade';
+import { StoreModule} from '@ngrx/store';
+import { FormBuilder } from '@angular/forms';
+import { NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('UserSettingsComponent', () => {
   let component: UserSettingsComponent;
@@ -8,7 +13,10 @@ describe('UserSettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserSettingsComponent ]
+      declarations: [ UserSettingsComponent, LessonEndPipe ],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [StoreModule.forRoot({})],
+      providers: [UserFacade, FormBuilder]
     })
     .compileComponents();
   }));
