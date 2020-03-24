@@ -1,24 +1,28 @@
 import {UserActions, UserActionTypes} from './user.actions';
 import {User} from '../../../models/user';
+import {LessonsSettings} from '../../../models/lessonsSettings';
 
 // State for this feature (User)
 export interface UserState {
   isLoggedIn: boolean;
-  userProfile: User | null;
+  profile: User | null;
+  settings: LessonsSettings;
 }
 
 const initialState: UserState = {
   isLoggedIn: false,
-  userProfile: null
+  profile: null,
+  settings: null
 };
 
 export function reducer(state = initialState, action: UserActions): UserState {
   switch (action.type) {
     case UserActionTypes.LoggedSuccessful:
+    case UserActionTypes.UserFetchedSuccessful:
       return {
         ...state,
         isLoggedIn: true,
-        userProfile: action.payload
+        profile: action.payload
       };
     case UserActionTypes.LoggedFailed:
       return {
@@ -29,19 +33,33 @@ export function reducer(state = initialState, action: UserActions): UserState {
       return {
         ...state,
         isLoggedIn: false,
-        userProfile: null
-      };
-    case UserActionTypes.UserFetchedSuccessful:
-      return {
-        ...state,
-        userProfile: action.payload
+        profile: null
       };
     case UserActionTypes.UserFetchFailed:
       return {
         ...state,
-        userProfile: null
+        isLoggedIn: false,
+        profile: null
       };
+    case UserActionTypes.SettingsFetchedSuccessful:
+      return  {
+        ...state,
+        settings: action.payload
+      };
+    case UserActionTypes.SettingsFetchFailed:
+      return {
+        ...state,
+        settings: null
+      };
+    case UserActionTypes.SettingsSaved:
+      return {
+        ...state,
+        settings: action.payload
+      };
+    case UserActionTypes.GetUserSettings:
     case UserActionTypes.Login:
+    case UserActionTypes.SaveUserSettings:
+    case UserActionTypes.SettingsNotSaved:
     case UserActionTypes.Logout:
     default:
       return state;

@@ -21,7 +21,7 @@ export class SpreadsheetGuard implements CanActivate {
       map(states => {
         const isRouteEnabled = Boolean(states[0] && states[1]);
         if (!isRouteEnabled) {
-          this.router.navigate(['dashboard']).then(
+          this.router.navigate(['']).then(
             () => {
               throw new Error('This route is not allowed');
             }

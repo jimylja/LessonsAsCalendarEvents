@@ -6,6 +6,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import {Store, StoreModule} from '@ngrx/store';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {MockStore, provideMockStore} from '@ngrx/store/testing';
+import {UserFacade} from '../../user/user.facade';
 
 export interface AppStore {
   user: {
@@ -59,7 +60,7 @@ describe('DashboardShellComponent', () => {
         RouterTestingModule,
         StoreModule.forRoot({}),
       ],
-      providers: [provideMockStore({initialState})],
+      providers: [provideMockStore({initialState}), UserFacade],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();

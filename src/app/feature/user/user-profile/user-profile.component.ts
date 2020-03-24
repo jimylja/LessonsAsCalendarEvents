@@ -1,10 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {User} from '../../../models/user';
-import {select, Store} from '@ngrx/store';
-import * as fromUser from '../state';
-import {AuthService} from '../auth.service';
-import * as UserActions from '../state/user.actions';
+import {UserFacade} from '../user.facade';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,11 +11,10 @@ import * as UserActions from '../state/user.actions';
 })
 export class UserProfileComponent {
 
-  constructor(private store: Store<fromUser.State>, private authService: AuthService) { }
-  activeUser$: Observable<User> = this.store.pipe(select(fromUser.getCurrentUser)).pipe();
+  constructor(private userFacade: UserFacade) { }
+  activeUser$: Observable<User> = this.userFacade.user$;
 
   logout(): void {
-    this.store.dispatch(new UserActions.Logout());
+    this.userFacade.logout();
   }
-
 }

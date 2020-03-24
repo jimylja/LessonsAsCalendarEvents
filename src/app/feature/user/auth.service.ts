@@ -25,7 +25,7 @@ export class AuthService implements OnDestroy {
   private tokenRequestParams: TokenReqParams = {
     client_id: environment.gApiClient.clientId,
     client_secret: environment.gApiClient.clientSecret,
-    redirect_uri: 'http://localhost:4200',
+    redirect_uri: environment.gApiClient.redirect_uri,
     grant_type: 'authorization_code'
   };
 
@@ -74,7 +74,15 @@ export class AuthService implements OnDestroy {
   }
 
   /**
-   * Method logout's user
+   * Method removes access token from session
+   */
+  private removeAccessToken(): void {
+    sessionStorage.removeItem(AuthService.SESSION_ST_ACCESS_TOKEN);
+    this.onDestroy$.next();
+  }
+
+  /**
+   * Method logout's user and removes all tokens
    */
   public logout(): void {
     sessionStorage.removeItem(AuthService.SESSION_ST_ACCESS_TOKEN);
@@ -88,7 +96,9 @@ export class AuthService implements OnDestroy {
    * @returns - user data
    */
   getUserInfo(): Observable<User> {
-    return this.httpClient.get(this.USER_ENDPOINT).pipe(
+    const fetchUser = this.httpClient.get(this.USER_ENDPOINT);
+    const getUser = this.accessToken ? fetchUser : this.updateAccessToken().pipe(switchMap(() => fetchUser));
+    return getUser.pipe(
       map((res: any) => {
         if (!this.isTimerStarted) {
           this.updateTokenTimer().subscribe();
@@ -96,12 +106,11 @@ export class AuthService implements OnDestroy {
         return AuthService.parseUserData(res);
       }),
       catchError(error => {
-        if (error.status === 401) { this.logout(); }
+        if (error.status === 401) { this.removeAccessToken(); }
         return throwError(error);
       })
     );
   }
-
 
   /**
    * The method makes sign-in action and return's data of the user who was authorized
@@ -174,6 +183,7 @@ export class AuthService implements OnDestroy {
    * @returns - New token
    */
   private updateAccessToken(): Observable<any> {
+    if (!this.refreshToken) { return throwError('update token is not available'); }
     return this.fetchToken({
       refresh_token: this.refreshToken,
       grant_type: 'refresh_token'
@@ -191,7 +201,7 @@ export class AuthService implements OnDestroy {
       switchMap(() => this.updateAccessToken()),
       catchError(error => {
         if (error.status === 401 || error.status === 400) {
-          this.logout();
+          this.removeAccessToken();
         }
         return throwError(error);
       }),
@@ -203,7 +213,7 @@ export class AuthService implements OnDestroy {
    * A getter for refresh token which stored in local storage
    * @returns - refresh token
    */
-  private get refreshToken(): string {
+  get refreshToken(): string {
     const refreshToken = localStorage.getItem(AuthService.LOCAL_ST_REFRESH_TOKEN);
     if (!refreshToken) {
       throwError('refresh token not set');

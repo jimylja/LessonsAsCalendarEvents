@@ -7,6 +7,7 @@ import { SpreadsheetComponent } from './spreadsheet.component';
 import { Store, StoreModule} from '@ngrx/store';
 import { MockStore, provideMockStore} from '@ngrx/store/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { UserFacade } from '../../user/user.facade';
 
 export interface AppStore {
   user: {
@@ -56,7 +57,7 @@ describe('SpreadsheetComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SpreadsheetComponent ],
-      providers: [provideMockStore({initialState}), FormBuilder],
+      providers: [provideMockStore({initialState}), FormBuilder, UserFacade],
       imports: [
         MatSnackBarModule,
         StoreModule.forRoot({}),

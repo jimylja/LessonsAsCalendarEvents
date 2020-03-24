@@ -44,7 +44,7 @@ export class CalendarsListComponent implements OnInit {
 
   calendarSelectHandler(calendar: CalendarEntry) {
     this.store.dispatch(new CalendarActions.CalendarSelected(calendar));
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/']);
   }
 
   calendarClearHandler(calendarId: string) {

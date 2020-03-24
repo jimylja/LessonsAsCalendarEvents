@@ -1,4 +1,6 @@
 import { Action } from '@ngrx/store';
+import {User} from '../../../models/user';
+import {LessonsSettings} from '../../../models/lessonsSettings';
 
 export enum UserActionTypes {
   Login = '[User] User Login',
@@ -9,6 +11,12 @@ export enum UserActionTypes {
   GetUser = '[User] Get User Data',
   UserFetchedSuccessful = '[User] User Fetched Successful',
   UserFetchFailed = '[User] User Fetch Failed',
+  GetUserSettings = '[User] Get Settings',
+  SettingsFetchedSuccessful = '[User] Settings Fetched Successful',
+  SettingsFetchFailed = '[User] Settings Fetch Failed',
+  SaveUserSettings = '[User] Save User Settings',
+  SettingsSaved = '[User] Settings has been saved',
+  SettingsNotSaved = '[User] Settings not saved',
 }
 
 export class Login implements Action {
@@ -38,11 +46,39 @@ export class GetUser implements Action {
 
 export class UserFetchedSuccessful implements Action {
   readonly type = UserActionTypes.UserFetchedSuccessful;
-  constructor(public payload: any) {}
+  constructor(public payload: User) {}
 }
 
 export class UserFetchFailed implements Action {
   readonly type = UserActionTypes.UserFetchFailed;
+}
+
+export class GetUserSettings implements Action {
+  readonly type = UserActionTypes.GetUserSettings;
+  constructor(public payload: User) {}
+}
+
+export class SettingsFetchedSuccessful implements Action {
+  readonly type = UserActionTypes.SettingsFetchedSuccessful;
+  constructor(public payload: LessonsSettings) {}
+}
+
+export class SettingsFetchFailed implements Action {
+  readonly type = UserActionTypes.SettingsFetchFailed;
+}
+
+export class SaveUserSettings implements Action {
+  readonly type = UserActionTypes.SaveUserSettings;
+  constructor(public payload: LessonsSettings) {}
+}
+
+export class SettingsSaved implements Action {
+  readonly type = UserActionTypes.SettingsSaved;
+  constructor(public payload: LessonsSettings) {}
+}
+
+export class SettingsNotSaved implements Action {
+  readonly type = UserActionTypes.SettingsNotSaved;
 }
 
 export type UserActions = Login
@@ -52,4 +88,10 @@ export type UserActions = Login
   |LogoutSuccessful
   |GetUser
   |UserFetchedSuccessful
-  |UserFetchFailed;
+  |UserFetchFailed
+  |GetUserSettings
+  |SettingsFetchedSuccessful
+  |SettingsFetchFailed
+  |SaveUserSettings
+  |SettingsSaved
+  |SettingsNotSaved;
