@@ -6,6 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSnackBarModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { UserFacade } from '../../user/user.facade';
 
 describe('CalendarsListComponent', () => {
   let component: CalendarsListComponent;
@@ -20,6 +21,7 @@ describe('CalendarsListComponent', () => {
         MatSnackBarModule,
         StoreModule.forRoot({}),
       ],
+      providers: [UserFacade],
       schemas: [ NO_ERRORS_SCHEMA ],
     })
     .compileComponents();

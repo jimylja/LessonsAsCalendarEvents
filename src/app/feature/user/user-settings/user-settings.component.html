@@ -1,6 +1,6 @@
 <ng-container *ngIf="settings$|async as settings; else loading">
   <ng-container *ngIf="form$|async as form">
-  <form [formGroup]="form" (submit)="onSubmit(form)">
+  <form [formGroup]="form">
     <mat-form-field class="lessons-duration">
       <mat-label>Тривалість уроків</mat-label>
       <input matInput formControlName="lessonDuration" type="number" placeholder="тривалість заняття">
@@ -12,9 +12,9 @@
       </mat-error>
     </mat-form-field>
     <h3>Розклад дзвінків</h3>
-    <div formArrayName="lessonsStartSchedule" #a class="lessons-start-hours">
-      <div *ngFor="let lessons of form.controls.lessonsStartSchedule['controls']; let i = index" class="lesson-item">
-        <div>Урок{{i}}</div>
+    <div formArrayName="lessonsStartSchedule" class="lessons-start-hours">
+      <div *ngFor="let lessons of lessonsStartControls['controls']; let i = index" class="lesson-item">
+        <div>Урок{{i+1}}</div>
         <mat-form-field>
           <mat-label>Початок уроку</mat-label>
           <input matInput [formControlName]="i" type="time">
@@ -24,8 +24,15 @@
           <input matInput disabled [value]="lessons.value|lessonEnd:form.value['lessonDuration']:form" type="time">
         </mat-form-field>
       </div>
+      <div class="actions">
+        <button (click)="addLesson()" class="add"><mat-icon>add_circle</mat-icon></button>
+        <button (click)="removeLesson()" class="remove"><mat-icon>remove_circle</mat-icon></button>
+      </div>
     </div>
-    <button mat-raised-button color="primary" [disabled]="!form.valid || !form.dirty">Зберегти</button>
+    <button (click)="onSubmit(form)"
+            [disabled]="!form.valid || !form.dirty"
+            mat-raised-button color="primary">Зберегти
+    </button>
   </form>
   </ng-container>
 </ng-container>

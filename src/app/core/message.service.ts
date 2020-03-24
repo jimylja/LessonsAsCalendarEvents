@@ -1,4 +1,4 @@
-import { Injectable, Injector, NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ExportStatus } from '../models/calendar';
@@ -13,7 +13,6 @@ import { SnackMessage } from '../models/snack-message';
 export class MessageService {
 
   constructor(
-    private inj: Injector,
     private router: Router,
     private readonly zone: NgZone,
     private snackBar: MatSnackBar) {}

@@ -13,6 +13,21 @@
         display: flex;
         justify-content: space-around;
       }
+      .actions {
+        align-self: center;
+        margin: 10px;
+        button {
+          opacity: 0.25;
+          border: none;
+          background: none;
+          &.add { color: green}
+          &.remove { color: red}
+          &:hover {
+            cursor: pointer;
+            opacity: 1;
+          }
+        }
+      }
     }
   }
 }
