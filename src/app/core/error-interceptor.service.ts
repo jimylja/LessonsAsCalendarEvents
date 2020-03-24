@@ -29,9 +29,9 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor, OnDestro
   }
 
   handleError(err: ErrorEvent) {
-    console.log('Global Error Handler', err);
-    const isErrorFromHttp = ((err instanceof Error) && (err instanceof HttpErrorResponse));
+    const isErrorFromHttp = (err instanceof HttpErrorResponse);
     if (!isErrorFromHttp) {
+      console.log('Global Error Handler', err);
       const startMessagePos = err.message.indexOf('Error');
       const endMessagePos = err.message.indexOf('Error', startMessagePos + 1);
       const message = err.message.slice(startMessagePos, endMessagePos);

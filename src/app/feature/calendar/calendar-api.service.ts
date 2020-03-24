@@ -2,11 +2,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, from, BehaviorSubject, Subject, iif } from 'rxjs';
 import { CalendarEntry, ExportStatus } from '../../models/calendar';
-import { pluck, mergeMap, delay, tap, concatMap, map, switchMap } from 'rxjs/operators';
+import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, takeUntil } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
 import { environment } from '../../../environments/environment';
+import {UserFacade} from '../user/user.facade';
 
 @Injectable({
   providedIn: 'root'
@@ -17,16 +18,25 @@ export class CalendarApiService implements OnDestroy {
   static readonly LIST_ENDPOINT = `${CalendarApiService.CALENDAR_API}/users/me/calendarList`;
   static readonly CALENDAR_ENDPOINT = `${CalendarApiService.CALENDAR_API}/calendars`;
 
-  private readonly LESSONS_START_SCHEDULE = environment.settings.lessonsStartSchedule;
-  private readonly LESSONS_DURATION = environment.settings.lessonDuration;
+  private LESSONS_START_SCHEDULE = environment.settings.lessonsStartSchedule;
+  private LESSONS_DURATION = environment.settings.lessonDuration;
   private calendarColors$ = new BehaviorSubject<string[]>(null);
   private exportEventsStatus$: BehaviorSubject<ExportStatus|null>;
   private deleteEventStatus$: BehaviorSubject<string>;
   private onDestroy$ = new Subject();
 
-  constructor(
-    private httpClient: HttpClient,
-    private messageService: MessageService) {}
+  constructor(private userFacade: UserFacade,
+              private httpClient: HttpClient,
+              private messageService: MessageService) {
+    this.userFacade.settings$.pipe(
+      tap(settings => {
+        if (settings) {
+          this.LESSONS_DURATION = settings.lessonDuration;
+          this.LESSONS_START_SCHEDULE = settings.lessonsStartSchedule;
+        }
+      }),
+      takeUntil(this.onDestroy$)).subscribe();
+  }
 
   /**
    * Method makes request, that takes list of user calendars

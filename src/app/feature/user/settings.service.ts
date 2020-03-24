@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {map, switchMap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
@@ -10,8 +10,10 @@ import {UserFacade} from './user.facade';
   providedIn: 'root'
 })
 export class SettingsService {
-
-  constructor(private userFacade: UserFacade, private db: AngularFirestore) { }
+  private userFacade: UserFacade
+  constructor(
+    private inj: Injector,
+    private db: AngularFirestore) { }
 
   /**
    * The method returns the settings of the user who was authorized
@@ -32,6 +34,7 @@ export class SettingsService {
    * @returns - user settings
    */
   saveUserSettings(settings: LessonsSettings): Observable<any> {
+    this.userFacade = this.inj.get(UserFacade);
     return this.userFacade.user$.pipe(
       switchMap(profile => this.db.collection('users')
         .doc(profile.id)
