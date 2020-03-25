@@ -1,6 +1,7 @@
 import {UserActions, UserActionTypes} from './user.actions';
 import {User} from '../../../models/user';
 import {LessonsSettings} from '../../../models/lessonsSettings';
+import {environment} from '../../../../environments/environment';
 
 // State for this feature (User)
 export interface UserState {
@@ -25,16 +26,7 @@ export function reducer(state = userInitialState, action: UserActions): UserStat
         profile: action.payload
       };
     case UserActionTypes.LoggedFailed:
-      return {
-        ...state,
-        isLoggedIn: false
-      };
     case UserActionTypes.LogoutSuccessful:
-      return {
-        ...state,
-        isLoggedIn: false,
-        profile: null
-      };
     case UserActionTypes.UserFetchFailed:
       return {
         ...state,
@@ -42,6 +34,7 @@ export function reducer(state = userInitialState, action: UserActions): UserStat
         profile: null
       };
     case UserActionTypes.SettingsFetchedSuccessful:
+    case UserActionTypes.SettingsSaved:
       return  {
         ...state,
         settings: action.payload
@@ -49,15 +42,10 @@ export function reducer(state = userInitialState, action: UserActions): UserStat
     case UserActionTypes.SettingsFetchFailed:
       return {
         ...state,
-        settings: null
+        settings: environment.settings
       };
-    case UserActionTypes.SettingsSaved:
-      return {
-        ...state,
-        settings: action.payload
-      };
-    case UserActionTypes.GetUserSettings:
     case UserActionTypes.Login:
+    case UserActionTypes.GetUserSettings:
     case UserActionTypes.SaveUserSettings:
     case UserActionTypes.SettingsNotSaved:
     case UserActionTypes.Logout:
