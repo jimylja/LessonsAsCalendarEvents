@@ -4,6 +4,7 @@ import { HeaderComponent } from './header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {By} from '@angular/platform-browser';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -33,5 +34,12 @@ describe('HeaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should test sidenav toggle', () => {
+    spyOn(component.toggleSidenav, 'emit');
+    const de = fixture.debugElement.query(By.css('button'));
+    de.triggerEventHandler('click', null);
+    expect(component.toggleSidenav.emit).toHaveBeenCalled();
   });
 });
