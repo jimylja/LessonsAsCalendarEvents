@@ -9,13 +9,13 @@ export interface UserState {
   settings: LessonsSettings;
 }
 
-const initialState: UserState = {
+export const userInitialState: UserState = {
   isLoggedIn: false,
   profile: null,
   settings: null
 };
 
-export function reducer(state = initialState, action: UserActions): UserState {
+export function reducer(state = userInitialState, action: UserActions): UserState {
   switch (action.type) {
     case UserActionTypes.LoggedSuccessful:
     case UserActionTypes.UserFetchedSuccessful:

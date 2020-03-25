@@ -6,12 +6,12 @@ export interface FileState {
   name: string;
 }
 
-const initialState: FileState = {
+export const fileInitialState: FileState = {
   id: null,
   name: null
 };
 
-export function reducer(state = initialState, action: FileActions): FileState {
+export function reducer(state = fileInitialState, action: FileActions): FileState {
   switch (action.type) {
     case FileActionTypes.FileSelected:
       return {

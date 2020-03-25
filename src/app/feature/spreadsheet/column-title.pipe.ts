@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-enum lessonEntities {
+export enum LessonEntities {
   'number'= '№',
   'date' = 'Дата',
   'order' = '№' + '<div>(розкл.)</div>',
@@ -16,7 +16,7 @@ enum lessonEntities {
 export class ColumnTitlePipe implements PipeTransform {
 
   transform(value: any, ...args: any[]): any {
-    return lessonEntities[value];
+    return LessonEntities[value];
   }
 
 }

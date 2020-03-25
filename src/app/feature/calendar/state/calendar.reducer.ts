@@ -1,7 +1,7 @@
 import { CalendarActions, CalendarActionTypes } from './calendar.actions';
 import { CalendarEntry } from '../../../models/calendar';
 
-const initialState: CalendarEntry = {
+export const calendarInitialState: CalendarEntry = {
   id: null,
   summary: null,
   description: null,
@@ -10,7 +10,7 @@ const initialState: CalendarEntry = {
   backgroundColor: null,
 };
 
-export function reducer(state = initialState, action: CalendarActions): CalendarEntry {
+export function reducer(state = calendarInitialState, action: CalendarActions): CalendarEntry {
   switch (action.type) {
     case CalendarActionTypes.CalendarSelected:
       return {
