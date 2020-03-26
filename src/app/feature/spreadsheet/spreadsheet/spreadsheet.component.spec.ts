@@ -8,13 +8,12 @@ import { Store, StoreModule} from '@ngrx/store';
 import { MockStore, provideMockStore} from '@ngrx/store/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserFacade } from '../../user/user.facade';
-import {AppStore} from '../../user/login/login.component.spec';
-import {appInitialState} from '../../../state/app.state';
+import {appInitialState, AppState} from '../../../state/app.state';
 
 describe('SpreadsheetComponent', () => {
   let component: SpreadsheetComponent;
   let fixture: ComponentFixture<SpreadsheetComponent>;
-  let store: MockStore<AppStore>;
+  let store: MockStore<AppState>;
   const initialState = appInitialState;
 
   beforeEach(async(() => {

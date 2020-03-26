@@ -1,9 +1,6 @@
 import {ChangeDetectionStrategy, Component, Injector, NgZone, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-
-import {select, Store} from '@ngrx/store';
-import * as fromUser from '../state';
-import * as UserActions from '../state/user.actions';
+import {Router} from '@angular/router';
+import {UserFacade} from '../user.facade';
 
 @Component({
   selector: 'app-login',
@@ -15,26 +12,25 @@ import * as UserActions from '../state/user.actions';
 export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
-    private injector: Injector,
-    private route: ActivatedRoute,
-    private store: Store<fromUser.State>) { }
+    private userFacade: UserFacade,
+    private injector: Injector) { }
 
   ngOnInit() {
-    this.store.pipe(select(fromUser.getLoginStatus)).subscribe(
+    this.userFacade.loginStatus$.subscribe(
       isLogged => {
         if (isLogged) {
           const routerService = this.injector.get(Router);
           const ngZone = this.injector.get(NgZone);
           ngZone.run(() => {
-            routerService.navigate(['/'], );
+            routerService.navigate(['/']).then();
           });
         }
       }
     );
   }
 
-  singIn() {
-    this.store.dispatch(new UserActions.Login());
+  signIn(): void {
+    this.userFacade.login();
   }
 
 }
