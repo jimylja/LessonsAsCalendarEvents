@@ -24,7 +24,6 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        // GoogleApiModule.forRoot({provide: NG_GAPI_CONFIG, useValue: environment.gApiClient})
       ],
       providers: [
         {provide: GoogleAuthService, useValue: mockAuthService},
