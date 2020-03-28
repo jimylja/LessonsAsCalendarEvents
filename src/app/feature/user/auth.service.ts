@@ -67,7 +67,7 @@ export class AuthService implements OnDestroy {
     } else {
       return this.googleAuthService.getAuth().pipe(
         switchMap( auth => {
-          return (!this.refreshToken) ? this.firstSignIn(auth) : this.signIn(auth);
+          return (!this.refreshToken) ? this.firstSignIn(auth) : this.defaultSignIn(auth);
         })
       );
     }
@@ -85,9 +85,8 @@ export class AuthService implements OnDestroy {
    * Method logout's user and removes all tokens
    */
   public logout(): void {
-    sessionStorage.removeItem(AuthService.SESSION_ST_ACCESS_TOKEN);
     localStorage.removeItem(AuthService.LOCAL_ST_REFRESH_TOKEN);
-    this.onDestroy$.next();
+    this.removeAccessToken();
   }
 
   /**
@@ -133,7 +132,7 @@ export class AuthService implements OnDestroy {
    * @params auth - GoogleAuth object
    * @returns - user data
    */
-  private signIn(auth: GoogleAuth): Observable<User> {
+  private defaultSignIn(auth: GoogleAuth): Observable<User> {
     return from(
       auth.signIn().then(
         (res: GoogleUser) => this.signInSuccessHandler(res),
