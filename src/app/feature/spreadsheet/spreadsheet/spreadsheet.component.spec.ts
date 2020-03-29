@@ -8,51 +8,13 @@ import { Store, StoreModule} from '@ngrx/store';
 import { MockStore, provideMockStore} from '@ngrx/store/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserFacade } from '../../user/user.facade';
-
-export interface AppStore {
-  user: {
-    isLoggedIn: boolean;
-    userProfile: any
-  };
-  calendar: {
-    id: string,
-    summary: string,
-    description: string,
-    timeZone: string,
-    accessRole: string,
-    backgroundColor: string,
-  };
-  file: {
-    id: string,
-    name: string
-  };
-}
-
+import {appInitialState, AppState} from '../../../state/app.state';
 
 describe('SpreadsheetComponent', () => {
   let component: SpreadsheetComponent;
   let fixture: ComponentFixture<SpreadsheetComponent>;
-  let store: MockStore<AppStore>;
-  const initialState = {
-    user: {
-      isLoggedIn: false,
-      userProfile: {
-        id: null
-      }
-    },
-    calendar: {
-      id: null,
-      summary: null,
-      description: null,
-      timeZone: null,
-      accessRole: null,
-      backgroundColor: null,
-    },
-    file: {
-      id: null,
-      name: null
-    }
-  };
+  let store: MockStore<AppState>;
+  const initialState = appInitialState;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

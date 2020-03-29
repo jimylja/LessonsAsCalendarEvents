@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {CanActivate, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
-import {Observable, combineLatest } from 'rxjs';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
+import { Observable, combineLatest } from 'rxjs';
 
 import { select, Store } from '@ngrx/store';
 import * as fromFile from '../file-picker/state';
@@ -21,11 +21,7 @@ export class SpreadsheetGuard implements CanActivate {
       map(states => {
         const isRouteEnabled = Boolean(states[0] && states[1]);
         if (!isRouteEnabled) {
-          this.router.navigate(['']).then(
-            () => {
-              throw new Error('This route is not allowed');
-            }
-          );
+          this.router.navigate(['']);
         }
         return isRouteEnabled;
       })

@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, from, BehaviorSubject, Subject, iif } from 'rxjs';
 import { CalendarEntry, ExportStatus } from '../../models/calendar';
-import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, takeUntil } from 'rxjs/operators';
+import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, takeUntil, finalize } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
@@ -18,8 +18,8 @@ export class CalendarApiService implements OnDestroy {
   static readonly LIST_ENDPOINT = `${CalendarApiService.CALENDAR_API}/users/me/calendarList`;
   static readonly CALENDAR_ENDPOINT = `${CalendarApiService.CALENDAR_API}/calendars`;
 
-  private LESSONS_START_SCHEDULE = environment.settings.lessonsStartSchedule;
-  private LESSONS_DURATION = environment.settings.lessonDuration;
+  private lessonsStartSchedule = environment.settings.lessonsStartSchedule;
+  private lessonsDuration = environment.settings.lessonDuration;
   private calendarColors$ = new BehaviorSubject<string[]>(null);
   private exportEventsStatus$: BehaviorSubject<ExportStatus|null>;
   private deleteEventStatus$: BehaviorSubject<string>;
@@ -27,16 +27,7 @@ export class CalendarApiService implements OnDestroy {
 
   constructor(private userFacade: UserFacade,
               private httpClient: HttpClient,
-              private messageService: MessageService) {
-    this.userFacade.settings$.pipe(
-      tap(settings => {
-        if (settings) {
-          this.LESSONS_DURATION = settings.lessonDuration;
-          this.LESSONS_START_SCHEDULE = settings.lessonsStartSchedule;
-        }
-      }),
-      takeUntil(this.onDestroy$)).subscribe();
-  }
+              private messageService: MessageService) {}
 
   /**
    * Method makes request, that takes list of user calendars
@@ -61,19 +52,18 @@ export class CalendarApiService implements OnDestroy {
     const lessons = events.map(
       classTab => this.generateEvents(classTab, calendar.timeZone)
     );
-    this.messageService.showMessage({data: {
-      message: this.exportEventsStatus$,
-      type: 'exportMessage',
-      title: 'Експорт уроків',
-      displaySpinner: true
-    }});
-    from(lessons).pipe(
-      concatMap(classLessons => from(classLessons).pipe(
-        mergeMap(lesson => this.createEvent(lesson, calendar.id), 1)
-      ))
-    ).subscribe({
-      complete: () => this.exportEventsStatus$.complete()
-    });
+    this.displayExportMessage(this.exportEventsStatus$, 'Експорт уроків', 'exportMessage');
+
+    this.userFacade.settings$.pipe(
+      tap(this.getActualUserSettings),
+      switchMap(() => from(lessons).pipe(
+        concatMap(classLessons => from(classLessons).pipe(
+          mergeMap(lesson => this.createEvent(lesson, calendar.id), 1)
+        )),
+        finalize(() => { this.exportEventsStatus$.complete(); })
+      )),
+      takeUntil(this.onDestroy$)
+    ).subscribe();
   }
 
   /**
@@ -117,7 +107,7 @@ export class CalendarApiService implements OnDestroy {
     return classTab.lessons.map(
       lesson => {
         const dateFormat = 'YYYY-MM-DD[T]HH:mm:ssZ';
-        const lessonStartTime = `${moment(lesson.date).format('DD.MM.YYYY')}T${this.LESSONS_START_SCHEDULE[lesson.order]}`;
+        const lessonStartTime = `${moment(lesson.date).format('DD.MM.YYYY')}T${this.lessonsStartSchedule[lesson.order]}`;
         const lessonDate = moment(lessonStartTime, 'DD.MM.YYYY HH:mm');
         const lessonEvent: GoogleEvent = {
           summary: `${lesson.order} урок: ${classTab.title}`,
@@ -128,7 +118,7 @@ export class CalendarApiService implements OnDestroy {
             timeZone
           },
           end: {
-            dateTime: lessonDate.clone().add(this.LESSONS_DURATION, 'minute').format(dateFormat),
+            dateTime: lessonDate.clone().add(this.lessonsDuration, 'minute').format(dateFormat),
             timeZone
           },
         };
@@ -213,7 +203,7 @@ export class CalendarApiService implements OnDestroy {
   clearCalendar(calendarId: string): void {
     let deletedEvents = 0;
     this.deleteEventStatus$ = new BehaviorSubject<string>('Видалено: 0');
-    this.messageService.showMessage({data: {message: this.deleteEventStatus$, title: 'Очищення календаря', displaySpinner: true}});
+    this.displayExportMessage(this.deleteEventStatus$, 'Очищення календаря');
     this.getCalendarEvents(calendarId).pipe(
       switchMap((events: {items: Array<any>}) => {
         return from(events.items).pipe(
@@ -232,6 +222,22 @@ export class CalendarApiService implements OnDestroy {
     ).subscribe({complete: () => {
       this.deleteEventStatus$.complete();
     }});
+  }
+
+  private getActualUserSettings(settings): void {
+    this.lessonsDuration = settings.lessonDuration;
+    this.lessonsStartSchedule = settings.lessonsStartSchedule;
+  }
+
+  private displayExportMessage(message, title, type?): void {
+    this.messageService.showMessage({
+      data: {
+        message,
+        type,
+        title,
+        displaySpinner: true},
+      duration: 0
+    });
   }
 
   ngOnDestroy(): void {

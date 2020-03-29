@@ -1,6 +1,7 @@
 import {UserActions, UserActionTypes} from './user.actions';
 import {User} from '../../../models/user';
 import {LessonsSettings} from '../../../models/lessonsSettings';
+import {environment} from '../../../../environments/environment';
 
 // State for this feature (User)
 export interface UserState {
@@ -9,13 +10,13 @@ export interface UserState {
   settings: LessonsSettings;
 }
 
-const initialState: UserState = {
+export const userInitialState: UserState = {
   isLoggedIn: false,
   profile: null,
   settings: null
 };
 
-export function reducer(state = initialState, action: UserActions): UserState {
+export function reducer(state = userInitialState, action: UserActions): UserState {
   switch (action.type) {
     case UserActionTypes.LoggedSuccessful:
     case UserActionTypes.UserFetchedSuccessful:
@@ -25,16 +26,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
         profile: action.payload
       };
     case UserActionTypes.LoggedFailed:
-      return {
-        ...state,
-        isLoggedIn: false
-      };
     case UserActionTypes.LogoutSuccessful:
-      return {
-        ...state,
-        isLoggedIn: false,
-        profile: null
-      };
     case UserActionTypes.UserFetchFailed:
       return {
         ...state,
@@ -42,6 +34,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
         profile: null
       };
     case UserActionTypes.SettingsFetchedSuccessful:
+    case UserActionTypes.SettingsSaved:
       return  {
         ...state,
         settings: action.payload
@@ -49,15 +42,10 @@ export function reducer(state = initialState, action: UserActions): UserState {
     case UserActionTypes.SettingsFetchFailed:
       return {
         ...state,
-        settings: null
+        settings: environment.settings
       };
-    case UserActionTypes.SettingsSaved:
-      return {
-        ...state,
-        settings: action.payload
-      };
-    case UserActionTypes.GetUserSettings:
     case UserActionTypes.Login:
+    case UserActionTypes.GetUserSettings:
     case UserActionTypes.SaveUserSettings:
     case UserActionTypes.SettingsNotSaved:
     case UserActionTypes.Logout:

@@ -12,12 +12,13 @@ export interface RgbObj {
   green: number;
 }
 
+export enum LessonProps {number, date, order, location, topic, hwTheory, hwPractice}
+
 @Injectable({
   providedIn: 'root'
 })
 export class SpreadsheetService {
   static readonly SPREADSHEET_API = environment.apiEndpoints.spreadsheet;
-  private keys = ['number', 'date', 'order', 'location', 'topic', 'hwTheory', 'hwPractice'];
 
   constructor(private httpClient: HttpClient, private calendarService: CalendarApiService) { }
 
@@ -65,20 +66,7 @@ export class SpreadsheetService {
    */
   private getRowValues(rowsData): Array<Lesson> {
     return rowsData.map(
-      row => {
-        const lesson = {};
-        row.values.forEach(
-          (value, index) => {
-            const isCellWithDate = index === 1;
-            if (!isCellWithDate) {
-              lesson[this.keys[index]] = value.formattedValue;
-            } else {
-              lesson[this.keys[index]] = SpreadsheetService.convertFromSerialToMoment(value.effectiveValue.numberValue);
-            }
-          }
-        );
-        return lesson;
-      }
+      row => this.parseRowData(row.values)
     );
   }
 
@@ -145,5 +133,24 @@ export class SpreadsheetService {
       return dist + Math.pow(cur - c2[idx], 2);
     }, 0);
     return Math.sqrt(distance);
+  }
+
+  private parseRowData(rowData) {
+    const lessonProps = LessonProps;
+    return rowData.reduce((lesson, cellData, idx) => {
+      if (idx === (Object.keys(lessonProps).length / 2)) {return lesson; }
+      switch (lessonProps[idx]) {
+        case 'date':
+          lesson[lessonProps[idx]] = SpreadsheetService.convertFromSerialToMoment(cellData.effectiveValue.numberValue);
+          break;
+        case 'number':
+        case 'order':
+          lesson[lessonProps[idx]] = Number(cellData.formattedValue);
+          break;
+        default:
+          lesson[lessonProps[idx]] = cellData.formattedValue;
+      }
+      return lesson;
+    }, {});
   }
 }
