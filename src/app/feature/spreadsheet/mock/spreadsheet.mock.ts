@@ -7,7 +7,7 @@ export const dummySheetData: Sheet[] = [
     lessons: [
       {
         number: 8,
-        date: new Date(2020, 3, 19, 3),
+        date: new Date(Date.UTC(2020, 3, 19, 0)),
         order: 3,
         location: '211',
         topic: 'Алгоритми з повторенням. Базова алгоритмічна структура повторення',
@@ -16,7 +16,7 @@ export const dummySheetData: Sheet[] = [
       },
       {
         number: 9,
-        date: new Date(2020, 3, 18, 3),
+        date: new Date(Date.UTC(2020, 3, 18, 0)),
         order: 4,
         location: '211',
         topic: 'П.Р. 3. Складання та виконання алгоритмів з повторенням у середовищі Scratch',
@@ -32,7 +32,7 @@ export const dummySheetData: Sheet[] = [
     lessons: [
       {
         number: 9,
-        date: new Date(2020, 3, 17, 3),
+        date: new Date(Date.UTC(2020, 3, 17, 0)),
         order: 1,
         location: '211',
         topic: 'Завантаження даних з Інтернету. П.Р.2.',
@@ -41,7 +41,7 @@ export const dummySheetData: Sheet[] = [
       },
       {
         number: 10,
-        date: new Date(2020, 3, 18, 3),
+        date: new Date(Date.UTC(2020, 3, 18, 0)),
         order: 2,
         location: '211',
         topic: 'Безпечне користування Інтернетом. Контроль знань',
