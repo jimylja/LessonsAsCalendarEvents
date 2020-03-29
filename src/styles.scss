@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.item-icon {
+  &.file-icon {
+    background-image: url('./assets/web-google-sheets-icon.png');
+  }
+  &.calendar-icon {
+    background-image: url('./assets/web-google-calendar-icon.png');
+  }
+  background-size: cover;
+}
+
+snack-bar-container.mat-snack-bar-container {
+  display: flex;
+  justify-content: center;
+  color: white;
+  &.popup-success {background-color: rgb(24, 168, 72);}
+  &.popup-error {background-color:  rgb(175, 50, 1);}
+}
+mat-spinner { margin: 50px auto; }

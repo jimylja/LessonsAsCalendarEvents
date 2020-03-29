@@ -1,0 +1,32 @@
+<ng-container *ngIf="messageData">
+  <mat-spinner *ngIf="(messageData?.displaySpinner)" class="message-spinner" diameter="32"></mat-spinner>
+  <div class="message-container">
+    <h4 class="message-title">{{messageData.title}}</h4>
+    <div class="message-body">
+      <ng-container *ngIf="messageData.message|async as message">
+        <div class="message-content">
+          <ng-container *ngIf="(messageData.type) === 'exportMessage';else customMessage">
+            <div>
+              <span>Експортовано:</span>
+              <span class="total">{{message.exportSuccess.total}}</span>
+            </div>
+            <div>
+              <span class="event-title">{{message.exportSuccess.lastEvent}}</span>
+            </div>
+            <div *ngIf="message.exportFail.total>0">
+              <span>Помилка:</span>
+              <span class="total">{{message.exportFail.total}}</span>
+            </div>
+            <div>
+              <span class="event-title">{{message.exportFail.lastEvent}}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #customMessage>
+  <div><span>{{messageData.message|async}}</span></div>
+</ng-template>

@@ -1,0 +1,13 @@
+:host(.active) {
+  .item-card {
+    background-color: #69F0AE;
+  }
+}
+
+.item-card {
+  max-width: 400px;
+  margin: 20px auto;
+  &:hover {
+    cursor: pointer;
+  }
+}

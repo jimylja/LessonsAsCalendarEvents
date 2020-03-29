@@ -1,0 +1,10 @@
+<app-header (toggleSidenav)="snav.toggle()" [user]="activeUser$|async"></app-header>
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav #snav mode="over">
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+<app-footer></app-footer>

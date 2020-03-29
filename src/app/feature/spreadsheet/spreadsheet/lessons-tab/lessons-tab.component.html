@@ -1,0 +1,50 @@
+<ng-container [formGroup]="form">
+  <ng-container formArrayName="classesData">
+    <ng-container [formGroupName]="tabIndex">
+
+      <div class="common_details">
+        <div class="common_details__attenders">
+          <mat-checkbox #attendeesCheckbox (change)="changeAttendeesPermission($event.checked)">
+            Додати отримувачів
+          </mat-checkbox>
+          <mat-form-field *ngIf="attendeesCheckbox.checked">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="attendeesEmail" placeholder="email класу">
+            <mat-error *ngIf="!form.controls.classesData.hasError('email')">
+              Введіть коректний email!
+            </mat-error>
+          </mat-form-field>
+        </div>
+          <mat-menu #menu="matMenu">
+            <mat-radio-group class="color-menu" formControlName="colorId" aria-label="Select an option">
+              <ng-container *ngFor="let color of colorsPalette; let i=index">
+                <mat-radio-button value="{{i}}" class="color_item" [ngStyle]="{'background-color': color}"></mat-radio-button>
+              </ng-container>
+            </mat-radio-group>
+          </mat-menu>
+          <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-button">
+            <span [ngStyle]="{'background-color': colorsPalette[form.value.classesData[tabIndex].colorId]}" class="color_item menu-button__item"></span>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+      </div>
+
+      <div class="lessons-table">
+        <mat-table [dataSource]="dataSource">
+          <ng-container *ngFor="let column of displayedColumns" [matColumnDef]=column>
+            <ng-container *ngIf="column !== 'date'">
+              <mat-header-cell *matHeaderCellDef [innerHTML]="column|columnTitle"></mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
+            </ng-container>
+            <ng-container *ngIf="column === 'date'">
+              <mat-header-cell *matHeaderCellDef [innerHTML]="column|columnTitle"></mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element[column] | date:'dd.MM'}} </mat-cell>
+            </ng-container>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>
