@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './feature/user/user.module';
-import { DashboardModule } from './feature/dashboard/dashboard.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 
@@ -39,7 +38,6 @@ const gApiClientConfig: NgGapiClientConfig = {
     SharedModule,
     CoreModule,
     UserModule,
-    DashboardModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gApiClientConfig
