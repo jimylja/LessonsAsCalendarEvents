@@ -12,8 +12,7 @@ export class UserEffects {
 
   constructor(private authService: AuthService,
               private settingsService: SettingsService,
-              private actions$: Actions) {
-  }
+              private actions$: Actions) {}
 
   @Effect() user$: Observable<Action> = this.actions$.pipe(
     ofType(userActions.UserActionTypes.GetUser),

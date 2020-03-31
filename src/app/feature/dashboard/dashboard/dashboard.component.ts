@@ -6,6 +6,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {DriveFile} from '../../../models/drive-file';
 import {CalendarEntry} from '../../../models/calendar';
 import {map} from 'rxjs/operators';
+import {UserFacade} from '../../user/user.facade';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,11 @@ export class DashboardComponent implements OnInit {
   activeFile$: Observable<DriveFile>;
   activeCalendar$: Observable<CalendarEntry>;
   isSpreadsheetEnabled$: Observable<boolean>;
-  constructor(private store: Store<fromFile.State>) { }
+  constructor(
+    private userFacade: UserFacade,
+    private store: Store<fromFile.State>) {
+      this.userFacade.getUser();
+  }
 
   ngOnInit() {
     this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));
