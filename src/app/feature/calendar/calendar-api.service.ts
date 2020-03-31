@@ -15,7 +15,7 @@ import {UserFacade} from '../user/user.facade';
 export class CalendarApiService implements OnDestroy {
   static readonly CALENDAR_API = environment.apiEndpoints.calendar;
   static readonly COLORS_ENDPOINT = `${CalendarApiService.CALENDAR_API}/colors`;
-  static readonly LIST_ENDPOINT = `${CalendarApiService.CALENDAR_API}/users/me/calendarList`;
+  static readonly LIST_ENDPOINT = `${CalendarApiService.CALENDAR_API}/users/me/calendarList?minAccessRole=writer`;
   static readonly CALENDAR_ENDPOINT = `${CalendarApiService.CALENDAR_API}/calendars`;
 
   private lessonsStartSchedule = environment.settings.lessonsStartSchedule;
