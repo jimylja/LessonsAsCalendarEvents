@@ -45,7 +45,7 @@ describe('SpreadsheetGuard', () => {
     expect(guard).toBeTruthy();
   }));
 
-  it('should redirect an unauthenticated user to the dashboard', async(
+  it('should redirect an unauthenticated user to the shell', async(
     inject([Router, SpreadsheetGuard], (router: Router, guard: SpreadsheetGuard) => {
       store.refreshState();
       spyOn(router, 'navigate').and.stub();

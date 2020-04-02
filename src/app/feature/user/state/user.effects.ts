@@ -15,14 +15,14 @@ export class UserEffects {
               private actions$: Actions) {}
 
   @Effect() user$: Observable<Action> = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.GetUser),
+    ofType(userActions.UserActionTypes.GetGoogleProfile),
     switchMap(
       () => this.authService.getUserInfo().pipe(
         mergeMap(user => [
-            new userActions.UserFetchedSuccessful(user),
-            new userActions.GetUserSettings(user),
+            new userActions.GoogleProfileFetchedSuccessful(user),
+            new userActions.GetUserData(user)
         ]),
-        catchError(() => of(new userActions.UserFetchFailed()))
+        catchError(() => of(new userActions.GoogleProfileFetchFailed()))
       )
     )
   );
@@ -46,18 +46,28 @@ export class UserEffects {
   );
 
   @Effect()
-  getSettings$: Observable<Action> = this.actions$.pipe(
-    ofType(userActions.UserActionTypes.GetUserSettings),
-    mergeMap((action: userActions.GetUserSettings) => this.settingsService.getUserSettings(action.payload.id).pipe(
-      map(settings => (new userActions.SettingsFetchedSuccessful(settings))),
-      catchError(() => of(new userActions.SettingsFetchFailed()))
+  activity$: Observable<Action> = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.UpdateUserStatistic),
+    mergeMap(() => this.settingsService.updateStatistics().pipe(
+      map(() => new userActions.StatisticUpdateSuccessful(),
+        catchError(() => of(new userActions.StatisticUpdateFailed()))
+      ))
+    ));
+
+
+  @Effect()
+  getUserData$: Observable<Action> = this.actions$.pipe(
+    ofType(userActions.UserActionTypes.GetUserData),
+    mergeMap((action: userActions.GetUserData) => this.settingsService.getUserData(action.payload).pipe(
+      map(user => user !== undefined ? new userActions.UserDataFetchedSuccessful(user) : new userActions.UserDataFetchFailed(),
+      catchError(() => of(new userActions.UserDataFetchFailed()))
     ))
-  );
+  ));
 
   @Effect()
   saveSettings$: Observable<Action> = this.actions$.pipe(
     ofType(userActions.UserActionTypes.SaveUserSettings),
-    mergeMap((action: userActions.SaveUserSettings) => this.settingsService.saveUserSettings(action.payload).pipe(
+    mergeMap((action: userActions.SaveUserSettings) => this.settingsService.updateUserSettings(action.payload).pipe(
       map(settings => (new userActions.SettingsSaved(settings))),
       catchError(() => of(new userActions.SettingsNotSaved()))
     ))

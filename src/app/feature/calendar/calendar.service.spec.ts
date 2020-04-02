@@ -71,7 +71,7 @@ describe('CalendarService', () => {
   it('should get all user calendars', fakeAsync(() => {
     service.getCalendars().subscribe();
     tick();
-    const request = httpMock.expectOne(`${environment.apiEndpoints.calendar}/users/me/calendarList`);
+    const request = httpMock.expectOne(`${environment.apiEndpoints.calendar}/users/me/calendarList?minAccessRole=writer`);
     expect(request.request.method).toEqual('GET');
   }));
 

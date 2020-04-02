@@ -1,47 +1,104 @@
 import {Injectable, Injector} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map, switchMap} from 'rxjs/operators';
-import {Observable} from 'rxjs';
-import {environment} from '../../../environments/environment';
+import {map, switchMap, tap, take, pluck} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {LessonsSettings} from '../../models/lessonsSettings';
 import {UserFacade} from './user.facade';
+import {UserState} from './state/user.reducer';
+import {User, UserStats} from '../../models/user';
+import {MessageService} from '../../core/message.service';
 
+
+export interface UserData {
+  profile?: User;
+  settings?: LessonsSettings;
+  statistic?: UserStats;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
   private userFacade: UserFacade;
+  private googleProfile: User;
+  firstVisitMessage = {
+    redirectTo: 'guide',
+    data: {
+      message: new BehaviorSubject('Схоже Ви вперше користуєтесь цим додатком, ознайомтесь з інструкцією...'),
+      title: 'Привіт'
+    }
+  };
+
   constructor(
+    private messageService: MessageService,
     private inj: Injector,
     private db: AngularFirestore) { }
 
   /**
-   * The method returns the settings of the user who was authorized
-   * if user absent return default settings
+   * The method returns the information of the user who was authorized
+   * if user absent return undefined
    * @inputs id - user id
-   * @returns - user settings
+   * @returns - user data
    */
-  getUserSettings(id: string): Observable<LessonsSettings> {
-    return this.db.collection('users').doc(id).valueChanges().pipe(
-      map((userData: {settings: LessonsSettings}) => userData ? userData.settings : environment.settings)
+  getUserData(user): Observable<UserState> {
+    this.googleProfile = user;
+    return this.db.collection('users').doc(user.id).valueChanges().pipe(
+      take(1),
+      tap(() => this.updateStatistics({lastVisit: new Date()}).pipe(take(1)).subscribe()),
+      map((userData: UserState) => {
+        if (!userData) {
+          this.messageService.showMessage(this.firstVisitMessage);
+          this.createUserProfile().subscribe();
+        }
+        return userData;
+      })
     );
   }
 
   /**
-   * The method update settings for active user
-   * if user absent creates new record for him in database
-   * @inputs settings - user lesson settings
-   * @returns - user settings
+   * The method updates settings for lessons
+   * @inputs settings - setting for lessons
+   * @returns - updated settings data
    */
-  saveUserSettings(settings: LessonsSettings): Observable<any> {
+  updateUserSettings(settings: LessonsSettings): Observable<LessonsSettings> {
+    return this.updateUserData({settings}).pipe(
+      pluck('settings'),
+    );
+  }
+
+  /**
+   * The method update user statistic(lastVisit, export summary) for active user
+   * if user absent creates new record for him in database
+   * @inputs stats - user statistic
+   * @returns - user updated statistic
+   */
+  updateStatistics(stats?: UserStats): Observable<UserStats> {
     this.userFacade = this.inj.get(UserFacade);
+    return this.userFacade.userStatistic$.pipe(
+      switchMap(statistic => this.updateUserData({statistic: {...statistic, ...stats}}).pipe(
+        pluck('statistic'),
+      ))
+    );
+  }
+
+  /**
+   * The method update data(settings, profile, statistic) for active user
+   * if user absent creates new record for him in database
+   * @inputs data - user data
+   * @returns - user data
+   */
+  private updateUserData(data?: UserData): Observable<any> {
     return this.userFacade.user$.pipe(
+      tap(profile => {if (!data) { data = {profile}; }}),
       switchMap(profile => this.db.collection('users')
         .doc(profile.id)
-        .set({profile, settings}, {merge: true})
-        .then(() => settings)
+        .set({...data}, {merge: true})
+        .then(() => data)
       ),
-      map(() => settings)
+      map(() => data)
     );
+  }
+
+  private createUserProfile() {
+    return this.updateUserData();
   }
 }

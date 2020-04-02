@@ -20,9 +20,7 @@ export class DashboardComponent implements OnInit {
   isSpreadsheetEnabled$: Observable<boolean>;
   constructor(
     private userFacade: UserFacade,
-    private store: Store<fromFile.State>) {
-      this.userFacade.getUser();
-  }
+    private store: Store<fromFile.State>) {}
 
   ngOnInit() {
     this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));

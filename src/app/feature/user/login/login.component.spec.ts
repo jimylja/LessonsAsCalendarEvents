@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import { Location } from '@angular/common';
 import {SpyLocation} from '@angular/common/testing';
-import {DashboardShellComponent} from '../../dashboard/dashboard-shell/dashboard-shell.component';
+import {ShellComponent} from '../../shell/shell/shell.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {UserState} from '../state/user.reducer';
@@ -24,9 +24,9 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent, DashboardShellComponent ],
+      declarations: [ LoginComponent, ShellComponent ],
       imports: [RouterTestingModule.withRoutes(
-        [{path: '', component: DashboardShellComponent}, {path: 'user/login', component: LoginComponent}]
+        [{path: '', component: ShellComponent}, {path: 'user/login', component: LoginComponent}]
       )
       ],
       providers: [
@@ -51,7 +51,7 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should redirect to dashboard if user logged', fakeAsync(() => {
+  it('should redirect to shell if user logged', fakeAsync(() => {
     fixture = TestBed.createComponent(LoginComponent);
     location = TestBed.get(Location);
     component.ngOnInit();

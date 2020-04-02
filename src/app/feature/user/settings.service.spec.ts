@@ -34,14 +34,14 @@ describe('SettingsService', () => {
 
   it('should return default settings if user no present in db', () => {
     const service: SettingsService = TestBed.get(SettingsService);
-    service.getUserSettings('failedId').subscribe(settings => {
+    service.getUserData('failedId').subscribe(settings => {
       expect(settings).toEqual(environment.settings);
     });
   });
 
   it('should return user settings from db', () => {
     const service: SettingsService = TestBed.get(SettingsService);
-    service.getUserSettings('werwfsdfsdf0d8sfsd').subscribe(settings => {
+    service.getUserData('werwfsdfsdf0d8sfsd').subscribe(settings => {
       expect(settings).toEqual(mockSettings);
     });
   });
@@ -49,7 +49,7 @@ describe('SettingsService', () => {
 
   it('should set new settings for user', () => {
     const service: SettingsService = TestBed.get(SettingsService);
-    service.saveUserSettings(mockSettings).subscribe(settings =>
+    service.updateUserSettings(mockSettings).subscribe(settings =>
       expect(settings).toEqual(mockSettings)
     );
   });

@@ -60,7 +60,14 @@ export class CalendarApiService implements OnDestroy {
         concatMap(classLessons => from(classLessons).pipe(
           mergeMap(lesson => this.createEvent(lesson, calendar.id), 1)
         )),
-        finalize(() => { this.exportEventsStatus$.complete(); })
+        finalize(() => {
+          this.userFacade.updateStatistic( {
+            calendar: calendar.summary,
+            exportFail: this.exportEventsStatus$.value.exportFail.total,
+            exportSuccess: this.exportEventsStatus$.value.exportSuccess.total
+          });
+          this.exportEventsStatus$.complete();
+        })
       )),
       takeUntil(this.onDestroy$)
     ).subscribe();
