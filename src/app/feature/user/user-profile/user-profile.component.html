@@ -5,18 +5,36 @@
       <mat-card-subtitle>{{user.email}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <app-avatar [avatar]="user.avatar"></app-avatar>
-      <div>
-        <ng-container *ngIf="userStats$|async as stats">
-          {{stats | json}}
-          The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-          A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-          bred for hunting.
-        </ng-container>
+      <div class="row">
+        <app-avatar [avatar]="user.avatar"></app-avatar>
+        <div class="stats" *ngIf="userStats$|async as stats">
+          <p>Останній візит: <span>{{stats.lastVisit?.toDate()| date:'dd.MM.yyyy'}}</span></p>
+          <p>Останній календар: <span>{{stats?.lastCalendar}}</span></p>
+        </div>
       </div>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="logout()">Logout</button>
-    </mat-card-actions>
+    <button class="logout-button" mat-raised-button color="primary" (click)="logout()">Вийти</button>
+    <ng-container *ngIf="userStats$|async as stats">
+        <p>Статистика експорту подій</p>
+        <table mat-table [dataSource]="stats.activity" class="mat-elevation-z8">
+          <ng-container matColumnDef="calendar">
+            <th mat-header-cell *matHeaderCellDef> Календар </th>
+            <td mat-cell *matCellDef="let element"> {{element.calendar}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="exportSuccess">
+            <th mat-header-cell *matHeaderCellDef> Усіпшно </th>
+            <td mat-cell *matCellDef="let element"> {{element.exportSuccess}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="exportFail">
+            <th mat-header-cell *matHeaderCellDef> Помилок </th>
+            <td mat-cell *matCellDef="let element"> {{element.exportFail}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['calendar', 'exportSuccess', 'exportFail'];sticky: true"></tr>
+          <tr mat-row *matRowDef="let element; columns: ['calendar', 'exportSuccess', 'exportFail'];"></tr>
+        </table>
+      </ng-container>
   </mat-card>
 </ng-container>

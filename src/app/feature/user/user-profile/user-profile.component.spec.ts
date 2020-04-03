@@ -9,6 +9,7 @@ import {of} from 'rxjs';
 import {UserState} from '../state/user.reducer';
 import {mockUser} from '../mock/user.mock';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {MatTableModule} from '@angular/material';
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
@@ -20,7 +21,7 @@ describe('UserProfileComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UserProfileComponent ],
       imports: [
-        HttpClientTestingModule,
+        HttpClientTestingModule, MatTableModule
       ],
       providers: [
         UserFacade,

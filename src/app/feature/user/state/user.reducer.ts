@@ -5,14 +5,12 @@ import {environment} from '../../../../environments/environment';
 
 // State for this feature (User)
 export interface UserState {
-  isLoggedIn: boolean;
   profile: User | null;
   settings: LessonsSettings;
   statistic: UserStats;
 }
 
 export const userInitialState: UserState = {
-  isLoggedIn: false,
   profile: null,
   settings: environment.settings,
   statistic: {
@@ -28,7 +26,6 @@ export function reducer(state = userInitialState, action: UserActions): UserStat
     case UserActionTypes.GoogleProfileFetchedSuccessful:
       return {
         ...state,
-        isLoggedIn: true,
         profile: action.payload
       };
     case UserActionTypes.LoggedFailed:
@@ -36,7 +33,6 @@ export function reducer(state = userInitialState, action: UserActions): UserStat
     case UserActionTypes.GoogleProfileFetchFailed:
       return {
         ...state,
-        isLoggedIn: false,
         profile: null
       };
     case UserActionTypes.SettingsSaved:
@@ -47,7 +43,7 @@ export function reducer(state = userInitialState, action: UserActions): UserStat
     case UserActionTypes.UserDataFetchedSuccessful:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     case UserActionTypes.UserDataFetchFailed:
       return {

@@ -20,10 +20,12 @@
   <ng-container *ngFor="let item of menuItems.footerMenu">
     <mat-list-item
       routerLink="/{{item.route}}"
-      routerLinkActive="active">
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:true}">
       <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
       <a matLine >{{item.title}}</a>
       <i mat-line *ngIf="item?.description">{{item.description}}</i>
     </mat-list-item>
   </ng-container>
+  <mat-divider></mat-divider>
 </mat-nav-list>

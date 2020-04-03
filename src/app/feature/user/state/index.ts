@@ -13,11 +13,6 @@ export const getUserProfile = createSelector(
   state => state.profile
 );
 
-export const getLoginStatus = createSelector(
-  getUserFeatureState,
-  state => state.isLoggedIn
-);
-
 export const getUserSettings = createSelector(
   getUserFeatureState,
   state => state.settings

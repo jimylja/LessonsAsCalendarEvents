@@ -12,7 +12,6 @@ export enum UserActionTypes {
   GetGoogleProfile = '[User] Get GoogleProfile',
   GoogleProfileFetchedSuccessful = '[User] GoogleProfile Fetched Successful',
   GoogleProfileFetchFailed = '[User] GoogleProfile Failed',
-  GetUserSettings = '[User] Get Settings',
   SettingsFetchedSuccessful = '[User] Settings Fetched Successful',
   SettingsFetchFailed = '[User] Settings Fetch Failed',
   SaveUserSettings = '[User] Save User Settings',
@@ -58,16 +57,6 @@ export class GoogleProfileFetchedSuccessful implements Action {
 
 export class GoogleProfileFetchFailed implements Action {
   readonly type = UserActionTypes.GoogleProfileFetchFailed;
-}
-
-export class GetUserSettings implements Action {
-  readonly type = UserActionTypes.GetUserSettings;
-  constructor(public payload: User) {}
-}
-
-export class SettingsFetchedSuccessful implements Action {
-  readonly type = UserActionTypes.SettingsFetchedSuccessful;
-  constructor(public payload: LessonsSettings) {}
 }
 
 export class SettingsFetchFailed implements Action {
@@ -123,9 +112,6 @@ export type UserActions = Login
   |GetGoogleProfile
   |GoogleProfileFetchedSuccessful
   |GoogleProfileFetchFailed
-  |GetUserSettings
-  |SettingsFetchedSuccessful
-  |SettingsFetchFailed
   |SaveUserSettings
   |SettingsSaved
   |SettingsNotSaved

@@ -13,7 +13,6 @@ export class UserFacade {
     tap(data => { if (!data) {this.getUser(); }})
   );
   settings$ = this.store.select(fromUser.getUserSettings);
-  loginStatus$ = this.store.select(fromUser.getLoginStatus);
   userStatistic$ = this.store.select(fromUser.getUserStats);
   constructor(private store: Store<fromUser.State>) {}
 

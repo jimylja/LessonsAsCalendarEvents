@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GuideComponent } from './guide.component';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('WelcomePageComponent', () => {
   let component: GuideComponent;
@@ -8,7 +9,8 @@ describe('WelcomePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GuideComponent ]
+      declarations: [ GuideComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

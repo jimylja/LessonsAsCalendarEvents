@@ -58,7 +58,7 @@ export class UserEffects {
   @Effect()
   getUserData$: Observable<Action> = this.actions$.pipe(
     ofType(userActions.UserActionTypes.GetUserData),
-    mergeMap((action: userActions.GetUserData) => this.settingsService.getUserData(action.payload).pipe(
+    mergeMap((action: userActions.GetUserData) => this.settingsService.getUserData(action.payload.id).pipe(
       map(user => user !== undefined ? new userActions.UserDataFetchedSuccessful(user) : new userActions.UserDataFetchFailed(),
       catchError(() => of(new userActions.UserDataFetchFailed()))
     ))

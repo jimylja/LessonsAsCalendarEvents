@@ -7,9 +7,9 @@ export interface User {
 }
 
 export interface UserStats {
-  lastVisit?: Date;
+  lastVisit?: any;
   activity?: CalendarExportStats[];
-  lastCalendar: string;
+  lastCalendar?: string;
 }
 
 export interface CalendarExportStats {

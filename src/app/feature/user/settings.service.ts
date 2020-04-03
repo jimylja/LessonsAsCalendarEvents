@@ -7,7 +7,7 @@ import {UserFacade} from './user.facade';
 import {UserState} from './state/user.reducer';
 import {User, UserStats} from '../../models/user';
 import {MessageService} from '../../core/message.service';
-
+import {firestore} from 'firebase';
 
 export interface UserData {
   profile?: User;
@@ -19,7 +19,6 @@ export interface UserData {
 })
 export class SettingsService {
   private userFacade: UserFacade;
-  private googleProfile: User;
   firstVisitMessage = {
     redirectTo: 'guide',
     data: {
@@ -39,11 +38,10 @@ export class SettingsService {
    * @inputs id - user id
    * @returns - user data
    */
-  getUserData(user): Observable<UserState> {
-    this.googleProfile = user;
-    return this.db.collection('users').doc(user.id).valueChanges().pipe(
+  getUserData(id): Observable<UserState> {
+    return this.db.collection('users').doc(id).valueChanges().pipe(
       take(1),
-      tap(() => this.updateStatistics({lastVisit: new Date()}).pipe(take(1)).subscribe()),
+      tap(() => this.updateStatistics({lastVisit: firestore.Timestamp.now()}).pipe(take(1)).subscribe()),
       map((userData: UserState) => {
         if (!userData) {
           this.messageService.showMessage(this.firstVisitMessage);
@@ -87,6 +85,7 @@ export class SettingsService {
    * @returns - user data
    */
   private updateUserData(data?: UserData): Observable<any> {
+    this.userFacade = this.inj.get(UserFacade);
     return this.userFacade.user$.pipe(
       tap(profile => {if (!data) { data = {profile}; }}),
       switchMap(profile => this.db.collection('users')

@@ -14,8 +14,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './state/user.effects';
 import { UserFacade} from './user.facade';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule, MatInputModule} from '@angular/material';
+import { ReactiveFormsModule} from '@angular/forms';
+import { MatFormFieldModule, MatInputModule} from '@angular/material';
+import { MatTableModule } from '@angular/material/table';
 import { LessonEndPipe } from './lesson-end.pipe';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { LessonEndPipe } from './lesson-end.pipe';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTableModule,
   ],
   providers: [UserFacade]
 })

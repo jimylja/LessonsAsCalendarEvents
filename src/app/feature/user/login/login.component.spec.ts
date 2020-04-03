@@ -32,7 +32,7 @@ describe('LoginComponent', () => {
       providers: [
         { provide: Location, useClass: SpyLocation },
         { provide: ActivatedRoute, useValue: routeStateMock},
-        { provide: UserFacade, useValue: {loginStatus$: of(false), login: () => {}}},
+        { provide: UserFacade, useValue: {user$: of(false), login: () => {}}},
         provideMockStore({initialState})
       ],
       schemas: [NO_ERRORS_SCHEMA]
