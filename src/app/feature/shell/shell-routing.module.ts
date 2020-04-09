@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DashboardShellComponent } from './dashboard-shell/dashboard-shell.component';
+import { ShellComponent } from './shell/shell.component';
 import { SpreadsheetGuard } from '../spreadsheet/spreadsheet.guard';
 import { AuthGuard } from './auth.guard';
 import { NotFoundComponent } from '../../shared/components/not-found/not-found.component';
+import {GuideComponent} from './guide/guide.component';
 const routes: Routes = [
   {
     path: '',
-    component: DashboardShellComponent,
+    component: ShellComponent,
     children: [
       {
         path: '',
@@ -38,6 +39,10 @@ const routes: Routes = [
         loadChildren: () => import('../user/user.module').then(m => m.UserModule)
       },
       {
+        path: 'guide',
+        component: GuideComponent
+      },
+      {
         path: '**', component: NotFoundComponent
       }
     ]
@@ -48,4 +53,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DashboardRoutingModule { }
+export class ShellRoutingModule { }

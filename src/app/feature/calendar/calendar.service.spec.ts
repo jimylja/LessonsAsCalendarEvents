@@ -1,17 +1,17 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {TestBed, fakeAsync, tick} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import { CalendarApiService } from './calendar-api.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MatSnackBarModule } from '@angular/material';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { UserFacade} from '../user/user.facade';
-import { StoreModule} from '@ngrx/store';
+import {CalendarApiService} from './calendar-api.service';
+import {RouterTestingModule} from '@angular/router/testing';
+import {MatSnackBarModule} from '@angular/material';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {UserFacade} from '../user/user.facade';
+import {StoreModule} from '@ngrx/store';
 import {environment} from '../../../environments/environment';
 import {MessageService} from '../../core/message.service';
 import {colorsResponse, eventListResponse, mockSheetData, dummyUserCalendars} from './mock/calendar.mock';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {mockSettings} from '../user/mock/user.mock';
-import { of } from 'rxjs';
+import {of} from 'rxjs';
 
 
 describe('CalendarService', () => {
@@ -28,8 +28,8 @@ describe('CalendarService', () => {
       ],
       providers: [
         UserFacade,
-        { provide: MessageService, useValue: {showMessage: () => {console.log('snack bar'); }} },
-        { provide: UserFacade, useValue: {settings$: of(mockSettings)}}
+        { provide: MessageService, useValue: {showMessage: () => {}} },
+        { provide: UserFacade, useValue: {settings$: of(mockSettings), updateStatistic: () => {}}}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -71,7 +71,7 @@ describe('CalendarService', () => {
   it('should get all user calendars', fakeAsync(() => {
     service.getCalendars().subscribe();
     tick();
-    const request = httpMock.expectOne(`${environment.apiEndpoints.calendar}/users/me/calendarList`);
+    const request = httpMock.expectOne(`${environment.apiEndpoints.calendar}/users/me/calendarList?minAccessRole=writer`);
     expect(request.request.method).toEqual('GET');
   }));
 

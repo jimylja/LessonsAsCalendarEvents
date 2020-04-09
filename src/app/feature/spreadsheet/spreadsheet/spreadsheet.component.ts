@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SpreadsheetService } from '../spreadsheet.service';
 import { Observable } from 'rxjs';
 import { DriveFile } from '../../../models/drive-file';
 import { CalendarEntry } from '../../../models/calendar';
-import { mergeMap, switchMap } from 'rxjs/operators';
+import { mergeMap, switchMap, finalize } from 'rxjs/operators';
 import { Sheet } from '../../../models/sheet';
 import { select, Store } from '@ngrx/store';
 import * as fromFile from '../../file-picker/state';
@@ -22,16 +22,18 @@ export class SpreadsheetComponent implements OnInit {
   activeFile$: Observable<DriveFile>;
   activeCalendar$: Observable<CalendarEntry>;
   spreadSheetData$: Observable<Sheet[]>;
+  colorsPalette$: Observable<string[]>;
   activeCalendar: CalendarEntry;
+  isExportInProcess = false;
   form: FormGroup;
   classesData: FormArray;
-  colorsPalette$: Observable<string[]>;
 
   constructor(
     private fb: FormBuilder,
     private store: Store<fromFile.State>,
     private spreadsheetService: SpreadsheetService,
     private calendarService: CalendarApiService,
+    private cd: ChangeDetectorRef
     ) {
       this.form = this.fb.group({
         classesData: this.fb.array([]),
@@ -54,7 +56,13 @@ export class SpreadsheetComponent implements OnInit {
   }
 
   exportToCalendar(): void {
-    this.calendarService.exportLessonsToCalendar(this.form.value.classesData, this.activeCalendar);
+    this.isExportInProcess = true;
+    this.calendarService.exportLessonsToCalendar(this.form.value.classesData, this.activeCalendar)
+      .subscribe({complete: () => {
+        this.isExportInProcess = false;
+        this.cd.markForCheck();
+      }}
+    );
   }
 
   addClassToForm({lessons, title, colorId}: Sheet): void {

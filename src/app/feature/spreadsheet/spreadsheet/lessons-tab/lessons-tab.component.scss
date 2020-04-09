@@ -1,11 +1,13 @@
 .menu-button {
-  display: flex;
-  align-items: center;
   border: none;
   border-radius: 10px;
   width: 75px;
   height: 36px;
   background-color: #eae5e536;
+  ::ng-deep .mat-button-wrapper {
+    display: flex;
+    align-items: center;
+  }
 
   &:hover {
     background-color: #eae5e57d;

@@ -1,26 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DashboardRoutingModule } from './dashboard-routing.module';
+import { ShellRoutingModule } from './shell-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DashboardShellComponent } from './dashboard-shell/dashboard-shell.component';
+import { ShellComponent } from './shell/shell.component';
+import { GuideComponent } from './guide/guide.component';
 import { SharedModule } from '../../shared/shared.module';
-import { MatCardModule, MatButtonModule } from '@angular/material';
+import {MatCardModule, MatButtonModule, MatExpansionModule} from '@angular/material';
 import { FeatureWidgetComponent } from './dashboard/feature-widget/feature-widget.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { MatListModule } from '@angular/material/list';
 
 @NgModule({
-  declarations: [DashboardComponent, DashboardShellComponent, FeatureWidgetComponent, SidenavComponent],
+  declarations: [DashboardComponent, ShellComponent, FeatureWidgetComponent, SidenavComponent, GuideComponent],
   imports: [
     CommonModule,
-    DashboardRoutingModule,
+    ShellRoutingModule,
     SharedModule,
     MatCardModule,
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
+    MatExpansionModule,
   ]
 })
-export class DashboardModule { }
+export class ShellModule { }

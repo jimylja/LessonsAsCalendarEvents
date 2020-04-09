@@ -8,17 +8,17 @@ export interface State extends fromRoot.AppState {
 
 const getUserFeatureState = createFeatureSelector<fromUser.UserState>('user');
 
-export const getCurrentUser = createSelector(
+export const getUserProfile = createSelector(
   getUserFeatureState,
   state => state.profile
-);
-
-export const getLoginStatus = createSelector(
-  getUserFeatureState,
-  state => state.isLoggedIn
 );
 
 export const getUserSettings = createSelector(
   getUserFeatureState,
   state => state.settings
+);
+
+export const getUserStats = createSelector(
+  getUserFeatureState,
+  state => state.statistic
 );

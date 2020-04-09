@@ -3,10 +3,17 @@ mat-card.user-card {
   flex-direction: column;
   margin: 20px auto;
   max-width: 600px;
-
-  mat-card-content {
+  .row {
     display: flex;
     min-height: 96px;
+    .stats {
+      align-self: center;
+      p {
+        text-align: left;
+        font-size: 1rem;
+      }
+      span {font-weight: bold}
+    }
     app-avatar {
       margin: 10px 20px;
       max-width: 96px;
@@ -14,7 +21,8 @@ mat-card.user-card {
       min-width: 96px;
     }
   }
-  mat-card-actions {
-    text-align: right;
+  p {text-align: center;}
+  .logout-button {
+    margin: 0 auto;
   }
 }

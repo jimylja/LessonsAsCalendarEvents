@@ -1,20 +1,19 @@
 import {
   LoggedSuccessful,
   LoggedFailed,
-  SettingsFetchedSuccessful,
-  SettingsFetchFailed,
+  UserDataFetchedSuccessful,
   Login,
+  UserDataFetchFailed,
 } from './user.actions';
 import {userInitialState, reducer} from './user.reducer';
-import {mockSettings, mockUser} from '../mock/user.mock';
+import {mockSettings, mockStatistic, mockUser} from '../mock/user.mock';
 import {environment} from '../../../../environments/environment';
 
 describe('User reducer', () => {
   const initState = userInitialState;
   const userLoggedState = {
     ...initState,
-    isLoggedIn: true,
-    profile: mockUser
+    profile: mockUser,
   };
   beforeEach( () => {});
 
@@ -30,15 +29,15 @@ describe('User reducer', () => {
     expect(newState).toEqual(initState);
   });
 
-  it('should return settings state', () => {
-    const settingsFetchedAction = new SettingsFetchedSuccessful(mockSettings);
-    const settingsFetchedState = reducer(userLoggedState, settingsFetchedAction);
-    expect(settingsFetchedState).toEqual({...userLoggedState, settings: mockSettings});
+  it('should return user state', () => {
+    const userFetchedAction = new UserDataFetchedSuccessful({profile: mockUser, statistic: mockStatistic, settings: mockSettings});
+    const userFetchedState = reducer(userLoggedState, userFetchedAction);
+    expect(userFetchedState).toEqual({...userLoggedState, settings: mockSettings, statistic: mockStatistic});
   });
 
-  it('should initial settings if fetching failed', () => {
-    const settingsFetchedAction = new SettingsFetchFailed();
-    const settingsFailedState = reducer(userLoggedState, settingsFetchedAction);
+  it('should return initial settings if fetching failed', () => {
+    const userFetchedAction = new UserDataFetchFailed();
+    const settingsFailedState = reducer(userLoggedState, userFetchedAction);
     expect(settingsFailedState).toEqual({...userLoggedState, settings: environment.settings});
   });
 

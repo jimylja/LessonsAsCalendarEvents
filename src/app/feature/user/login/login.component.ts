@@ -16,9 +16,9 @@ export class LoginComponent implements OnInit {
     private injector: Injector) { }
 
   ngOnInit() {
-    this.userFacade.loginStatus$.subscribe(
-      isLogged => {
-        if (isLogged) {
+    this.userFacade.user$.subscribe(
+      isUser => {
+        if (isUser) {
           const routerService = this.injector.get(Router);
           const ngZone = this.injector.get(NgZone);
           ngZone.run(() => {

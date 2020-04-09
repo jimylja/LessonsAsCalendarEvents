@@ -1,11 +1,11 @@
 import {of} from 'rxjs';
-import {mockSettings, mockUser} from './user.mock';
+import {mockSettings, mockUser, mockStatistic} from './user.mock';
 
 export class FirebaseMock {
   public collection(collection: string) {
    return {
      doc(id: string) {
-      return {
+       return {
         valueChanges() {
           return of(mockDb[collection][id]);
         },
@@ -28,7 +28,8 @@ export const mockDb = {
   users: {
     werwfsdfsdf0d8sfsd: {
       profile: mockUser,
-      settings: mockSettings
+      settings: mockSettings,
+      statistic: mockStatistic
     }
   }
 };

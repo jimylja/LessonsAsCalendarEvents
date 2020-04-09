@@ -5,6 +5,7 @@ import { FeatureWidgetComponent } from './feature-widget/feature-widget.componen
 import { MatCardModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { UserFacade } from '../../user/user.facade';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -17,6 +18,7 @@ describe('DashboardComponent', () => {
         MatCardModule,
         StoreModule.forRoot({})
       ],
+      providers: [UserFacade],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

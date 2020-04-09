@@ -23,6 +23,7 @@ export class SidenavComponent implements OnInit {
       footerMenu: [
         {title: 'Профіль', icon: 'person', route: 'user'},
         {title: 'Загальні', icon: 'settings', route: 'user/settings'},
+        {title: 'Інструкція', icon: 'help_outline', route: 'guide'},
       ]
     };
   ngOnInit() {

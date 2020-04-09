@@ -2,12 +2,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, from, BehaviorSubject, Subject, iif } from 'rxjs';
 import { CalendarEntry, ExportStatus } from '../../models/calendar';
-import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, takeUntil, finalize } from 'rxjs/operators';
+import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, finalize, take } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
 import { environment } from '../../../environments/environment';
-import {UserFacade} from '../user/user.facade';
+import { UserFacade } from '../user/user.facade';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ import {UserFacade} from '../user/user.facade';
 export class CalendarApiService implements OnDestroy {
   static readonly CALENDAR_API = environment.apiEndpoints.calendar;
   static readonly COLORS_ENDPOINT = `${CalendarApiService.CALENDAR_API}/colors`;
-  static readonly LIST_ENDPOINT = `${CalendarApiService.CALENDAR_API}/users/me/calendarList`;
+  static readonly LIST_ENDPOINT = `${CalendarApiService.CALENDAR_API}/users/me/calendarList?minAccessRole=writer`;
   static readonly CALENDAR_ENDPOINT = `${CalendarApiService.CALENDAR_API}/calendars`;
 
   private lessonsStartSchedule = environment.settings.lessonsStartSchedule;
@@ -44,7 +44,7 @@ export class CalendarApiService implements OnDestroy {
    * @param events - spreadsheet tabs, where rows represents lessons data
    * @param calendar - calendar that will contain new events
    */
-  exportLessonsToCalendar(events: Sheet[], calendar: CalendarEntry): void {
+  exportLessonsToCalendar(events: Sheet[], calendar: CalendarEntry): Observable<void> {
     this.exportEventsStatus$ = new BehaviorSubject<ExportStatus|null>({
       exportSuccess: {total: 0, lastEvent: ''},
       exportFail: {total: 0, lastEvent: ''}
@@ -54,16 +54,23 @@ export class CalendarApiService implements OnDestroy {
     );
     this.displayExportMessage(this.exportEventsStatus$, 'Експорт уроків', 'exportMessage');
 
-    this.userFacade.settings$.pipe(
+    return this.userFacade.settings$.pipe(
+      take(1),
       tap(this.getActualUserSettings),
       switchMap(() => from(lessons).pipe(
         concatMap(classLessons => from(classLessons).pipe(
           mergeMap(lesson => this.createEvent(lesson, calendar.id), 1)
         )),
-        finalize(() => { this.exportEventsStatus$.complete(); })
+        finalize(() => {
+          this.userFacade.updateStatistic( {
+            calendar: calendar.summary,
+            exportFail: this.exportEventsStatus$.value.exportFail.total,
+            exportSuccess: this.exportEventsStatus$.value.exportSuccess.total
+          });
+          this.exportEventsStatus$.complete();
+        })
       )),
-      takeUntil(this.onDestroy$)
-    ).subscribe();
+    );
   }
 
   /**
