@@ -2,12 +2,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, from, BehaviorSubject, Subject, iif } from 'rxjs';
 import { CalendarEntry, ExportStatus } from '../../models/calendar';
-import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, takeUntil, finalize } from 'rxjs/operators';
+import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, finalize, take } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
 import { environment } from '../../../environments/environment';
-import {UserFacade} from '../user/user.facade';
+import { UserFacade } from '../user/user.facade';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +44,7 @@ export class CalendarApiService implements OnDestroy {
    * @param events - spreadsheet tabs, where rows represents lessons data
    * @param calendar - calendar that will contain new events
    */
-  exportLessonsToCalendar(events: Sheet[], calendar: CalendarEntry): void {
+  exportLessonsToCalendar(events: Sheet[], calendar: CalendarEntry): Observable<void> {
     this.exportEventsStatus$ = new BehaviorSubject<ExportStatus|null>({
       exportSuccess: {total: 0, lastEvent: ''},
       exportFail: {total: 0, lastEvent: ''}
@@ -54,7 +54,8 @@ export class CalendarApiService implements OnDestroy {
     );
     this.displayExportMessage(this.exportEventsStatus$, 'Експорт уроків', 'exportMessage');
 
-    this.userFacade.settings$.pipe(
+    return this.userFacade.settings$.pipe(
+      take(1),
       tap(this.getActualUserSettings),
       switchMap(() => from(lessons).pipe(
         concatMap(classLessons => from(classLessons).pipe(
@@ -69,8 +70,7 @@ export class CalendarApiService implements OnDestroy {
           this.exportEventsStatus$.complete();
         })
       )),
-      takeUntil(this.onDestroy$)
-    ).subscribe();
+    );
   }
 
   /**

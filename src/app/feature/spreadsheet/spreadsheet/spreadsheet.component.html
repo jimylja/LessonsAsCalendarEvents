@@ -18,9 +18,9 @@
         [lessons]="tab.lessons"></app-lessons-tab>
     </mat-tab>
   </mat-tab-group>
-  <button [disabled]="!form.valid"
-          (click)="exportToCalendar()">
-    Експортувати
+  <button mat-raised-button color="primary"
+          [disabled]="!form.valid || isExportInProcess"
+          (click)="exportToCalendar()">Експортувати
   </button>
 </ng-container>
 
