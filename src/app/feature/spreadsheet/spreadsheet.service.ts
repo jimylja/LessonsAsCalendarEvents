@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, Observable} from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { pluck, map } from 'rxjs/operators';
+import { map, pluck} from 'rxjs/operators';
 import { Lesson, Sheet } from '../../models/sheet';
 import { CalendarApiService } from '../calendar/calendar-api.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { FileFacade } from '../file-picker/file.facade';
+import { MessageService } from '../../core/message.service';
+import {ParseError} from '../file-picker/state/file.reducer';
 
 export interface RgbObj {
   red: number;
@@ -19,8 +22,12 @@ export enum LessonProps {number, date, order, location, topic, hwTheory, hwPract
 })
 export class SpreadsheetService {
   static readonly SPREADSHEET_API = environment.apiEndpoints.spreadsheet;
-
-  constructor(private httpClient: HttpClient, private calendarService: CalendarApiService) { }
+  colors: string[];
+  parseError: ParseError = {};
+  constructor(private httpClient: HttpClient,
+              private fileFacade: FileFacade,
+              private messageService: MessageService,
+              private calendarService: CalendarApiService) {}
 
   static convertFromSerialToMoment(excelDate: number): Date {
     const unixTimestamp = (excelDate - 25569) * 86400;
@@ -32,18 +39,16 @@ export class SpreadsheetService {
       this.fetchSpreadsheet(id),
       this.calendarService.getCalendarColors()
     ).pipe(
-      map(([lessons, colors]) => {
-        return lessons.map(
-          sheet => {
-            const tabColor = sheet.properties.tabColor;
-            return {
-              title: sheet.properties.title,
-              colorId: tabColor ? this.getSimilarColor(this.convertToRgb(sheet.properties.tabColor), colors) : null,
-              attendeesEmail: sheet.data[0].rowData[0].values[2].formattedValue,
-              lessons: this.getRowValues(sheet.data[0].rowData.slice(3))
-            };
-          }
-        );
+      map(([sheets, colors]) => {
+        this.colors = colors;
+        const spreadsheetData = [];
+        for (const sheet of sheets) {
+          const sheetData = this.parseSheetData(sheet);
+          if (sheetData) {
+            spreadsheetData.push(sheetData);
+          } else { break; }
+        }
+        return spreadsheetData;
       })
     );
   }
@@ -65,9 +70,7 @@ export class SpreadsheetService {
    * @returns array of lessons
    */
   private getRowValues(rowsData): Array<Lesson> {
-    return rowsData.map(
-      row => this.parseRowData(row.values)
-    );
+    return rowsData.map(this.parseRowData.bind(this));
   }
 
   /**
@@ -93,9 +96,9 @@ export class SpreadsheetService {
    * @params color - rgb object of color
    * @returns - index of similar color in google events palette
    */
-  private getSimilarColor(color: RgbObj, colors: string[]): number {
-    let similarRgb = this.hexToRgb(colors[0]);
-    return colors.reduce(
+  private getSimilarColor(color: RgbObj): number {
+    let similarRgb = this.hexToRgb(this.colors[0]);
+    return this.colors.reduce(
       (acc, cur, idx) => {
         const curRgb = this.hexToRgb(cur);
         if ( this.calcColorsSimilarity(color, curRgb) < this.calcColorsSimilarity(color, similarRgb)) {
@@ -135,22 +138,65 @@ export class SpreadsheetService {
     return Math.sqrt(distance);
   }
 
-  private parseRowData(rowData) {
+  /**
+   * Methods takes data of spreadsheet row and convert it into lesson metadata,
+   * if row contains invalid data throw the error
+   * @params rowData - data of spreadsheet row
+   * @params index - row order in spreadsheet
+   * @returns - lesson object
+   */
+  private parseRowData({values: rowData}, index): Lesson {
     const lessonProps = LessonProps;
     return rowData.reduce((lesson, cellData, idx) => {
-      if (idx === (Object.keys(lessonProps).length / 2)) {return lesson; }
-      switch (lessonProps[idx]) {
-        case 'date':
-          lesson[lessonProps[idx]] = SpreadsheetService.convertFromSerialToMoment(cellData.effectiveValue.numberValue);
-          break;
-        case 'number':
-        case 'order':
-          lesson[lessonProps[idx]] = Number(cellData.formattedValue);
-          break;
-        default:
-          lesson[lessonProps[idx]] = cellData.formattedValue;
+      if (idx === (Object.keys(lessonProps).length / 2)) { return lesson; }
+      try {
+        switch (lessonProps[idx]) {
+          case 'date':
+            const date = this.parseInt(cellData.effectiveValue.numberValue, lessonProps[idx]);
+            lesson[lessonProps[idx]] = SpreadsheetService.convertFromSerialToMoment(date);
+            break;
+          case 'number':
+          case 'order':
+            lesson[lessonProps[idx]] = this.parseInt(cellData.formattedValue, lessonProps[idx]);
+            break;
+          default:
+            lesson[lessonProps[idx]] = cellData.formattedValue;
+        }
+        return lesson;
+      } catch (e) {
+        this.parseError.row = index + 4;
+        throw Error();
       }
-      return lesson;
     }, {});
+  }
+
+  private parseSheetData(sheet): Sheet {
+    const tabColor = sheet.properties.tabColor;
+    const sheetData = sheet.data[0];
+    try {
+      return {
+        title: sheet.properties.title,
+        colorId: tabColor ? this.getSimilarColor(this.convertToRgb(sheet.properties.tabColor)) : null,
+        attendeesEmail: sheetData.rowData[0].values[2] ? sheetData.rowData[0].values[2].formattedValue : null,
+        lessons: this.getRowValues(sheet.data[0].rowData.slice(3))
+      };
+    } catch (e) {
+      this.parseError.sheet = sheet.properties.title;
+      const messageText = `Файл не відповідає шаблону. Помилка зчитування в листі: ${sheet.properties.title}.`;
+      const message = new BehaviorSubject(messageText);
+      this.messageService.showMessage({data: {message, title: 'Помилка валідації' }, panelClass: ['popup-error']});
+      this.fileFacade.validationFailed(this.parseError);
+      return null;
+    }
+  }
+
+  private parseInt(data, column: string): number {
+    if (Number.isInteger(Number.parseInt(data, 10))) {
+      return Number.parseInt(data, 10);
+    } else {
+      this.parseError.column = column;
+      this.parseError.message = 'Очікується ціле число';
+      throw Error();
+    }
   }
 }

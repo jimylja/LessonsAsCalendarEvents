@@ -14,9 +14,10 @@ import { SharedModule } from '../../shared/shared.module';
 import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
 import { LessonsTabComponent } from './spreadsheet/lessons-tab/lessons-tab.component';
 import { ColumnTitlePipe } from './column-title.pipe';
+import { InvalidSpreadsheetComponent } from './spreadsheet/invalid-spreadsheet/invalid-spreadsheet.component';
 
 @NgModule({
-  declarations: [SpreadsheetComponent, LessonsTabComponent, ColumnTitlePipe],
+  declarations: [SpreadsheetComponent, LessonsTabComponent, ColumnTitlePipe, InvalidSpreadsheetComponent],
   imports: [
     CommonModule,
     SpreadsheetRoutingModule,

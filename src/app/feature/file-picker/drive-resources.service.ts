@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import { pluck } from 'rxjs/operators';
+import { pluck, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DriveFile } from '../../models/drive-file';
 import {environment} from '../../../environments/environment';
@@ -14,7 +14,8 @@ export class DriveResourcesService {
 
   public getDriveSheets(): Observable<DriveFile[]> {
     const spreadSheetTypes = `mimeType='application/vnd.google-apps.spreadsheet'`;
-    const params = new HttpParams().append('q', spreadSheetTypes);
+    const displayedFields = 'files(id, name, webViewLink, modifiedTime)'
+    const params = new HttpParams().append('q', spreadSheetTypes).append('fields', displayedFields);
     return this.httpClient.get(DriveResourcesService.FILES_LIST_ENDPOINT, { params }).pipe(
       pluck('files')
     );

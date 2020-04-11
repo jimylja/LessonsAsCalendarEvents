@@ -1,0 +1,20 @@
+<mat-card class="validation-error-card">
+  <mat-card-header>
+    <div mat-card-avatar class="error-icon material-icons">warning</div>
+    <mat-card-title>{{file.name}}</mat-card-title>
+    <mat-card-subtitle>Помилка зчитування файлу</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p class="error-details">
+      <span *ngIf="file.validationError.sheet">Лист: <span>{{file.validationError.sheet}}</span></span>
+      <span *ngIf="file.validationError.row">Рядок: <span>{{file.validationError.row}}</span></span>
+      <span *ngIf="file.validationError.column">Стовпець: <span>{{file.validationError.column}}</span></span>
+      <span *ngIf="file.validationError.message">Повідомлення: <span>{{file.validationError.message}}</span></span>
+    </p>
+    <p>Переконайтесь, що вказаний файл відповідає шаблону</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button routerLink="/files">Обрати інший</button>
+    <button mat-button><a href="{{file.webViewLink}}" target="_blank">Редагувати</a> </button>
+  </mat-card-actions>
+</mat-card>

@@ -2,14 +2,14 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@an
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SpreadsheetService } from '../spreadsheet.service';
 import { Observable } from 'rxjs';
-import { DriveFile } from '../../../models/drive-file';
 import { CalendarEntry } from '../../../models/calendar';
-import { mergeMap, switchMap, finalize } from 'rxjs/operators';
+import { mergeMap, switchMap } from 'rxjs/operators';
 import { Sheet } from '../../../models/sheet';
 import { select, Store } from '@ngrx/store';
-import * as fromFile from '../../file-picker/state';
 import * as fromCalendar from '../../calendar/state';
-import {CalendarApiService} from '../../calendar/calendar-api.service';
+import { CalendarApiService } from '../../calendar/calendar-api.service';
+import { FileState } from '../../file-picker/state/file.reducer';
+import { FileFacade } from '../../file-picker/file.facade';
 
 @Component({
   selector: 'app-spreadsheet',
@@ -19,7 +19,7 @@ import {CalendarApiService} from '../../calendar/calendar-api.service';
 })
 export class SpreadsheetComponent implements OnInit {
 
-  activeFile$: Observable<DriveFile>;
+  activeFile$: Observable<FileState>;
   activeCalendar$: Observable<CalendarEntry>;
   spreadSheetData$: Observable<Sheet[]>;
   colorsPalette$: Observable<string[]>;
@@ -30,7 +30,8 @@ export class SpreadsheetComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<fromFile.State>,
+    private store: Store<fromCalendar.State>,
+    private fileFacade: FileFacade,
     private spreadsheetService: SpreadsheetService,
     private calendarService: CalendarApiService,
     private cd: ChangeDetectorRef
@@ -41,7 +42,7 @@ export class SpreadsheetComponent implements OnInit {
   }
   ngOnInit() {
     this.classesData = this.getClassesDataControls();
-    this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));
+    this.activeFile$  = this.fileFacade.activeFile$;
     this.activeCalendar$ = this.store.pipe(select(fromCalendar.getCurrentCalendar));
     this.colorsPalette$ = this.calendarService.getCalendarColors();
 
@@ -49,7 +50,7 @@ export class SpreadsheetComponent implements OnInit {
       mergeMap((calendar: CalendarEntry) => {
         this.activeCalendar = calendar;
         return this.activeFile$.pipe(
-          switchMap((file: DriveFile) => this.spreadsheetService.getSpreadsheetData(file.id))
+          switchMap((file: FileState) => this.spreadsheetService.getSpreadsheetData(file.id))
         );
       })
     );

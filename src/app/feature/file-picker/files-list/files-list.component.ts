@@ -1,12 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DriveResourcesService } from '../drive-resources.service';
 import { Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DriveFile } from '../../../models/drive-file';
-import { select, Store } from '@ngrx/store';
-import * as fromFile from '../state';
-import * as FileActions from '../state/file.actions';
+import { FileFacade } from '../file.facade';
 
 export interface FilesData {
   activeFile: DriveFile;
@@ -25,14 +23,13 @@ export class FilesListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private cd: ChangeDetectorRef,
     private driveResourcesService: DriveResourcesService,
-    private store: Store<fromFile.State>
+    private fileFacade: FileFacade
     ) { }
 
   ngOnInit() {
     this.filesData$ = combineLatest(
-      this.store.pipe(select(fromFile.getCurrentFile)),
+      this.fileFacade.activeFile$,
       this.driveResourcesService.getDriveSheets()
     ).pipe(
       map(data => {
@@ -45,7 +42,7 @@ export class FilesListComponent implements OnInit {
   }
 
   fileSelectHandler(file: DriveFile) {
-    this.store.dispatch(new FileActions.FileSelected(file));
+    this.fileFacade.selectFile(file);
     this.router.navigate(['/']);
   }
 
