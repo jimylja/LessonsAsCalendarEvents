@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FilesListComponent } from './files-list.component';
-import { FileItemComponent } from './file-item/file-item.component';
 import { MatCardModule, MatProgressSpinnerModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -15,7 +14,7 @@ describe('FilesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FilesListComponent, FileItemComponent ],
+      declarations: [ FilesListComponent],
       imports: [
         MatCardModule, MatProgressSpinnerModule,
         RouterTestingModule,

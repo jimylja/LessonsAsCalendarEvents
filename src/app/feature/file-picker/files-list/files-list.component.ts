@@ -5,6 +5,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DriveFile } from '../../../models/drive-file';
 import { FileFacade } from '../file.facade';
+import {ItemAction, ActionList} from '../../../shared/components/list-item/list-item.component';
 
 export interface FilesData {
   activeFile: DriveFile;
@@ -20,7 +21,7 @@ export interface FilesData {
 
 export class FilesListComponent implements OnInit {
   filesData$: Observable<FilesData>;
-
+  actions = ActionList;
   constructor(
     private router: Router,
     private driveResourcesService: DriveResourcesService,
@@ -46,4 +47,9 @@ export class FilesListComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  eventHandler({action, data}: ItemAction) {
+    if (action === ActionList.itemSelected) {
+      this.fileSelectHandler(data as DriveFile);
+    }
+  }
 }

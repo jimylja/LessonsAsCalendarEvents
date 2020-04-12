@@ -16,9 +16,9 @@ export const eventListResponse = {
 };
 
 export const dummyUserCalendars: CalendarEntry[] = [
-  {id: 'cal1', timeZone: '+2', description: 'calendar1', summary: 'sddfs', accessRole: 'owner', backgroundColor: '1'},
-  {id: 'cal2', timeZone: '+2', description: 'calendar2', summary: 'sddfs', accessRole: 'owner', backgroundColor: '2'},
-  {id: 'cal3', timeZone: '+2', description: 'calendar3', summary: 'sddfs', accessRole: 'owner', backgroundColor: '3'},
+  {id: 'cal1', timeZone: '+2', description: 'calendar1', name: 'sddfs', accessRole: 'owner', backgroundColor: '1'},
+  {id: 'cal2', timeZone: '+2', description: 'calendar2', name: 'sddfs', accessRole: 'owner', backgroundColor: '2'},
+  {id: 'cal3', timeZone: '+2', description: 'calendar3', name: 'sddfs', accessRole: 'owner', backgroundColor: '3'},
 ];
 
 export const mockSheetData: Sheet[] = [

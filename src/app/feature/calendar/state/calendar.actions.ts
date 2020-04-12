@@ -11,15 +11,4 @@ export class CalendarSelected implements Action {
   }
 }
 
-// export class LoggedSuccessful implements Action {
-//   readonly type = FileActionTypes.LoggedSuccessful;
-//   constructor(public payload: any) {}
-// }
-//
-// export class LoggedFailed implements Action {
-//   readonly type = FileActionTypes.LoggedFailed;
-// }
-
 export type CalendarActions = CalendarSelected;
-// |LoggedSuccessful
-// |LoggedFailed;

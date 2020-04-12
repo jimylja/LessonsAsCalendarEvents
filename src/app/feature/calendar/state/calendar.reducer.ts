@@ -3,7 +3,7 @@ import { CalendarEntry } from '../../../models/calendar';
 
 export const calendarInitialState: CalendarEntry = {
   id: null,
-  summary: null,
+  name: null,
   description: null,
   timeZone: null,
   accessRole: null,

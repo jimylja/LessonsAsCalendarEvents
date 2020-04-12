@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CalendarApiService } from '../calendar-api.service';
-import { Observable, combineLatest } from 'rxjs';
-import { CalendarEntry } from '../../../models/calendar';
-import { select, Store } from '@ngrx/store';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {CalendarApiService} from '../calendar-api.service';
+import {combineLatest, Observable} from 'rxjs';
+import {CalendarEntry} from '../../../models/calendar';
+import {select, Store} from '@ngrx/store';
 import * as fromCalendar from '../state';
 import * as CalendarActions from '../state/calendar.actions';
-import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import {map} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {ActionList, ActionsEntries, ItemAction} from '../../../shared/components/list-item/list-item.component';
 
 export interface CalendarData {
   activeCalendar: CalendarEntry;
@@ -22,6 +23,8 @@ export interface CalendarData {
 
 export class CalendarsListComponent implements OnInit {
   calendarsData$: Observable<CalendarData>;
+  actions = ActionList;
+  calendarActions: ActionsEntries[] = [{name: ActionList.clearCalendar, description: 'Очистити календар', icon: 'delete_sweep'}];
   constructor(
     private router: Router,
     private calendarApi: CalendarApiService,
@@ -49,5 +52,16 @@ export class CalendarsListComponent implements OnInit {
 
   calendarClearHandler(calendarId: string) {
     this.calendarApi.clearCalendar(calendarId);
+  }
+
+  eventHandler({action, data}: ItemAction) {
+    switch (action) {
+      case ActionList.itemSelected:
+        this.calendarSelectHandler(data as CalendarEntry);
+        break;
+      case ActionList.clearCalendar:
+        this.calendarClearHandler((data as CalendarEntry).id);
+        break;
+    }
   }
 }

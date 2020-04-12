@@ -12,6 +12,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SnackbarMessageComponent } from './components/snack-message/snackbar-message.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { RouterModule } from '@angular/router';
+import { ListItemComponent } from './components/list-item/list-item.component';
 
 @NgModule({
   declarations: [
@@ -20,29 +21,32 @@ import { RouterModule } from '@angular/router';
     FooterComponent,
     SnackbarMessageComponent,
     AvatarComponent,
+    ListItemComponent,
+  ],
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    RouterModule,
+    MatCardModule,
+  ],
+  exports: [
+    CommonModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatMenuModule,
+    MatCardModule,
+    MatButtonModule,
+    NotFoundComponent,
+    HeaderComponent,
+    FooterComponent,
+    AvatarComponent,
+    SnackbarMessageComponent,
+    ListItemComponent,
   ],
   entryComponents: [SnackbarMessageComponent],
-    imports: [
-      CommonModule,
-      MatToolbarModule,
-      MatIconModule,
-      MatMenuModule,
-      MatProgressSpinnerModule,
-      MatButtonModule,
-      RouterModule,
-    ],
-    exports: [
-      NotFoundComponent,
-      HeaderComponent,
-      FooterComponent,
-      SnackbarMessageComponent,
-      CommonModule,
-      MatProgressSpinnerModule,
-      MatIconModule,
-      MatMenuModule,
-      MatCardModule,
-      AvatarComponent,
-      MatButtonModule,
-    ],
 })
 export class SharedModule { }

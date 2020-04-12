@@ -30,12 +30,24 @@ export class CalendarApiService implements OnDestroy {
               private messageService: MessageService) {}
 
   /**
+   * Method rename's 'summary' key of object into 'name'
+   * @params obj - object with calendar entries
+   * @returns object with renamed property key
+   */
+  static renameSummaryKey(obj) {
+    const res = Object.assign(obj, {name: obj.summary});
+    delete res.summary;
+    return res;
+  }
+
+  /**
    * Method makes request, that takes list of user calendars
    * @returns array, list of calendars
    */
   getCalendars(): Observable<CalendarEntry[]> {
     return this.httpClient.get(CalendarApiService.LIST_ENDPOINT).pipe(
-      pluck('items')
+      pluck('items'),
+      map((data: CalendarEntry[]) => data.map(CalendarApiService.renameSummaryKey))
     );
   }
 
@@ -63,7 +75,7 @@ export class CalendarApiService implements OnDestroy {
         )),
         finalize(() => {
           this.userFacade.updateStatistic( {
-            calendar: calendar.summary,
+            calendar: calendar.name,
             exportFail: this.exportEventsStatus$.value.exportFail.total,
             exportSuccess: this.exportEventsStatus$.value.exportSuccess.total
           });
