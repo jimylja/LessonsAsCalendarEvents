@@ -12,6 +12,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SnackbarMessageComponent } from './components/snack-message/snackbar-message.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { RouterModule } from '@angular/router';
+import { ItemIconDirective } from './directives/item-icon.directive';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { RouterModule } from '@angular/router';
     FooterComponent,
     SnackbarMessageComponent,
     AvatarComponent,
+    ItemIconDirective,
   ],
   imports: [
     CommonModule,
@@ -43,6 +45,7 @@ import { RouterModule } from '@angular/router';
     FooterComponent,
     AvatarComponent,
     SnackbarMessageComponent,
+    ItemIconDirective,
   ],
   entryComponents: [SnackbarMessageComponent],
 })

@@ -1,6 +1,6 @@
 <mat-card class="item-card">
   <mat-card-header (click)="emitAction(itemActions.itemSelected, listItem)">
-    <div mat-card-avatar class="item-icon"></div>
+    <div mat-card-avatar appItemIcon [iconType]="itemType"></div>
     <mat-card-title>{{ listItem?.name }}</mat-card-title>
   </mat-card-header>
   <mat-card-content *ngIf="actions">

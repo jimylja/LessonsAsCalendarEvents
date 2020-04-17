@@ -1,6 +1,6 @@
 <mat-card class="widget-card">
   <mat-card-header>
-    <div mat-card-avatar [ngClass]="featureType+'-icon'" class="item-icon -icon"></div>
+    <div mat-card-avatar appItemIcon [iconType]="featureType"></div>
     <mat-card-title *ngIf="!data || !data.name">{{widgetItem}} не обрано</mat-card-title>
     <mat-card-title *ngIf="data && data.name">{{data.name}}</mat-card-title>
     <mat-card-subtitle>{{widgetItem}} Google</mat-card-subtitle>

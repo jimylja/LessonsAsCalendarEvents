@@ -1,9 +1,10 @@
 <ng-container *ngIf="itemData$|async as itemsData; else loading">
   <app-list-item *ngFor="let item of itemsData.itemsList"
-                 (itemAction)="eventHandler($event)"
+                 [ngClass]="{'active': itemsData.activeItem?.id===item.id}"
                  [actions]="itemActions"
+                 [itemType]="itemKey"
                  [listItem]="item"
-                 [ngClass]="{'active': itemsData.activeItem?.id===item.id, 'file-item': true}">
+                 (itemAction)="eventHandler($event)">
   </app-list-item>
 </ng-container>
 

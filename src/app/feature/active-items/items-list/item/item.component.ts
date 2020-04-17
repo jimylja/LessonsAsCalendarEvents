@@ -22,6 +22,7 @@ export interface ActionsEntries {
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ItemComponent {
+  @Input() itemType: 'file'|'calendar';
   @Input() listItem: DriveFile | CalendarEntry;
   @Input() actions: ActionsEntries[];
   @Output() itemSelected = new EventEmitter<DriveFile|CalendarEntry>();
