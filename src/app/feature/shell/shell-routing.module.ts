@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShellComponent } from './shell/shell.component';
-import { SpreadsheetGuard } from '../spreadsheet/spreadsheet.guard';
+import { EventsExportGuard } from '../events-export/events-export.guard';
 import { AuthGuard } from './auth.guard';
 import { NotFoundComponent } from '../../shared/components/not-found/not-found.component';
-import {GuideComponent} from './guide/guide.component';
+import { GuideComponent } from './guide/guide.component';
 const routes: Routes = [
   {
     path: '',
@@ -19,20 +19,20 @@ const routes: Routes = [
       },
       {
         path: 'files',
-        loadChildren: () => import('../file-picker/file-picker.module').then(m => m.FilePickerModule),
+        loadChildren: () => import('../active-items/active-items.module').then(m => m.ActiveItemsModule),
         canActivate: [AuthGuard],
         canLoad: [AuthGuard]
       },
       {
         path: 'calendars',
-        loadChildren: () => import('../calendar/calendar.module').then(m => m.CalendarModule),
+        loadChildren: () => import('../active-items/active-items.module').then(m => m.ActiveItemsModule),
         canActivate: [AuthGuard],
         canLoad: [AuthGuard]
       },
       {
         path: 'spreadsheet',
-        loadChildren: () => import('../spreadsheet/spreadsheet.module').then(m => m.SpreadsheetModule),
-        canActivate: [SpreadsheetGuard, AuthGuard]
+        loadChildren: () => import('../events-export/events-export.module').then(m => m.EventsExportModule),
+        canActivate: [EventsExportGuard, AuthGuard]
       },
       {
         path: 'user',

@@ -1,8 +1,8 @@
 <div class="widget-container">
-  <app-feature-widget [data]="activeFile$|async" [featureType]="'file'" ></app-feature-widget>
-  <app-feature-widget [data]="activeCalendar$|async" [featureType]="'calendar'" ></app-feature-widget>
+  <app-feature-widget [data]="(activeItems$|async).activeFile" [featureType]="'file'"></app-feature-widget>
+  <app-feature-widget [data]="(activeItems$|async).activeCalendar" [featureType]="'calendar'"></app-feature-widget>
 </div>
 <button mat-raised-button color="primary"
-        [disabled]="isSpreadsheetEnabled$|async"
+        [disabled]="!isSpreadsheetEnabled"
         routerLink="/spreadsheet">Відкрити таблицю
 </button>

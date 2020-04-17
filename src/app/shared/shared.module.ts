@@ -12,7 +12,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SnackbarMessageComponent } from './components/snack-message/snackbar-message.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { RouterModule } from '@angular/router';
-import { ListItemComponent } from './components/list-item/list-item.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +20,6 @@ import { ListItemComponent } from './components/list-item/list-item.component';
     FooterComponent,
     SnackbarMessageComponent,
     AvatarComponent,
-    ListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -45,7 +43,6 @@ import { ListItemComponent } from './components/list-item/list-item.component';
     FooterComponent,
     AvatarComponent,
     SnackbarMessageComponent,
-    ListItemComponent,
   ],
   entryComponents: [SnackbarMessageComponent],
 })

@@ -1,17 +1,14 @@
-import { CalendarEntry } from '../models/calendar';
 import {userInitialState, UserState} from '../feature/user/state/user.reducer';
-import {fileInitialState, FileState} from '../feature/file-picker/state/file.reducer';
-import {calendarInitialState} from '../feature/calendar/state/calendar.reducer';
+import {activeItemsInitialState, ActiveItemsState} from '../feature/active-items/state/active-items.reducer';
+
 // Representation of the entire app state
 // Extended by lazy loaded modules
 export interface AppState {
   user: UserState;
-  file: FileState;
-  calendar: CalendarEntry;
+  activeItems: ActiveItemsState;
 }
 
 export const appInitialState: AppState = {
-  calendar: calendarInitialState,
-  file: fileInitialState,
+  activeItems: activeItemsInitialState,
   user: userInitialState,
 };

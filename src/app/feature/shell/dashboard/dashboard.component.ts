@@ -1,12 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import * as fromFile from '../../file-picker/state';
-import * as fromCalendar from '../../calendar/state';
-import {combineLatest, Observable} from 'rxjs';
-import {DriveFile} from '../../../models/drive-file';
-import {CalendarEntry} from '../../../models/calendar';
-import {map} from 'rxjs/operators';
-import {UserFacade} from '../../user/user.facade';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {ActiveItemsFacade} from '../../active-items/active-items.facade';
+import {ActiveItemsState} from '../../active-items/state/active-items.reducer';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,20 +11,15 @@ import {UserFacade} from '../../user/user.facade';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
-  activeFile$: Observable<DriveFile>;
-  activeCalendar$: Observable<CalendarEntry>;
-  isSpreadsheetEnabled$: Observable<boolean>;
-  constructor(
-    private userFacade: UserFacade,
-    private store: Store<fromFile.State>) {}
+  isSpreadsheetEnabled: boolean;
+  activeItems$: Observable<ActiveItemsState>;
+  constructor(private activeItemsFacade: ActiveItemsFacade) {}
 
   ngOnInit() {
-    this.activeFile$  = this.store.pipe(select(fromFile.getCurrentFile));
-    this.activeCalendar$ = this.store.pipe(select(fromCalendar.getCurrentCalendar));
-    this.isSpreadsheetEnabled$ = combineLatest(this.activeCalendar$, this.activeFile$).pipe(
-      map(data => (data.some(isItemsDefined)))
+    this.activeItems$ = this.activeItemsFacade.activeItems.pipe(
+      tap(activeItems => {
+        this.isSpreadsheetEnabled = Boolean(activeItems.activeCalendar && activeItems.activeFile);
+      })
     );
-    const isItemsDefined = item => (item === undefined) ? true :
-      (item.hasOwnProperty('id')) ? item.id === null : true;
   }
 }

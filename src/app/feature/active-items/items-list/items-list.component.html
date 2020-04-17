@@ -1,0 +1,14 @@
+<ng-container *ngIf="itemData$|async as itemsData; else loading">
+  <app-list-item *ngFor="let item of itemsData.itemsList"
+                 (itemAction)="eventHandler($event)"
+                 [actions]="itemActions"
+                 [listItem]="item"
+                 [ngClass]="{'active': itemsData.activeItem?.id===item.id, 'file-item': true}">
+  </app-list-item>
+</ng-container>
+
+<ng-template #loading>
+  <div class="wait-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
