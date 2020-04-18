@@ -1,6 +1,5 @@
-import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
-
-import { Component, Input } from '@angular/core';
+import {ComponentFixture, ComponentFixtureAutoDetect, TestBed} from '@angular/core/testing';
+import {Component, Input} from '@angular/core';
 import {ItemIconDirective, ItemIcons} from './item-icon.directive';
 
 @Component({
@@ -36,7 +35,7 @@ describe('HighlightDirective', () => {
   it('should set background-color green when passing green parameter', () => {
     container.iconType = 'file';
     const targetElement = element.querySelector('#icon') as HTMLDivElement;
-    const iconUrl = `url(\'./assets/${ItemIcons[container.iconType]}\')`;
+    const iconUrl = `url(\"./assets/${ItemIcons[container.iconType]}\")`;
     expect(targetElement.style.backgroundSize).toEqual('cover');
     expect(targetElement.style.backgroundImage).toEqual(iconUrl);
   });

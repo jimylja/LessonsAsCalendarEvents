@@ -11,13 +11,11 @@ import { Store} from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import {appInitialState, AppState} from '../../state/app.state';
 import { MemoizedSelector } from '@ngrx/store';
-import * as fromFile from '../file-picker/state';
-import * as fromCalendar from '../calendar/state';
+import * as fromActiveItems from '../active-items/state';
 
-describe('SpreadsheetGuard', () => {
+describe('EventsExportGuard', () => {
   let store: MockStore<AppState>;
-  let mockFileSelector: MemoizedSelector<fromFile.State, any>;
-  let mockCalendarSelector: MemoizedSelector<fromCalendar.State, any>;
+  let mockActiveItemsSelector: MemoizedSelector<fromActiveItems.State, any>;
   const routeMock: any = { snapshot: {}, };
   const routeStateMock: any = { snapshot: {}, url: '/calendar'};
   const initialState = appInitialState;
@@ -37,8 +35,7 @@ describe('SpreadsheetGuard', () => {
       schemas: [NO_ERRORS_SCHEMA]
     });
     store = TestBed.get(Store);
-    mockFileSelector = store.overrideSelector(fromFile.getCurrentFile, null);
-    mockCalendarSelector = store.overrideSelector(fromCalendar.getCurrentCalendar, null);
+    mockActiveItemsSelector = store.overrideSelector(fromActiveItems.getActiveItems, {activeCalendar: null, activeFile: null});
   });
 
   it('should ...', inject([EventsExportGuard], (guard: EventsExportGuard) => {

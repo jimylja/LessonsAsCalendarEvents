@@ -6,7 +6,7 @@ import { MatSnackBarModule} from '@angular/material';
 import { NO_ERRORS_SCHEMA} from '@angular/core';
 import { UserFacade} from '../user/user.facade';
 import { StoreModule} from '@ngrx/store';
-import { CalendarApiService} from '../calendar/calendar-api.service';
+import { CalendarApiService} from '../active-items/calendar-api.service';
 import { dummyGridResponse, dummySheetData} from './mock/spreadsheet.mock';
 import { environment} from '../../../environments/environment';
 

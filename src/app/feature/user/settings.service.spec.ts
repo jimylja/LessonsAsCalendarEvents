@@ -42,10 +42,9 @@ describe('SettingsService', () => {
     expect(service).toBeTruthy();
   });
 
-  xit('should return default settings if user no present in db', () => {
+  it('should return default settings if user no present in db', () => {
     const service: SettingsService = TestBed.get(SettingsService);
     service.getUserData('failedId').subscribe(userData => {
-      console.log('test UserData', userData);
       expect(userData.settings).toEqual(environment.settings);
     });
   });

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InvalidSpreadsheetComponent } from './invalid-spreadsheet.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {FileState} from '../../../file-picker/state/file.reducer';
+import {FileState} from '../../../active-items/state/active-items.reducer';
 
 describe('InvalidSpreadsheetComponent', () => {
   let component: InvalidSpreadsheetComponent;
