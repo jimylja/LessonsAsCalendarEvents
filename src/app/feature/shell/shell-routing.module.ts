@@ -20,18 +20,19 @@ const routes: Routes = [
       {
         path: 'files',
         loadChildren: () => import('../active-items/active-items.module').then(m => m.ActiveItemsModule),
+        data: { preload: true },
         canActivate: [AuthGuard],
-        canLoad: [AuthGuard]
       },
       {
         path: 'calendars',
         loadChildren: () => import('../active-items/active-items.module').then(m => m.ActiveItemsModule),
+        data: { preload: true },
         canActivate: [AuthGuard],
-        canLoad: [AuthGuard]
       },
       {
-        path: 'spreadsheet',
+        path: 'export',
         loadChildren: () => import('../events-export/events-export.module').then(m => m.EventsExportModule),
+        data: { preload: true },
         canActivate: [EventsExportGuard, AuthGuard]
       },
       {

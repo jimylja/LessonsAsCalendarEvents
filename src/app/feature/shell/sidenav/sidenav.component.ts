@@ -29,7 +29,7 @@ export class SidenavComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.isSpreadsheetEnabled$ = this.activeItemsFacade.activeItems.pipe(
+    this.isSpreadsheetEnabled$ = this.activeItemsFacade.activeItems$.pipe(
       map((activeItems: ActiveItemsState) => Boolean(activeItems.activeCalendar && activeItems.activeFile))
     );
   }

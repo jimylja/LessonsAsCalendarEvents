@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
 )
 export class ActiveItemsFacade {
   constructor(private store: Store<fromActiveItems.State>) {}
-  activeItems = this.store.select(fromActiveItems.getActiveItems);
+  activeItems$ = this.store.select(fromActiveItems.getActiveItems);
   selectItem(item: 'file'|'calendar', data: DriveFile|CalendarEntry): void {
     switch (item) {
       case 'file':

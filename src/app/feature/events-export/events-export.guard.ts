@@ -13,7 +13,7 @@ export class EventsExportGuard implements CanActivate {
   isCalendarAndSheetSelected$: Observable<boolean>;
 
   constructor(private router: Router, private activeItemsFacade: ActiveItemsFacade) {
-    this.isCalendarAndSheetSelected$ = this.activeItemsFacade.activeItems.pipe(
+    this.isCalendarAndSheetSelected$ = this.activeItemsFacade.activeItems$.pipe(
       map((activeItems: ActiveItemsState) => {
         const isRouteEnabled = Boolean(activeItems.activeCalendar && activeItems.activeFile);
         if (!isRouteEnabled) {

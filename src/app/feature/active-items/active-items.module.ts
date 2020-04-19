@@ -7,6 +7,7 @@ import {StoreModule} from '@ngrx/store';
 import {reducer} from './state/active-items.reducer';
 import {ItemsListComponent} from './items-list/items-list.component';
 import {ItemComponent} from './items-list/item/item.component';
+import {ActiveItemsFacade} from './active-items.facade';
 
 @NgModule({
   declarations: [ItemsListComponent, ItemComponent],
@@ -15,6 +16,7 @@ import {ItemComponent} from './items-list/item/item.component';
     ActiveItemsRoutingModule,
     StoreModule.forFeature('activeItems', reducer),
     SharedModule,
-  ]
+  ],
+  providers: [ActiveItemsFacade]
 })
 export class ActiveItemsModule { }

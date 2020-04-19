@@ -6,6 +6,7 @@ import { ErrorInterceptor } from './error-interceptor.service';
 import { MessageService } from './message.service';
 import { MatSnackBarModule } from '@angular/material';
 import { MatIconModule } from '@angular/material/icon';
+import { PreloadingStrategyService } from './preloading-strategy.service';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   providers: [
     MessageService,
+    PreloadingStrategyService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

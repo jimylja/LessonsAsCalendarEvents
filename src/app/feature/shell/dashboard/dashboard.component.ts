@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   constructor(private activeItemsFacade: ActiveItemsFacade) {}
 
   ngOnInit() {
-    this.activeItems$ = this.activeItemsFacade.activeItems.pipe(
+    this.activeItems$ = this.activeItemsFacade.activeItems$.pipe(
       tap(activeItems => {
         this.isSpreadsheetEnabled = Boolean(activeItems.activeCalendar && activeItems.activeFile);
       })
