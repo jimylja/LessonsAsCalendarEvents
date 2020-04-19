@@ -16,16 +16,9 @@ export class FeatureWidgetComponent implements OnChanges {
   @Input() data: DriveFile|CalendarEntry;
   @Input() featureType: 'calendar'|'file';
   widgetItem: string;
-  titleKey: string;
   constructor() { }
 
   ngOnChanges() {
     this.widgetItem = Widgets[this.featureType];
-    switch (this.featureType) {
-      case 'calendar':
-        this.titleKey = 'summary';
-        break;
-      case 'file': this.titleKey = 'name';
-    }
-  }
+   }
 }

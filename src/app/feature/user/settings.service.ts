@@ -8,6 +8,7 @@ import {UserState} from './state/user.reducer';
 import {User, UserStats} from '../../models/user';
 import {MessageService} from '../../core/message.service';
 import {firestore} from 'firebase';
+import {environment} from '../../../environments/environment';
 
 export interface UserData {
   profile?: User;
@@ -45,7 +46,7 @@ export class SettingsService {
       map((userData: UserState) => {
         if (!userData) {
           this.messageService.showMessage(this.firstVisitMessage);
-          this.createUserProfile().subscribe();
+          this.createUserProfile().subscribe(data => {userData = data; });
         }
         return userData;
       })
@@ -87,7 +88,7 @@ export class SettingsService {
   private updateUserData(data?: UserData): Observable<any> {
     this.userFacade = this.inj.get(UserFacade);
     return this.userFacade.user$.pipe(
-      tap(profile => {if (!data) { data = {profile}; }}),
+      tap(profile => {if (!data) { data = {profile, settings: environment.settings}; }}),
       switchMap(profile => this.db.collection('users')
         .doc(profile.id)
         .set({...data}, {merge: true})

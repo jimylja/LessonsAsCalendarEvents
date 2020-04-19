@@ -1,6 +1,6 @@
 export interface CalendarEntry {
   id: string;
-  summary: string;
+  name: string;
   description: string;
   timeZone: string;
   accessRole: string;

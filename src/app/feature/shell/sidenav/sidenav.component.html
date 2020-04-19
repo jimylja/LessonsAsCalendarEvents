@@ -7,7 +7,7 @@
     <mat-list-item
       routerLink="/{{item.route}}"
       routerLinkActive="active"
-      [class.disabled]="(isSpreadsheetEnabled$|async) && item.title==='Експортувати'">
+      [class.disabled]="((isSpreadsheetEnabled$|async)===false) && item.title==='Експортувати'">
       <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
       <a matLine>{{item.title}}</a>
       <i mat-line *ngIf="item?.description">{{item.description}}</i>
