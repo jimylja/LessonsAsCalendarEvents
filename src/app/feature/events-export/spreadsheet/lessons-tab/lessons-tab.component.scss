@@ -81,8 +81,15 @@
   }
   .lessons-table {
     padding-bottom: 100px;
+    @media (max-width: 500px) {
+      ::ng-deep {
+        .mat-paginator-page-size-label {display: none;}
+        .mat-paginator-range-label {margin: 0}
+      }
+    }
     mat-table {
       overflow-x: auto;
+      mat-row:nth-child(even) {background-color: #f2f2f2;}
       mat-header-cell, mat-cell {
         justify-content: center;
         flex-direction: column;
