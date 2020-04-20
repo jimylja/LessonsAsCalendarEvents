@@ -1,6 +1,5 @@
-import { TestBed } from '@angular/core/testing';
-
-import { EventBusService } from './event-bus.service';
+import {TestBed} from '@angular/core/testing';
+import {EventBusService} from './event-bus.service';
 
 describe('EventBusService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

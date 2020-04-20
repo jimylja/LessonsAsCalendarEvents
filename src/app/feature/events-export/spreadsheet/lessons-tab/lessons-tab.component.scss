@@ -52,6 +52,7 @@
 
 :host {
   width: 100%;
+  padding-bottom: 60px;
   .common_details {
     display: flex;
     flex: 1;
@@ -79,8 +80,8 @@
     }
   }
   .lessons-table {
+    padding-bottom: 100px;
     mat-table {
-      //min-width: 480px;
       overflow-x: auto;
       mat-header-cell, mat-cell {
         justify-content: center;

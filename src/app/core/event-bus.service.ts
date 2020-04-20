@@ -14,7 +14,7 @@ export interface BusEvent<T = any> {
 @Injectable({
   providedIn: 'root',
 })
-export class EventbusService {
+export class EventBusService {
   private eventSubject$ = new Subject<BusEvent>();
 
   /**
