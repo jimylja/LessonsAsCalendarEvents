@@ -39,7 +39,14 @@
           <ng-container *ngFor="let column of columns" [matColumnDef]=column.key>
             <ng-container *ngIf="column.key !== 'date'">
               <mat-header-cell *matHeaderCellDef [innerHTML]="column.description" [matTooltip]="column.tooltip"></mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element[column.key]}} </mat-cell>
+              <ng-container *matCellDef="let element">
+                <ng-container *ngIf="column.key==='topic'">
+                  <mat-cell *ngIf="element[column.key].length>45"
+                            [matTooltip]="element[column.key]">{{element[column.key]|slice:0:45}}...</mat-cell>
+                  <mat-cell *ngIf="element[column.key].length<=45">{{element[column.key]}}</mat-cell>
+                </ng-container>
+                <mat-cell *ngIf="column.key!=='topic'">{{element[column.key]}}</mat-cell>
+              </ng-container>
             </ng-container>
             <ng-container *ngIf="column.key === 'date'">
               <mat-header-cell *matHeaderCellDef [innerHTML]="column.description" [matTooltip]="column.tooltip"></mat-header-cell>
