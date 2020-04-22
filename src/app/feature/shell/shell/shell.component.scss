@@ -6,6 +6,7 @@
 mat-sidenav-container {
   flex: 1;
   overflow: auto;
+  padding-bottom: 64px;
   mat-sidenav-content {
     padding: 0 10px;
     router-outlet + ::ng-deep * {

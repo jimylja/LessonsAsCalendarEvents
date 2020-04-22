@@ -9,7 +9,10 @@
           </mat-checkbox>
           <mat-form-field *ngIf="attendeesCheckbox.checked">
             <mat-label>Email</mat-label>
-            <input matInput formControlName="attendeesEmail" placeholder="email класу">
+            <input matInput formControlName="attendeesEmail"
+                   matTooltip="Вкажіть email групи в системі GSuite"
+                   matTooltipPosition="above"
+                   placeholder="email класу">
             <mat-error *ngIf="!form.controls.classesData.hasError('email')">
               Введіть коректний email!
             </mat-error>
@@ -22,7 +25,10 @@
               </ng-container>
             </mat-radio-group>
           </mat-menu>
-          <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-button">
+          <button mat-icon-button [matMenuTriggerFor]="menu"
+                  matTooltip="Вкажіть колір, яким відображатимуться події в календарі"
+                  matTooltipPosition="above"
+                  class="menu-button">
             <span [ngStyle]="{'background-color': colorsPalette[form.value.classesData[tabIndex].colorId]}" class="color_item menu-button__item"></span>
             <mat-icon>arrow_drop_down</mat-icon>
           </button>
@@ -30,20 +36,27 @@
 
       <div class="lessons-table">
         <mat-table [dataSource]="dataSource">
-          <ng-container *ngFor="let column of displayedColumns" [matColumnDef]=column>
-            <ng-container *ngIf="column !== 'date'">
-              <mat-header-cell *matHeaderCellDef [innerHTML]="column|columnTitle"></mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element[column]}} </mat-cell>
+          <ng-container *ngFor="let column of columns" [matColumnDef]=column.key>
+            <ng-container *ngIf="column.key !== 'date'">
+              <mat-header-cell *matHeaderCellDef [innerHTML]="column.description" [matTooltip]="column.tooltip"></mat-header-cell>
+              <ng-container *matCellDef="let element">
+                <ng-container *ngIf="column.key==='topic'">
+                  <mat-cell *ngIf="element[column.key].length>45"
+                            [matTooltip]="element[column.key]">{{element[column.key]|slice:0:45}}...</mat-cell>
+                  <mat-cell *ngIf="element[column.key].length<=45">{{element[column.key]}}</mat-cell>
+                </ng-container>
+                <mat-cell *ngIf="column.key!=='topic'">{{element[column.key]}}</mat-cell>
+              </ng-container>
             </ng-container>
-            <ng-container *ngIf="column === 'date'">
-              <mat-header-cell *matHeaderCellDef [innerHTML]="column|columnTitle"></mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element[column] | date:'dd.MM'}} </mat-cell>
+            <ng-container *ngIf="column.key === 'date'">
+              <mat-header-cell *matHeaderCellDef [innerHTML]="column.description" [matTooltip]="column.tooltip"></mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element[column.key] | date:'dd.MM'}} </mat-cell>
             </ng-container>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
           <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
         </mat-table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        <mat-paginator appInViewport [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
       </div>
     </ng-container>
   </ng-container>

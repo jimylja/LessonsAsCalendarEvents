@@ -52,6 +52,7 @@
 
 :host {
   width: 100%;
+  padding-bottom: 60px;
   .common_details {
     display: flex;
     flex: 1;
@@ -79,15 +80,23 @@
     }
   }
   .lessons-table {
+    padding-bottom: 100px;
+    @media (max-width: 500px) {
+      ::ng-deep {
+        .mat-paginator-page-size-label {display: none;}
+        .mat-paginator-range-label {margin: 0}
+      }
+    }
     mat-table {
-      //min-width: 480px;
       overflow-x: auto;
+      mat-row:nth-child(even) {background-color: #f2f2f2;}
       mat-header-cell, mat-cell {
         justify-content: center;
         flex-direction: column;
       }
       ::ng-deep mat-footer-row, mat-header-row, mat-row { min-width: 480px; }
-      mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type { padding: 0; }
+      mat-cell:last-of-type, mat-footer-cell:last-of-type, mat-header-cell:last-of-type {padding-right: 5px;}
+      mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type { padding-left: 5px; }
     }
     mat-header-cell:nth-of-type(1), mat-cell:nth-of-type(1),
     mat-header-cell:nth-of-type(2), mat-cell:nth-of-type(2),

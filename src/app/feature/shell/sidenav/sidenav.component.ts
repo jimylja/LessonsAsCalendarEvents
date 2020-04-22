@@ -19,7 +19,7 @@ export class SidenavComponent implements OnInit {
     mainMenu: [
       {title: 'Календарі', description: 'список доступних календарів', icon: 'event_note', route: 'calendars'},
       {title: 'Таблиці', description: 'список доступних таблиць', icon: 'grid_on', route: 'files'},
-      {title: 'Експортувати', description: 'експорт уроків в календар', icon: 'double_arrow', route: 'spreadsheet'},
+      {title: 'Експортувати', description: 'експорт уроків в календар', icon: 'double_arrow', route: 'export'},
     ],
     footerMenu: [
       {title: 'Профіль', icon: 'person', route: 'user'},
