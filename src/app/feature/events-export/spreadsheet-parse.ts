@@ -23,7 +23,6 @@ export class SpreadsheetParse {
   colors: string[];
   parseError: ParseError = {};
   constructor(data) {
-    console.log(data);
     this.colors = data.colors;
   }
 
