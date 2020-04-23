@@ -56,8 +56,6 @@ export class SpreadsheetParse {
       };
     } catch (e) {
       this.parseError.sheet = sheet.properties.title;
-      // const messageText = `Файл не відповідає шаблону. Помилка зчитування в листі: ${sheet.properties.title}.`;
-      // const message = new BehaviorSubject(messageText);
       return null;
     }
   }

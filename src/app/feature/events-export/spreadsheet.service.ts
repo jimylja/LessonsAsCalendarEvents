@@ -8,9 +8,9 @@ import { environment } from '../../../environments/environment';
 import { MessageService } from '../../core/message.service';
 import { ParseError } from '../active-items/state/active-items.reducer';
 import { ActiveItemsFacade } from '../active-items/active-items.facade';
-import {SpreadsheetParse} from './spreadsheet-parse';
+import { SpreadsheetParse } from './spreadsheet-parse';
 
-interface PendingMessage {
+interface WorkerPromise {
   resolve;
   reject;
 }
@@ -27,7 +27,7 @@ export class SpreadsheetService {
   static readonly SPREADSHEET_API = environment.apiEndpoints.spreadsheet;
   colors: string[];
   worker: Worker;
-  pendingMessages: PendingMessage;
+  workerResult: WorkerPromise;
   parseSpreadsheet: (sheets, colors) => Observable<Sheet[]>;
 
   constructor(private httpClient: HttpClient,
@@ -78,7 +78,7 @@ export class SpreadsheetService {
       this.worker.onmessage = ({ data }) => {
         const parsedSheet = data as WorkerResp;
         if (parsedSheet.isValid) {
-          this.pendingMessages.resolve(parsedSheet.data);
+          this.workerResult.resolve(parsedSheet.data);
         } else {
           this.initErrorMessage(parsedSheet.data as ParseError);
         }
@@ -98,7 +98,7 @@ export class SpreadsheetService {
   private parseViaWorker(sheets, colors): Observable<Sheet[]> {
     this.worker.postMessage({sheets, colors});
     const promise = new Promise((resolve, reject) => {
-      this.pendingMessages = {resolve, reject};
+      this.workerResult = {resolve, reject};
     });
     return from(promise) as Observable<Sheet[]>;
   }

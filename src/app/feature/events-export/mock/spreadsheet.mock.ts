@@ -52,6 +52,29 @@ export const dummySheetData: Sheet[] = [
   }
 ];
 
+export const failedSheet =   {
+  properties: {
+    sheetId: 0,
+    title: '5-В',
+    index: 0,
+    sheetType: 'GRID',
+    gridProperties: {
+      rowCount: 1002,
+      columnCount: 26
+    },
+    tabColor: {
+      red: 1
+    },
+    tabColorStyle: {
+      rgbColor: {
+        red: 1
+      }
+    }
+  },
+  data: [
+    {}]
+};
+
 export const dummyGridResponse = {
   spreadsheetId: '1nwCS1MSx_oDNcUsAiYi4DM5ib_SHe-isUd655MHYX_g',
   properties: {

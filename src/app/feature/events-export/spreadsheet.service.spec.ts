@@ -7,16 +7,20 @@ import { NO_ERRORS_SCHEMA} from '@angular/core';
 import { UserFacade} from '../user/user.facade';
 import { StoreModule} from '@ngrx/store';
 import { CalendarApiService} from '../active-items/calendar-api.service';
-import { dummyGridResponse, dummySheetData} from './mock/spreadsheet.mock';
+import {dummyGridResponse, dummySheetData, failedSheet} from './mock/spreadsheet.mock';
 import { environment} from '../../../environments/environment';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from '../../shared/shared.module';
 
 describe('SpreadsheetService', () => {
   let httpMock: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({}),
-        HttpClientTestingModule, RouterTestingModule, MatSnackBarModule
+        SharedModule,
+        HttpClientTestingModule, RouterTestingModule, MatSnackBarModule, NoopAnimationsModule
       ],
       providers: [
         CalendarApiService,
@@ -42,5 +46,19 @@ describe('SpreadsheetService', () => {
     const request = httpMock.expectOne(`${environment.apiEndpoints.spreadsheet}/${gridId}/?includeGridData=true`);
     expect(request.request.method).toEqual('GET');
     request.flush(dummyGridResponse);
+  });
+
+  it('should display error message', (done) => {
+    const colors = ['#a4bdfc', '#7ae7bf', '#dbadff', '#ff887c'];
+    const gridId = dummyGridResponse.spreadsheetId;
+    const service: SpreadsheetService = TestBed.get(SpreadsheetService);
+    const calendarService = TestBed.get(CalendarApiService);
+    spyOn(calendarService, 'getCalendarColors').and.returnValue([colors]);
+    service.getSpreadsheetData(gridId).subscribe(grid => { expect(grid).toEqual(null); });
+    const request = httpMock.expectOne(`${environment.apiEndpoints.spreadsheet}/${gridId}/?includeGridData=true`);
+    done();
+    request.flush({sheets: [failedSheet]});
+
+
   });
 });
