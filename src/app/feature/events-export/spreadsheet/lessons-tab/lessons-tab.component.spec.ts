@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ColumnTitlePipe } from '../../column-title.pipe';
 import {FormBuilder, FormControl, ReactiveFormsModule} from '@angular/forms';
 import { LessonsTabComponent } from './lessons-tab.component';
 import { MatMenuModule } from '@angular/material';
@@ -13,7 +12,7 @@ xdescribe('LessonsTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LessonsTabComponent, ColumnTitlePipe ],
+      declarations: [LessonsTabComponent],
       imports: [ReactiveFormsModule, MatMenuModule, MatTableModule],
       providers: [{ provide: FormBuilder, useValue: fb }],
       schemas: [NO_ERRORS_SCHEMA],

@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, from, of} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map, pluck} from 'rxjs/operators';
-import { Lesson, Sheet } from '../../models/sheet';
+import { mergeMap, pluck} from 'rxjs/operators';
+import { Sheet } from '../../models/sheet';
 import { CalendarApiService } from '../active-items/calendar-api.service';
 import { environment } from '../../../environments/environment';
 import { MessageService } from '../../core/message.service';
 import { ParseError } from '../active-items/state/active-items.reducer';
 import { ActiveItemsFacade } from '../active-items/active-items.facade';
+import { SpreadsheetParse } from './spreadsheet-parse';
 
-export interface RgbObj {
-  red: number;
-  blue: number;
-  green: number;
+interface WorkerPromise {
+  resolve;
+  reject;
 }
 
-export enum LessonProps {number, date, order, location, topic, hwTheory, hwPractice}
+export interface WorkerResp {
+  isValid: boolean;
+  data: Sheet[] | ParseError;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -23,15 +26,15 @@ export enum LessonProps {number, date, order, location, topic, hwTheory, hwPract
 export class SpreadsheetService {
   static readonly SPREADSHEET_API = environment.apiEndpoints.spreadsheet;
   colors: string[];
-  parseError: ParseError = {};
+  worker: Worker;
+  workerResult: WorkerPromise;
+  parseSpreadsheet: (sheets, colors) => Observable<Sheet[]>;
+
   constructor(private httpClient: HttpClient,
               private activeItemsFacade: ActiveItemsFacade,
               private messageService: MessageService,
-              private calendarService: CalendarApiService) {}
-
-  static convertFromSerialToMoment(excelDate: number): Date {
-    const unixTimestamp = (excelDate - 25569) * 86400;
-    return new Date(unixTimestamp * 1000);
+              private calendarService: CalendarApiService) {
+    this.initParseMethod();
   }
 
   public getSpreadsheetData(id: string): Observable<Sheet[]> {
@@ -39,17 +42,10 @@ export class SpreadsheetService {
       this.fetchSpreadsheet(id),
       this.calendarService.getCalendarColors()
     ).pipe(
-      map(([sheets, colors]) => {
+      mergeMap((([sheets, colors]) => {
         this.colors = colors;
-        const spreadsheetData = [];
-        for (const sheet of sheets) {
-          const sheetData = this.parseSheetData(sheet);
-          if (sheetData) {
-            spreadsheetData.push(sheetData);
-          } else { break; }
-        }
-        return spreadsheetData;
-      })
+        return this.parseSpreadsheet(sheets, colors);
+      }))
     );
   }
 
@@ -65,138 +61,53 @@ export class SpreadsheetService {
   }
 
   /**
-   * Method takes data from events-export rows and generates lesson for each table row
-   * @params rowData - array, contains data of rows from table sheet
-   * @returns array of lessons
+   * init parse method for spreadsheet, if Worker is available take's it,
+   * if not - parse spreadsheet in the same thread
+   * @params spreadsheetId - id of events-export
+   * @returns object, that contain array of data for each table sheet
    */
-  private getRowValues(rowsData): Array<Lesson> {
-    return rowsData.map(this.parseRowData.bind(this));
-  }
+  private initParseMethod() {
+    if (typeof Worker !== 'undefined') {
+      this.worker = new Worker('./spreadsheet.worker', { type: 'module' });
+      this.parseSpreadsheet = this.parseViaWorker;
 
-  /**
-   * The returns object that contains values of color channels in range from 0 to 255
-   * @params - rgb object that contains values of color channels in range from 0 to 1
-   * @returns - color object, that contains values of color channels in range from 0 to 255
-   */
-  private convertToRgb(rgb: any): RgbObj {
-    const color = {...rgb};
-    const channels = ['red', 'green', 'blue'];
-    channels.forEach( chanel => {
-      if (color.hasOwnProperty(chanel)) {
-        color[chanel] = color[chanel] * 255;
-      } else {
-        color[chanel] = 0;
-      }
-    });
-    return color;
-  }
-
-  /**
-   * Methods search similar color to pipe value from google events palette
-   * @params color - rgb object of color
-   * @returns - index of similar color in google events palette
-   */
-  private getSimilarColor(color: RgbObj): number {
-    let similarRgb = this.hexToRgb(this.colors[0]);
-    return this.colors.reduce(
-      (acc, cur, idx) => {
-        const curRgb = this.hexToRgb(cur);
-        if ( this.calcColorsSimilarity(color, curRgb) < this.calcColorsSimilarity(color, similarRgb)) {
-          similarRgb = curRgb;
-          return idx;
-        } else { return acc; }
-      }, 0);
-  }
-
- /**
-  * Methods convert color from hex to rgb
-  * @params hex - color, represented in hex string
-  * @returns - rgb object of color
-  */
-  private hexToRgb(hex: string): RgbObj {
-    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-      const c = hex.substring(1).split('');
-      const hexArr = [c[0] + c[1], c[2] + c[3], c[4] + c[5]];
-      const convertHexUnitTo256 = (hexStr) => parseInt(hexStr.repeat(2 / hexStr.length), 16);
-      const [red, green, blue] = hexArr.map(convertHexUnitTo256);
-      return {red, green , blue};
-    }
-  }
-
-  /**
-   * Methods takes two colors and calculate the value of similarity between them
-   * @params color1 - color, that need to be compared
-   * @params color2 - color, that need to be compared
-   * @returns - numeric value of similarity between colors
-   */
-  private calcColorsSimilarity(color1: RgbObj, color2: RgbObj): number {
-    const c1 = [color1.red, color1.green, color1.blue];
-    const c2 = [color2.red, color2.green, color2.blue];
-    const distance = c1.reduce((dist, cur, idx) => {
-      return dist + Math.pow(cur - c2[idx], 2);
-    }, 0);
-    return Math.sqrt(distance);
-  }
-
-  /**
-   * Methods takes data of events-export row and convert it into lesson metadata,
-   * if row contains invalid data throw the error
-   * @params rowData - data of events-export row
-   * @params index - row order in events-export
-   * @returns - lesson object
-   */
-  private parseRowData({values: rowData}, index): Lesson {
-    const lessonProps = LessonProps;
-    return rowData.reduce((lesson, cellData, idx) => {
-      if (idx === (Object.keys(lessonProps).length / 2)) { return lesson; }
-      try {
-        switch (lessonProps[idx]) {
-          case 'date':
-            const date = this.parseInt(cellData.effectiveValue.numberValue, lessonProps[idx]);
-            lesson[lessonProps[idx]] = SpreadsheetService.convertFromSerialToMoment(date);
-            break;
-          case 'number':
-          case 'order':
-            lesson[lessonProps[idx]] = this.parseInt(cellData.formattedValue, lessonProps[idx]);
-            break;
-          default:
-            lesson[lessonProps[idx]] = cellData.formattedValue;
-        }
-        return lesson;
-      } catch (e) {
-        this.parseError.row = index + 4;
-        throw Error();
-      }
-    }, {});
-  }
-
-  private parseSheetData(sheet): Sheet {
-    const tabColor = sheet.properties.tabColor;
-    const sheetData = sheet.data[0];
-    try {
-      return {
-        title: sheet.properties.title,
-        colorId: tabColor ? this.getSimilarColor(this.convertToRgb(sheet.properties.tabColor)) : null,
-        attendeesEmail: sheetData.rowData[0].values[2] ? sheetData.rowData[0].values[2].formattedValue : null,
-        lessons: this.getRowValues(sheet.data[0].rowData.slice(3))
+      this.worker.onerror = err => {
+        this.initErrorMessage({message: `Помилка валідації (${err.message})`});
       };
-    } catch (e) {
-      this.parseError.sheet = sheet.properties.title;
-      const messageText = `Файл не відповідає шаблону. Помилка зчитування в листі: ${sheet.properties.title}.`;
-      const message = new BehaviorSubject(messageText);
-      this.messageService.showMessage({data: {message, title: 'Помилка валідації' }, panelClass: ['popup-error']});
-      this.activeItemsFacade.fileValidationFailed(this.parseError);
-      return null;
+
+      this.worker.onmessage = ({ data }) => {
+        const parsedSheet = data as WorkerResp;
+        if (parsedSheet.isValid) {
+          this.workerResult.resolve(parsedSheet.data);
+        } else {
+          this.initErrorMessage(parsedSheet.data as ParseError);
+        }
+      };
+    } else {
+      this.parseSpreadsheet = this.parseViaClass;
     }
+
   }
 
-  private parseInt(data, column: string): number {
-    if (Number.isInteger(Number.parseInt(data, 10))) {
-      return Number.parseInt(data, 10);
-    } else {
-      this.parseError.column = column;
-      this.parseError.message = 'Очікується ціле число';
-      throw Error();
-    }
+  private initErrorMessage(error: ParseError) {
+    const message = new BehaviorSubject(error.message);
+    this.messageService.showMessage({data: {message, title: 'Помилка валідації' }, panelClass: ['popup-error']});
+    this.activeItemsFacade.fileValidationFailed(error);
+  }
+
+  private parseViaWorker(sheets, colors): Observable<Sheet[]> {
+    this.worker.postMessage({sheets, colors});
+    const promise = new Promise((resolve, reject) => {
+      this.workerResult = {resolve, reject};
+    });
+    return from(promise) as Observable<Sheet[]>;
+  }
+
+  private parseViaClass(sheets, colors): Observable<Sheet[]> {
+    const parse = new SpreadsheetParse({sheets, colors});
+    const resp = parse.parseSpreadsheet(sheets);
+    if (resp.isValid) {
+      return of(resp.data) as Observable<Sheet[]>;
+    } else { this.initErrorMessage(resp.data  as ParseError); }
   }
 }
