@@ -1,0 +1,60 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "lessons-shedule",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ],
+        "urls": [
+          "ttps://www.google.com/images/**"
+        ]
+      }
+    }, {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "spreadsheet",
+      "urls": [
+        "https://sheets.googleapis.com/v4/spreadsheets/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 5,
+        "maxAge": "5m",
+        "timeout": "5s",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "user info, calendars and spreadsheets lists",
+      "urls": [
+        "https://www.googleapis.com/oauth2/v3/userinfo",
+        "https://www.googleapis.com/drive/v3/files",
+        "https://www.googleapis.com/calendar/v3/users/me/calendarList?minAccessRole=writer"
+      ],
+      "cacheConfig": {
+        "maxSize": 5,
+        "maxAge": "1d",
+        "timeout": "5s",
+        "strategy": "performance"
+      }
+    }
+  ]
+}
