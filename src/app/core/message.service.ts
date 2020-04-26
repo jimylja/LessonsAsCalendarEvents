@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ExportStatus } from '../models/calendar';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { SnackbarMessageComponent } from '../shared/components/snack-message/snackbar-message.component';
 import { Router } from '@angular/router';
 import { SnackMessage } from '../models/snack-message';

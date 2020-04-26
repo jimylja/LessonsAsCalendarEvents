@@ -14,7 +14,8 @@ import { UserEffects } from './state/user.effects';
 import { UserFacade} from './user.facade';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ReactiveFormsModule} from '@angular/forms';
-import { MatFormFieldModule, MatInputModule} from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { LessonEndPipe } from './lesson-end.pipe';
 

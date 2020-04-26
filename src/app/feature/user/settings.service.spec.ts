@@ -10,7 +10,7 @@ import {FirebaseMock} from './mock/firebase.mock';
 import {mockNewUser, mockSettings, mockStatistic} from './mock/user.mock';
 import {UserFacade} from './user.facade';
 import {RouterTestingModule} from '@angular/router/testing';
-import {MatSnackBarModule} from '@angular/material';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {of} from 'rxjs';
 import {MessageService} from '../../core/message.service';

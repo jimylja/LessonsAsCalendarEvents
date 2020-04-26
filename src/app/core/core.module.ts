@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TokenInterceptorService } from './token-interceptor.service';
 import { ErrorInterceptor } from './error-interceptor.service';
 import { MessageService } from './message.service';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { PreloadingStrategyService } from './preloading-strategy.service';
 

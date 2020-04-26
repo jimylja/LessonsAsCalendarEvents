@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {FormBuilder, FormControl, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule} from '@angular/forms';
 import { LessonsTabComponent } from './lessons-tab.component';
-import { MatMenuModule } from '@angular/material';
-import {MatTableModule} from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 xdescribe('LessonsTabComponent', () => {

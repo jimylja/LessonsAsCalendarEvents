@@ -1,4 +1,4 @@
-import { MatSnackBarConfig } from '@angular/material';
+import {MatSnackBarConfig} from '@angular/material/snack-bar';
 import {Subject} from 'rxjs';
 import {ExportStatus} from './calendar';
 
