@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeatureWidgetComponent } from './feature-widget.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 
 describe('FeatureWidgetComponent', () => {
   let component: FeatureWidgetComponent;

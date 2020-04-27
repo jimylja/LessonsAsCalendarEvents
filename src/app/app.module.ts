@@ -21,6 +21,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 // GoogleApi
 import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
+import { ServiceWorkerModule } from '@angular/service-worker';
 const gApiClientConfig: NgGapiClientConfig = {
   ...environment.gApiClient,
   ux_mode: 'popup'
@@ -50,7 +51,8 @@ const gApiClientConfig: NgGapiClientConfig = {
       logOnly: environment.production,
     }),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
 
   ],
   bootstrap: [AppComponent]

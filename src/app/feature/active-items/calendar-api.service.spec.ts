@@ -2,7 +2,7 @@ import {TestBed, fakeAsync, tick} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {CalendarApiService} from './calendar-api.service';
 import {RouterTestingModule} from '@angular/router/testing';
-import {MatSnackBarModule} from '@angular/material';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {UserFacade} from '../user/user.facade';
 import {StoreModule} from '@ngrx/store';

@@ -55,17 +55,22 @@ export class InViewportDirective implements DoCheck, OnDestroy {
 
   private fixElement() {
     this.isElementFixed = true;
-    this.renderer.setStyle(this.elRef.nativeElement, 'width', '100%');
-    this.renderer.setStyle(this.elRef.nativeElement, 'position', 'fixed');
-    this.renderer.setStyle(this.elRef.nativeElement, 'left', '-25px');
-    this.renderer.setStyle(this.elRef.nativeElement, 'bottom', '56px');
+    this.renderer.addClass(this.elRef.nativeElement, 'fixed');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'width', 'calc(100% - 35px)');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'position', 'fixed');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'left', '0');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'bottom', '56px');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'transform', 'translateX(10px)');
   }
 
   private returnStyleBack() {
     this.isElementFixed = false;
-    this.renderer.setStyle(this.elRef.nativeElement, 'position', 'inherit');
-    this.renderer.setStyle(this.elRef.nativeElement, 'bottom', 'inherit');
-    this.renderer.setStyle(this.elRef.nativeElement, 'left', 'unset');
+    this.renderer.removeClass(this.elRef.nativeElement, 'fixed');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'position', 'inherit');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'bottom', 'inherit');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'left', 'unset');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'transform', 'unset');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'width', 'unset');
   }
 
   ngOnDestroy(): void {

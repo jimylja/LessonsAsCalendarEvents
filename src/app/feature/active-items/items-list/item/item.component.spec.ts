@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemComponent } from './item.component';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {MatMenuModule} from '@angular/material';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatMenuModule } from '@angular/material/menu';
 
 describe('ItemComponent', () => {
   let component: ItemComponent;

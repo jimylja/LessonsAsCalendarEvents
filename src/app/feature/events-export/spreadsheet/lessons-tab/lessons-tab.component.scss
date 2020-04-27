@@ -81,6 +81,19 @@
   }
   .lessons-table {
     padding-bottom: 100px;
+    mat-paginator {
+      box-shadow: 0 -25px 20px 5px rgba(248,251,252,.75);
+      &.fixed {
+        position: fixed;
+        width: calc(100% - 35px);
+        left: 0;
+        bottom: 56px;
+        transform: translateX(10px);
+        @media(display-mode: standalone) {
+          width: calc(100% - 20px);
+        }
+      }
+    }
     @media (max-width: 500px) {
       ::ng-deep {
         .mat-paginator-page-size-label {display: none;}
