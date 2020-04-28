@@ -2,30 +2,8 @@
   <mat-icon class="sidenav-logo" color="primary">pages</mat-icon>
   <div>Lessons App</div>
 </div>
-<mat-nav-list class="sidenav-menu">
-  <ng-container *ngFor="let item of menuItems.mainMenu">
-    <mat-list-item
-      routerLink="/{{item.route}}"
-      routerLinkActive="active"
-      [class.disabled]="((isSpreadsheetEnabled$|async)===false) && item.title==='Експортувати'">
-      <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
-      <a matLine>{{item.title}}</a>
-      <i mat-line *ngIf="item?.description">{{item.description}}</i>
-    </mat-list-item>
-  </ng-container>
-</mat-nav-list>
-<mat-nav-list class="sidenav-footer">
+<app-menu-list [menuList]="navMenuTop" [entriesForDisplay]="['title', 'description']" class="sidenav-menu"></app-menu-list>
+<app-menu-list [menuList]="navMenuBottom" [entriesForDisplay]="['title', 'description']" class="sidenav-footer">
   <mat-divider></mat-divider>
   <div mat-subheader>Налаштування</div>
-  <ng-container *ngFor="let item of menuItems.footerMenu">
-    <mat-list-item
-      routerLink="/{{item.route}}"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{exact:true}">
-      <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
-      <a matLine >{{item.title}}</a>
-      <i mat-line *ngIf="item?.description">{{item.description}}</i>
-    </mat-list-item>
-  </ng-container>
-  <mat-divider></mat-divider>
-</mat-nav-list>
+</app-menu-list>

@@ -2,7 +2,4 @@
   <app-feature-widget [data]="(activeItems$|async).activeFile" [featureType]="'file'"></app-feature-widget>
   <app-feature-widget [data]="(activeItems$|async).activeCalendar" [featureType]="'calendar'"></app-feature-widget>
 </div>
-<button mat-raised-button color="primary"
-        [disabled]="!isSpreadsheetEnabled"
-        routerLink="/export">Відкрити таблицю
-</button>
+<button mat-raised-button color="primary" appSpreadsheetButton routerLink="/export">Відкрити таблицю </button>

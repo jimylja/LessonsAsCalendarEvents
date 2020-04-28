@@ -1,0 +1,12 @@
+:host {
+  &.active mat-list-item {
+    background-color: rgba(63, 81, 181, 0.1);
+    a { font-weight: bold; }
+    mat-icon {color: #3f51b5; }
+  }
+  &.disabled mat-list-item {
+    background-color: rgba(176, 176, 176, 0.1);
+    color: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+  }
+}
