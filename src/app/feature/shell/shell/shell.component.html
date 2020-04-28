@@ -3,7 +3,7 @@
     <mat-sidenav #snav mode="over">
       <app-sidenav></app-sidenav>
     </mat-sidenav>
-    <mat-sidenav-content (scroll)="onScroll($event)" #content>
+    <mat-sidenav-content (scroll)="onScroll($event)">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

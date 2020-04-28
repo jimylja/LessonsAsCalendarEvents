@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {MenuItems, MenuLocations} from '../../../shared/menu-items';
+import {MenuService, MenuLocations} from '../../../core/menu.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -8,8 +8,7 @@ import {MenuItems, MenuLocations} from '../../../shared/menu-items';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidenavComponent {
-  constructor() {}
-  menuItems = new MenuItems();
+  constructor( private menuItems: MenuService) {}
   navMenuTop = this.menuItems.getMenu(MenuLocations.navBarTop);
   navMenuBottom = this.menuItems.getMenu(MenuLocations.navBarBottom);
 }

@@ -21,3 +21,9 @@ mat-sidenav-container {
     }
   }
 }
+
+app-footer {
+  @media (min-width: 768px) {
+    display: none;
+  }
+}

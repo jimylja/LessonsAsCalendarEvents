@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {MenuEntry} from '../../menu-items';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MenuEntry } from 'src/app/core/menu.service';
 
 @Component({
   selector: 'app-menu-list',
