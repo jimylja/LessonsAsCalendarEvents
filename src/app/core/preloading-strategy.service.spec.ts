@@ -22,12 +22,12 @@ describe('PreloadingStrategyService', () => {
   }));
 
   it('should be created', () => {
-    const service: PreloadingStrategyService = TestBed.get(PreloadingStrategyService);
+    const service: PreloadingStrategyService = TestBed.inject(PreloadingStrategyService);
     expect(service).toBeTruthy();
   });
 
   it('should be preload depend on path', () => {
-    const service: PreloadingStrategyService = TestBed.get(PreloadingStrategyService);
+    const service: PreloadingStrategyService = TestBed.inject(PreloadingStrategyService);
     const fn = () => of(true);
     service.preload(mockNotPreloadingRoute, fn).subscribe(data => {
       expect(data).toBeNull();

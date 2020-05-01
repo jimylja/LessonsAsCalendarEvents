@@ -3,15 +3,12 @@ import {AuthGuard} from './auth.guard';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {GoogleAuthService} from 'ng-gapi';
-import {MockStore, provideMockStore} from '@ngrx/store/testing';
-import {Store} from '@ngrx/store';
-import {appInitialState, AppState} from '../../state/app.state';
+import {provideMockStore} from '@ngrx/store/testing';
+import {appInitialState} from '../../state/app.state';
 import {AuthService} from '../user/auth.service';
 import {Router} from '@angular/router';
 
 describe('AuthGuard', () => {
-  let store: MockStore<AppState>;
-  const mockService = {refreshToken: null};
   const routeMock: any = { snapshot: {}};
   const routeStateMock: any = { snapshot: {}, url: '/'};
   const initialState = appInitialState;
@@ -20,8 +17,7 @@ describe('AuthGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         provideMockStore({initialState}),
-        AuthGuard,
-        {provide: AuthService, useValue: mockService},
+        AuthGuard, AuthService,
         {provide: GoogleAuthService, useValue: {}},
       ],
       imports: [
@@ -32,7 +28,6 @@ describe('AuthGuard', () => {
   });
 
   it('should create instance', inject([AuthGuard], (guard: AuthGuard) => {
-    store = TestBed.get(Store);
     expect(guard).toBeTruthy();
   }));
 
@@ -47,7 +42,7 @@ describe('AuthGuard', () => {
 
   it('should allow the authenticated user to access app', async(
     inject([AuthGuard, AuthService], (guard: AuthGuard, authService ) => {
-      authService.refreshToken = 'some token';
+      spyOnProperty(authService, 'refreshToken').and.returnValue('some token');
       expect(guard.canActivate(routeMock, routeStateMock)).toEqual(true);
       expect(guard.canLoad(routeMock, routeStateMock)).toEqual(true);
     })

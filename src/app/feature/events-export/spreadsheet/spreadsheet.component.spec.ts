@@ -4,16 +4,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SpreadsheetComponent } from './spreadsheet.component';
-import { Store, StoreModule} from '@ngrx/store';
-import { MockStore, provideMockStore} from '@ngrx/store/testing';
+import { StoreModule } from '@ngrx/store';
+import { provideMockStore} from '@ngrx/store/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { appInitialState, AppState} from '../../../state/app.state';
+import { appInitialState } from '../../../state/app.state';
 import { UserFacade } from '../../user/user.facade';
 
 describe('SpreadsheetComponent', () => {
   let component: SpreadsheetComponent;
   let fixture: ComponentFixture<SpreadsheetComponent>;
-  let store: MockStore<AppState>;
   const initialState = appInitialState;
 
   beforeEach(async(() => {
@@ -28,11 +27,10 @@ describe('SpreadsheetComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+    .compileComponents().then();
   }));
 
   beforeEach(() => {
-    store = TestBed.get(Store);
     fixture = TestBed.createComponent(SpreadsheetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

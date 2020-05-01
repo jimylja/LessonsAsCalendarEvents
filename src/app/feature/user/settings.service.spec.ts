@@ -2,9 +2,8 @@ import {TestBed} from '@angular/core/testing';
 import {SettingsService} from './settings.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireModule} from '@angular/fire';
-import {Store} from '@ngrx/store';
-import {MockStore, provideMockStore} from '@ngrx/store/testing';
-import {appInitialState, AppState} from '../../state/app.state';
+import {provideMockStore} from '@ngrx/store/testing';
+import {appInitialState} from '../../state/app.state';
 import {environment} from '../../../environments/environment';
 import {FirebaseMock} from './mock/firebase.mock';
 import {mockNewUser, mockSettings, mockStatistic} from './mock/user.mock';
@@ -17,7 +16,6 @@ import {MessageService} from '../../core/message.service';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('SettingsService', () => {
-  let store: MockStore<AppState>;
   const initialState = appInitialState;
   const fb = new FirebaseMock();
   beforeEach(() => TestBed.configureTestingModule({
@@ -37,20 +35,19 @@ describe('SettingsService', () => {
   }));
 
   it('should be created', () => {
-    store = TestBed.get(Store);
-    const service: SettingsService = TestBed.get(SettingsService);
+    const service: SettingsService = TestBed.inject(SettingsService);
     expect(service).toBeTruthy();
   });
 
   it('should return default settings if user no present in db', () => {
-    const service: SettingsService = TestBed.get(SettingsService);
+    const service: SettingsService = TestBed.inject(SettingsService);
     service.getUserData('failedId').subscribe(userData => {
       expect(userData.settings).toEqual(environment.settings);
     });
   });
 
   it('should return user settings from db', () => {
-    const service: SettingsService = TestBed.get(SettingsService);
+    const service: SettingsService = TestBed.inject(SettingsService);
     service.getUserData('werwfsdfsdf0d8sfsd').subscribe(userData => {
       expect(userData.settings).toEqual(mockSettings);
     });
@@ -58,7 +55,7 @@ describe('SettingsService', () => {
 
 
   it('should set new settings for user', () => {
-    const service: SettingsService = TestBed.get(SettingsService);
+    const service: SettingsService = TestBed.inject(SettingsService);
     service.updateUserSettings(mockSettings).subscribe(settings =>
       expect(settings).toEqual(mockSettings)
     );

@@ -1,7 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {SpreadsheetParse} from './spreadsheet-parse';
-import {dummyGridResponse, dummySheetData} from './mock/spreadsheet.mock';
+import {dummyGridResponse, dummySheetData, failedSheet} from './mock/spreadsheet.mock';
 
 describe('SpreadsheetParse', () => {
   let parse: SpreadsheetParse;
@@ -20,9 +20,7 @@ describe('SpreadsheetParse', () => {
   });
 
   it('should parse invalid spreadsheet data', () => {
-    const invalidSheets = Object.assign(dummyGridResponse).sheets;
-    invalidSheets[0].data[0].rowData[0] = null;
-    const data = parse.parseSpreadsheet(dummyGridResponse.sheets);
+    const data = parse.parseSpreadsheet([failedSheet]);
     expect(data).toEqual({isValid: false, data: {sheet: '5-В'}});
   });
 

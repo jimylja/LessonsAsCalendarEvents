@@ -13,11 +13,18 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {mockSettings} from '../user/mock/user.mock';
 import {of} from 'rxjs';
 
-
 describe('CalendarApiService', () => {
   const colors = ['#a4bdfc', '#7ae7bf', '#dbadff', '#ff887c'];
   const activeCalendar = dummyUserCalendars[0];
-  const dummyGetCalendarsResp = {items: dummyUserCalendars};
+
+  const dummyGetCalendarsResp = {
+    items: [
+      {id: 'cal1', timeZone: '+2', description: 'calendar1', summary: 'cal1', name: 'cal1', accessRole: 'owner', backgroundColor: '1'},
+      {id: 'cal2', timeZone: '+2', description: 'calendar2', summary: 'cal2', name: 'cal2', accessRole: 'owner', backgroundColor: '2'},
+      {id: 'cal3', timeZone: '+2', description: 'calendar3', summary: 'cal3', name: 'cal3', accessRole: 'owner', backgroundColor: '3'},
+    ]
+  };
+
   let service: CalendarApiService;
   let httpMock: HttpTestingController;
 
@@ -34,8 +41,8 @@ describe('CalendarApiService', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
-    service = TestBed.get(CalendarApiService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(CalendarApiService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

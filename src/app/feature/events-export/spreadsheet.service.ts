@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, from, of} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { mergeMap, pluck} from 'rxjs/operators';
+import { mergeMap, pluck } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import { CalendarApiService } from '../active-items/calendar-api.service';
 import { environment } from '../../../environments/environment';
@@ -38,14 +38,14 @@ export class SpreadsheetService {
   }
 
   public getSpreadsheetData(id: string): Observable<Sheet[]> {
-    return combineLatest(
-      this.fetchSpreadsheet(id),
-      this.calendarService.getCalendarColors()
-    ).pipe(
-      mergeMap((([sheets, colors]) => {
-        this.colors = colors;
-        return this.parseSpreadsheet(sheets, colors);
-      }))
+    return combineLatest([
+        this.fetchSpreadsheet(id),
+        this.calendarService.getCalendarColors()
+      ]).pipe(
+        mergeMap(([sheets, colors]) => {
+          this.colors = colors;
+          return this.parseSpreadsheet(sheets, colors);
+        })
     );
   }
 
@@ -80,6 +80,7 @@ export class SpreadsheetService {
         if (parsedSheet.isValid) {
           this.workerResult.resolve(parsedSheet.data);
         } else {
+          this.workerResult.resolve(null);
           this.initErrorMessage(parsedSheet.data as ParseError);
         }
       };

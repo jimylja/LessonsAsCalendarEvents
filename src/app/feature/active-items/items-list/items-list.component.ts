@@ -34,9 +34,10 @@ export class ItemsListComponent implements OnInit {
 
   ngOnInit() {
     this.defineItem();
-    this.itemData$ = combineLatest(
-      this.activeItemsFacade.getActiveItem(this.itemKey),
-      this.itemDataFormService$
+    this.itemData$ = combineLatest([
+        this.activeItemsFacade.getActiveItem(this.itemKey),
+        this.itemDataFormService$
+      ]
     ).pipe(
       map(data => {
         return {
