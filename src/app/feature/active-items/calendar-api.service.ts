@@ -35,7 +35,7 @@ export class CalendarApiService implements OnDestroy {
    * @returns object with renamed property key
    */
   static renameSummaryKey(obj) {
-    const res = Object.assign(obj, {name: obj.summary});
+    const res = Object.assign({}, obj, {name: obj.summary});
     delete res.summary;
     return res;
   }

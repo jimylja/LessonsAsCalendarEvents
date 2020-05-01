@@ -16,6 +16,10 @@ import { AvatarComponent } from './components/avatar/avatar.component';
 import { RouterModule } from '@angular/router';
 import { ItemIconDirective } from './directives/item-icon.directive';
 import { InViewportDirective } from './directives/in-viewport.directive';
+import { MenuListComponent } from './components/menu-list/menu-list.component';
+import { MatListModule } from '@angular/material';
+import { SpreadsheetButtonDirective } from './directives/spreadsheet-button.directive';
+import { MenuItemComponent } from './components/menu-list/menu-item/menu-item.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +30,9 @@ import { InViewportDirective } from './directives/in-viewport.directive';
     AvatarComponent,
     ItemIconDirective,
     InViewportDirective,
+    MenuListComponent,
+    SpreadsheetButtonDirective,
+    MenuItemComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +43,7 @@ import { InViewportDirective } from './directives/in-viewport.directive';
     MatButtonModule,
     RouterModule,
     MatCardModule,
+    MatListModule,
   ],
   exports: [
     CommonModule,
@@ -51,7 +59,9 @@ import { InViewportDirective } from './directives/in-viewport.directive';
     AvatarComponent,
     SnackbarMessageComponent,
     ItemIconDirective,
-    InViewportDirective
+    InViewportDirective,
+    MenuListComponent,
+    SpreadsheetButtonDirective,
   ],
   entryComponents: [SnackbarMessageComponent],
 })

@@ -7,7 +7,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthService} from '../user/auth.service';
 import { GoogleAuthService} from 'ng-gapi';
 import { Observable} from 'rxjs';
-import { Store} from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import {appInitialState, AppState} from '../../state/app.state';
 import { MemoizedSelector } from '@ngrx/store';
@@ -34,7 +33,7 @@ describe('EventsExportGuard', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
-    store = TestBed.get(Store);
+    store = TestBed.inject(MockStore);
     mockActiveItemsSelector = store.overrideSelector(fromActiveItems.getActiveItems, {activeCalendar: null, activeFile: null});
   });
 

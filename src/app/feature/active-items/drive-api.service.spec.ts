@@ -14,8 +14,8 @@ describe('DriveApiService', () => {
       imports: [HttpClientTestingModule],
       schemas: [NO_ERRORS_SCHEMA]
     });
-    service = TestBed.get(DriveApiService);
-    httpMock = TestBed.get(HttpTestingController);
+    service = TestBed.inject(DriveApiService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {

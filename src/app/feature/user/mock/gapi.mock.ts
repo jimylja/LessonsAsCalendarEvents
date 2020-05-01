@@ -14,7 +14,6 @@ export const dummyUserInfoResp = {
   email: mockUser.email,
 };
 
-
 const storage = {
   localStorage: {},
   sessionStorage: {}
@@ -49,7 +48,6 @@ export class MockGoogleAuth {
   get currentUser() {
     return {
       get() {
-        console.log('user get');
         return {
           getAuthResponse() { return {access_token: dummyToken.accessToken}; },
           getBasicProfile() { return basicProfile; }
