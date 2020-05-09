@@ -4,7 +4,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShellComponent } from './shell/shell.component';
 import { EventsExportGuard } from '../events-export/events-export.guard';
 import { AuthGuard } from './auth.guard';
-import { NotFoundComponent } from '../../shared/components/not-found/not-found.component';
 import { GuideComponent } from './guide/guide.component';
 const routes: Routes = [
   {
@@ -44,7 +43,7 @@ const routes: Routes = [
         component: GuideComponent
       },
       {
-        path: '**', component: NotFoundComponent
+        path: '**', redirectTo: ''
       }
     ]
   }

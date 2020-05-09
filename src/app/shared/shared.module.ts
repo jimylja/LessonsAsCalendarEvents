@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SnackbarMessageComponent } from './components/snack-message/snackbar-message.component';
@@ -23,7 +22,6 @@ import { MenuItemComponent } from './components/menu-list/menu-item/menu-item.co
 
 @NgModule({
   declarations: [
-    NotFoundComponent,
     HeaderComponent,
     FooterComponent,
     SnackbarMessageComponent,
@@ -53,7 +51,6 @@ import { MenuItemComponent } from './components/menu-list/menu-item/menu-item.co
     MatCardModule,
     MatButtonModule,
     MatTooltipModule,
-    NotFoundComponent,
     HeaderComponent,
     FooterComponent,
     AvatarComponent,
