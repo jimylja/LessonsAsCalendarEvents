@@ -20,11 +20,17 @@ export interface UserData {
 })
 export class SettingsService {
   private userFacade: UserFacade;
-  firstVisitMessage = {
+  private firstVisitMessage = {
     redirectTo: 'guide',
     data: {
       message: new BehaviorSubject('Схоже Ви вперше користуєтесь цим додатком, ознайомтесь з інструкцією...'),
       title: 'Привіт'
+    }
+  };
+  private settingsSavedMessage = {
+    data: {
+      message: new BehaviorSubject('Ваші налаштування збережені'),
+      title: 'Налаштування'
     }
   };
 
@@ -42,12 +48,13 @@ export class SettingsService {
   getUserData(id): Observable<UserState> {
     return this.db.collection('users').doc(id).valueChanges().pipe(
       take(1),
-      tap(() => this.updateStatistics({lastVisit: firestore.Timestamp.now()}).pipe(take(1)).subscribe()),
+      tap(data => {console.log('user data', data); }),
       map((userData: UserState) => {
         if (!userData) {
           this.messageService.showMessage(this.firstVisitMessage);
           this.createUserProfile().subscribe(data => {userData = data; });
         }
+        this.updateStatistics({lastVisit: firestore.Timestamp.now()}).pipe(take(1)).subscribe();
         return userData;
       })
     );
@@ -60,7 +67,10 @@ export class SettingsService {
    */
   updateUserSettings(settings: LessonsSettings): Observable<LessonsSettings> {
     return this.updateUserData({settings}).pipe(
-      pluck('settings'),
+    tap(resp => {
+      if (resp) { this.messageService.showMessage(this.settingsSavedMessage); }
+    }),
+    pluck('settings')
     );
   }
 
