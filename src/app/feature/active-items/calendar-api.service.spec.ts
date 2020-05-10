@@ -12,6 +12,9 @@ import {colorsResponse, eventListResponse, mockSheetData, dummyUserCalendars} fr
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {mockSettings} from '../user/mock/user.mock';
 import {of} from 'rxjs';
+import {AuthService} from '../user/auth.service';
+import {GoogleAuthService} from 'ng-gapi';
+import {mockAuthService} from '../user/mock/gapi.mock';
 
 describe('CalendarApiService', () => {
   const colors = ['#a4bdfc', '#7ae7bf', '#dbadff', '#ff887c'];
@@ -36,6 +39,7 @@ describe('CalendarApiService', () => {
       ],
       providers: [
         UserFacade,
+        { provide: GoogleAuthService, useValue: mockAuthService },
         { provide: MessageService, useValue: {showMessage: () => {}} },
         { provide: UserFacade, useValue: {settings$: of(mockSettings), updateStatistic: () => {}}}
       ],

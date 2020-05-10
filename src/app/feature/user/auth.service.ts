@@ -3,8 +3,8 @@ import { GoogleAuthService } from 'ng-gapi';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import GoogleUser = gapi.auth2.GoogleUser;
 import GoogleAuth = gapi.auth2.GoogleAuth;
-import { catchError, map, switchMap, tap, takeUntil } from 'rxjs/operators';
-import { Observable, from, throwError, Subject, interval } from 'rxjs';
+import {catchError, map, switchMap, tap, takeUntil, retryWhen, mergeMap} from 'rxjs/operators';
+import {Observable, from, throwError, Subject, interval, timer } from 'rxjs';
 import { User } from '../../models/user';
 import { TokenRefreshParams, TokenAccessParams, TokenReqParams, Token } from './token.model';
 import { environment } from '../../../environments/environment';
@@ -95,8 +95,12 @@ export class AuthService implements OnDestroy {
    * @returns - user data
    */
   getUserInfo(): Observable<User> {
-    const fetchUser = this.httpClient.get(this.USER_ENDPOINT);
-    const getUser = this.accessToken ? fetchUser : this.updateAccessToken().pipe(switchMap(() => fetchUser));
+    const fetchUser = this.httpClient.get(this.USER_ENDPOINT).pipe(
+      retryWhen(this.retryWithNewToken()),
+      catchError(() => { throw Error('Invalid Credentials'); }),
+    );
+    // const getUser = this.accessToken ? fetchUser : this.updateAccessToken().pipe(switchMap(() => fetchUser));
+    const getUser = fetchUser;
     return getUser.pipe(
       map((res: any) => {
         if (!this.isTimerStarted) {
@@ -109,6 +113,26 @@ export class AuthService implements OnDestroy {
         return throwError(error);
       })
     );
+  }
+
+  /**
+   * Method for retryWhen operator,
+   * retry request 3 times with update access token
+   * if maximum number of retries have been met or status code of response not equal 401, throw error
+   * @returns - function with retry strategy
+   */
+  retryWithNewToken() {
+    return (attempts: Observable<any>) => {
+      const scalingDuration = 500;
+      const maxRetryAttempts = 3;
+      return attempts.pipe(
+        mergeMap((error, i) => {
+          const retryAttempt = i + 1;
+          if (retryAttempt > maxRetryAttempts || error.status !== 401) { return throwError(error); }
+          return timer(retryAttempt * scalingDuration).pipe(switchMap(() => this.updateAccessToken()));
+        }),
+      );
+    };
   }
 
   /**

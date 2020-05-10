@@ -13,6 +13,8 @@ import {By} from '@angular/platform-browser';
 import {dummyUserCalendars} from '../mock/calendar.mock';
 import {ActionList, ItemComponent} from './item/item.component';
 import {of} from 'rxjs';
+import {GoogleAuthService} from 'ng-gapi';
+import {mockAuthService} from '../../user/mock/gapi.mock';
 
 describe('ItemsListComponent', () => {
   let component: ItemsListComponent;
@@ -28,6 +30,7 @@ describe('ItemsListComponent', () => {
       declarations: [ ItemsListComponent, ItemComponent ],
       providers: [
         UserFacade,
+        {provide: GoogleAuthService, useValue: mockAuthService},
         {provide: Router, useValue: routeStateMock},
       ],
       imports: [

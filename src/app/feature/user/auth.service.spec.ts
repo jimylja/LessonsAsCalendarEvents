@@ -92,16 +92,10 @@ describe('AuthService', () => {
     request.flush(dummyUserInfoResp);
   });
 
-  it ('if user not logged, it should return user data and update access token', () => {
+  it ('if user not logged, it should return user data after request', () => {
     localStorage.setItem('refreshToken', 'some_refresh_token');
     sessionStorage.removeItem('accessToken');
     service.getUserInfo().subscribe(user => { expect(user).toEqual(mockUser); });
-
-    const request = httpMock.expectOne(`${environment.apiEndpoints.token}`);
-    expect(request.request.method).toEqual('POST');
-    expect(request.request.body.grant_type).toEqual('refresh_token');
-    request.flush({...dummyToken, refresh_token: dummyToken.refreshToken});
-
     const requestUser = httpMock.expectOne(`${environment.apiEndpoints.user}`);
     expect(requestUser.request.method).toEqual('GET');
     requestUser.flush(dummyUserInfoResp);
