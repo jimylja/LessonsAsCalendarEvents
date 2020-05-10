@@ -12,6 +12,9 @@ import { environment} from '../../../environments/environment';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../../shared/shared.module';
 import { of } from 'rxjs';
+import {AuthService} from '../user/auth.service';
+import {GoogleAuthService} from 'ng-gapi';
+import {mockAuthService} from '../user/mock/gapi.mock';
 
 describe('SpreadsheetService', () => {
   let httpMock: HttpTestingController;
@@ -28,6 +31,7 @@ describe('SpreadsheetService', () => {
         HttpClientTestingModule, RouterTestingModule, MatSnackBarModule, NoopAnimationsModule
       ],
       providers: [
+        { provide: GoogleAuthService, useValue: mockAuthService },
         CalendarApiService,
         UserFacade
       ],

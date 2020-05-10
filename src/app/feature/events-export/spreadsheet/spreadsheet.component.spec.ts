@@ -9,6 +9,8 @@ import { provideMockStore} from '@ngrx/store/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { appInitialState } from '../../../state/app.state';
 import { UserFacade } from '../../user/user.facade';
+import {GoogleAuthService} from 'ng-gapi';
+import {mockAuthService} from '../../user/mock/gapi.mock';
 
 describe('SpreadsheetComponent', () => {
   let component: SpreadsheetComponent;
@@ -18,7 +20,10 @@ describe('SpreadsheetComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SpreadsheetComponent ],
-      providers: [provideMockStore({initialState}), FormBuilder, UserFacade],
+      providers: [
+        {provide: GoogleAuthService, useValue: mockAuthService},
+        provideMockStore({initialState}), FormBuilder, UserFacade
+      ],
       imports: [
         MatSnackBarModule,
         StoreModule.forRoot({}),

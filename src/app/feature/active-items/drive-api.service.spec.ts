@@ -4,6 +4,8 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {HttpParams} from '@angular/common/http';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {environment} from '../../../environments/environment';
+import {GoogleAuthService} from 'ng-gapi';
+import {mockAuthService} from '../user/mock/gapi.mock';
 
 describe('DriveApiService', () => {
   let httpMock: HttpTestingController;
@@ -12,6 +14,9 @@ describe('DriveApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [
+        { provide: GoogleAuthService, useValue: mockAuthService },
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     });
     service = TestBed.inject(DriveApiService);

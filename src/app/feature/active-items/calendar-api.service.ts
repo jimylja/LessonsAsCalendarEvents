@@ -2,12 +2,13 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, from, BehaviorSubject, Subject, iif } from 'rxjs';
 import { CalendarEntry, ExportStatus } from '../../models/calendar';
-import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, finalize, take } from 'rxjs/operators';
+import { pluck, mergeMap, delay, tap, concatMap, map, switchMap, finalize, take, retryWhen, catchError } from 'rxjs/operators';
 import { Sheet } from '../../models/sheet';
 import * as moment from 'moment';
 import { MessageService } from '../../core/message.service';
 import { environment } from '../../../environments/environment';
 import { UserFacade } from '../user/user.facade';
+import { AuthService } from '../user/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class CalendarApiService implements OnDestroy {
 
   constructor(private userFacade: UserFacade,
               private httpClient: HttpClient,
+              private auth: AuthService,
               private messageService: MessageService) {}
 
   /**
@@ -46,6 +48,8 @@ export class CalendarApiService implements OnDestroy {
    */
   getCalendars(): Observable<CalendarEntry[]> {
     return this.httpClient.get(CalendarApiService.LIST_ENDPOINT).pipe(
+      retryWhen(this.auth.retryWithNewToken()),
+      catchError(() => { throw Error('Invalid Credentials'); }),
       pluck('items'),
       map((data: CalendarEntry[]) => data.map(CalendarApiService.renameSummaryKey))
     );
@@ -189,6 +193,8 @@ export class CalendarApiService implements OnDestroy {
         this.calendarColors$.next(colors);
         return colors;
       }),
+      retryWhen(this.auth.retryWithNewToken()),
+      catchError(() => { throw Error('Invalid Credentials'); }),
     );
   }
 
