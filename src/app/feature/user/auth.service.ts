@@ -95,23 +95,11 @@ export class AuthService implements OnDestroy {
    * @returns - user data
    */
   getUserInfo(): Observable<User> {
-    const fetchUser = this.httpClient.get(this.USER_ENDPOINT).pipe(
+    return this.httpClient.get(this.USER_ENDPOINT).pipe(
+      tap(() => {if (!this.isTimerStarted) { this.updateTokenTimer().subscribe(); }}),
+      map((res: any) => AuthService.parseUserData(res)),
       retryWhen(this.retryWithNewToken()),
       catchError(() => { throw Error('Invalid Credentials'); }),
-    );
-    // const getUser = this.accessToken ? fetchUser : this.updateAccessToken().pipe(switchMap(() => fetchUser));
-    const getUser = fetchUser;
-    return getUser.pipe(
-      map((res: any) => {
-        if (!this.isTimerStarted) {
-          this.updateTokenTimer().subscribe();
-        }
-        return AuthService.parseUserData(res);
-      }),
-      catchError(error => {
-        if (error.status === 401) { this.removeAccessToken(); }
-        return throwError(error);
-      })
     );
   }
 
