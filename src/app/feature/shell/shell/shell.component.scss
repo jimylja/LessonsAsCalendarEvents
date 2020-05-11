@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+mat-sidenav-container {
+  flex: 1;
+  overflow: auto;
+  padding-bottom: 64px;
+  mat-sidenav-content {
+    padding: 0 10px;
+    router-outlet + ::ng-deep * {
+      .wait-spinner {
+        display: flex;
+        flex: 1;
+        height: 100%;
+        justify-content: center;
+        flex-direction: column;
+        transform: translateY(-64px);
+      }
+    }
+  }
+}
+
+app-footer {
+  @media (min-width: 768px) {
+    display: none;
+  }
+}

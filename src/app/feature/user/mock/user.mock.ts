@@ -1,3 +1,5 @@
+import {firestore} from 'firebase';
+
 export const mockUser = {
   id: 'werwfsdfsdf0d8sfsd',
   email: 'email@mail.com',
@@ -17,4 +19,12 @@ export const mockNewUser = {
 export const mockSettings = {
   lessonsStartSchedule: ['07:55', '08:55', '10:00', '11:05', '12:00', '12:55', '13:45'],
   lessonDuration: 40
+};
+
+export const mockStatistic = {
+  lastVisit: firestore.Timestamp.now(),
+  lastCalendar: 'SomeCalendar',
+  activity: [
+    {calendar: 'SomeCalendar', exportSuccess: 2, exportFail: 0}
+  ]
 };

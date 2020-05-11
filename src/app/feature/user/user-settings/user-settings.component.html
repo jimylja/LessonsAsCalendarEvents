@@ -29,6 +29,8 @@
         <button (click)="removeLesson()" class="remove"><mat-icon>remove_circle</mat-icon></button>
       </div>
     </div>
+    <mat-error *ngIf="form.errors?.durationError">Часові проміжки перекриваються.</mat-error>
+    <mat-error *ngIf="form.errors?.orderError">Некоректний порядок</mat-error>
     <button (click)="onSubmit(form)"
             [disabled]="!form.valid || !form.dirty"
             mat-raised-button color="primary">Зберегти

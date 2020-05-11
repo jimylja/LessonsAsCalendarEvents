@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './feature/user/user.module';
-import { DashboardModule } from './feature/dashboard/dashboard.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 
@@ -22,6 +21,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 // GoogleApi
 import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
+import { ServiceWorkerModule } from '@angular/service-worker';
 const gApiClientConfig: NgGapiClientConfig = {
   ...environment.gApiClient,
   ux_mode: 'popup'
@@ -39,7 +39,6 @@ const gApiClientConfig: NgGapiClientConfig = {
     SharedModule,
     CoreModule,
     UserModule,
-    DashboardModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gApiClientConfig
@@ -52,7 +51,8 @@ const gApiClientConfig: NgGapiClientConfig = {
       logOnly: environment.production,
     }),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
 
   ],
   bootstrap: [AppComponent]

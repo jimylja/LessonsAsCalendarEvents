@@ -1,0 +1,8 @@
+<mat-list-item
+  routerLink="/{{item.route}}"
+  [routerLinkActiveOptions]="{exact:true}"
+  routerLinkActive="active">
+  <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
+  <a matLine *ngIf="item?.title && entriesForDisplay?.includes('title')">{{item.title}}</a>
+  <i mat-line *ngIf="item?.description && entriesForDisplay?.includes('description')">{{item.description}}</i>
+</mat-list-item>

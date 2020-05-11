@@ -1,0 +1,9 @@
+<div class="sidenav-title">
+  <mat-icon class="sidenav-logo" color="primary">pages</mat-icon>
+  <div>Lessons App</div>
+</div>
+<app-menu-list [menuList]="navMenuTop" [entriesForDisplay]="['title', 'description']" class="sidenav-menu"></app-menu-list>
+<app-menu-list [menuList]="navMenuBottom" [entriesForDisplay]="['title', 'description']" class="sidenav-footer">
+  <mat-divider></mat-divider>
+  <div mat-subheader>Налаштування</div>
+</app-menu-list>

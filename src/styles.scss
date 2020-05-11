@@ -1,16 +1,6 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.item-icon {
-  &.file-icon {
-    background-image: url('./assets/web-google-sheets-icon.png');
-  }
-  &.calendar-icon {
-    background-image: url('./assets/web-google-calendar-icon.png');
-  }
-  background-size: cover;
-}
-
 snack-bar-container.mat-snack-bar-container {
   display: flex;
   justify-content: center;

@@ -1,21 +1,27 @@
 import { Injectable } from '@angular/core';
-import {select, Store} from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromUser from './state';
 import * as UserActions from './state/user.actions';
 import {LessonsSettings} from '../../models/lessonsSettings';
+import {CalendarExportStats} from '../../models/user';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class UserFacade {
 
-  user$ = this.store.select(fromUser.getCurrentUser);
+  user$ = this.store.select(fromUser.getUserProfile).pipe(
+    tap(data => { if (!data) {this.getUser(); }})
+  );
   settings$ = this.store.select(fromUser.getUserSettings);
-  loginStatus$ = this.store.select(fromUser.getLoginStatus);
-  constructor(private store: Store<fromUser.State>) {
-    this.store.dispatch(new UserActions.GetUser());
-  }
+  userStatistic$ = this.store.select(fromUser.getUserStats);
+  constructor(private store: Store<fromUser.State>) {}
 
   login(): void {
     this.store.dispatch(new UserActions.Login());
+  }
+
+  getUser(): void {
+    this.store.dispatch(new UserActions.GetGoogleProfile());
   }
 
   logout(): void {
@@ -24,5 +30,9 @@ export class UserFacade {
 
   saveSettings(settings: LessonsSettings): void {
     this.store.dispatch( new UserActions.SaveUserSettings(settings));
+  }
+
+  updateStatistic(calendarExportStats: CalendarExportStats) {
+    this.store.dispatch(new UserActions.UpdateUserStatistic(calendarExportStats));
   }
 }

@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { PreloadingStrategyService } from './core/preloading-strategy.service';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./feature/dashboard/dashboard.module').then(m => m.DashboardModule),
+    loadChildren: () => import('./feature/shell/shell.module').then(m => m.ShellModule),
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadingStrategyService})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -18,11 +18,29 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor, OnDestro
   messageService: MessageService;
   messageText = new BehaviorSubject(null);
 
+  static getErrorMessage(error): string {
+    let message;
+    if (error.error.hasOwnProperty('error')) {
+      if (error.error.error.message) {
+        message = error.error.error.message;
+      } else { message = error.error.error; }
+    } else { message = error.error; }
+    if (!message) { message = 'Невідома помилка'; }
+    let errorMessage = `Неможливо виконати: Помилка: ${message}. Код:${error.status}`;
+    if (message === 'Bad Request') {
+      errorMessage = 'Некоректний запит на сервер';
+    } else if (message === 'Invalid Credentials' || message === 'invalid_grant' || error.status === 401) {
+      if (sessionStorage.getItem('accessToken') || (!sessionStorage.getItem('accessToken') && error.status === 401) ) { return null; }
+      errorMessage = 'Немає необхідних дозволів';
+    }
+    return errorMessage;
+  }
+
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        const errorMessage = this.getErrorMessage(error);
-        this.displaySnackBar(errorMessage);
+        const errorMessage = ErrorInterceptor.getErrorMessage(error);
+        if (errorMessage) { this.displaySnackBar(errorMessage); }
         return throwError(error);
       })
     );
@@ -32,6 +50,7 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor, OnDestro
     const isErrorFromHttp = (err instanceof HttpErrorResponse);
     if (!isErrorFromHttp) {
       console.log('Global Error Handler', err);
+      if (err.message === 'Invalid Credentials') { this.redirectTo = 'user/login'; }
       const startMessagePos = err.message.indexOf('Error');
       const endMessagePos = err.message.indexOf('Error', startMessagePos + 1);
       const message = err.message.slice(startMessagePos, endMessagePos);
@@ -47,24 +66,6 @@ export class ErrorInterceptor implements ErrorHandler, HttpInterceptor, OnDestro
     if (this.redirectTo.length !== 0) { this.snackMessage.redirectTo = this.redirectTo; }
     this.messageText.next(message);
     this.messageService.showMessage(this.snackMessage);
-  }
-
-  private getErrorMessage(error): string {
-    let message;
-    if (error.error.hasOwnProperty('error')) {
-      if (error.error.error.message) {
-        message = error.error.error.message;
-      } else { message = error.error.error; }
-    } else { message = error.error; }
-    if (!message) { message = 'Невідома помилка'; }
-    let errorMessage = `Неможливо виконати: Помилка: ${message}. Код:${error.status}`;
-    if (message === 'Bad Request') {
-      errorMessage = 'Некоректний запит на сервер';
-    } else if (message === 'Invalid Credentials' || message === 'invalid_grant' || error.status === 401) {
-      errorMessage = 'Немає необхідних дозволів';
-      this.redirectTo = 'user/login';
-    }
-    return errorMessage;
   }
 
   ngOnDestroy(): void {

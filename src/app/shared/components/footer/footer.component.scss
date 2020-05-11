@@ -4,4 +4,13 @@
   bottom: 0;
   left: 0;
   z-index: 1;
+  mat-toolbar {border-top: 1px solid #0000001c;}
+  app-menu-list.row {
+    width: 100%;
+    ::ng-deep mat-nav-list {
+      display: flex;
+      justify-content: space-around;
+      mat-list-item {background-color: unset}
+    }
+  }
 }

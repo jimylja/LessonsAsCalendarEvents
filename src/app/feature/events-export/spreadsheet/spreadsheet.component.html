@@ -1,0 +1,38 @@
+<ng-container *ngIf="activeFile$|async as activeFile">
+  <ng-container *ngIf="activeFile.validationError">
+    <app-invalid-spreadsheet [file]="activeFile"></app-invalid-spreadsheet>
+  </ng-container>
+  <ng-container *ngIf="!activeFile.validationError">
+    <ng-container *ngIf="spreadSheetData$|async as spreadSheetData; else loading">
+      <mat-tab-group [formGroup]="form">
+        <mat-tab *ngFor="let tab of spreadSheetData; let i = index">
+          <ng-template mat-tab-label>
+            <ng-container *ngIf="classesData.controls.length>0">
+              <mat-icon *ngIf="!classesData.controls[i].valid"
+                        class="error-icon">warning</mat-icon>
+            </ng-container>
+            {{tab.title}}
+          </ng-template>
+          <app-lessons-tab
+            [form]="form"
+            [tabIndex] = "i"
+            (tabCreated)="addClassToForm(tab)"
+            [colorsPalette]="colorsPalette$|async"
+            (attendersChanged)="changeAttendersForClass($event, i, tab)"
+            [colorId]="tab.colorId"
+            [lessons]="tab.lessons"></app-lessons-tab>
+        </mat-tab>
+      </mat-tab-group>
+      <button mat-raised-button color="primary"
+              [disabled]="!form.valid || isExportInProcess"
+              (click)="exportToCalendar()">Експортувати
+      </button>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #loading>
+  <div class="wait-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

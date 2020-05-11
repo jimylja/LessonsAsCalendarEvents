@@ -1,0 +1,5 @@
+<div class="widget-container">
+  <app-feature-widget [data]="(activeItems$|async).activeFile" [featureType]="'file'"></app-feature-widget>
+  <app-feature-widget [data]="(activeItems$|async).activeCalendar" [featureType]="'calendar'"></app-feature-widget>
+</div>
+<button mat-raised-button color="primary" appSpreadsheetButton routerLink="/export">Відкрити таблицю </button>

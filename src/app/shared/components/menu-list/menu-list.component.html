@@ -1,0 +1,13 @@
+<mat-nav-list class="sidenav-menu">
+  <ng-content></ng-content>
+  <ng-container *ngFor="let item of menuList">
+    <app-menu-item *ngIf="item.route !=='export'"
+                   [item]="item"
+                   [entriesForDisplay]="entriesForDisplay">
+    </app-menu-item>
+    <app-menu-item *ngIf="item.route ==='export'" appSpreadsheetButton
+                   [item]="item"
+                   [entriesForDisplay]="entriesForDisplay">
+    </app-menu-item>
+  </ng-container>
+</mat-nav-list>

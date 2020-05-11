@@ -1,26 +1,24 @@
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import { UserProfileComponent } from './user-profile.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Store } from '@ngrx/store';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import {UserFacade} from '../user.facade';
-import {By} from '@angular/platform-browser';
-import {of} from 'rxjs';
-import {UserState} from '../state/user.reducer';
-import {mockUser} from '../mock/user.mock';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { provideMockStore } from '@ngrx/store/testing';
+import { UserFacade} from '../user.facade';
+import { By} from '@angular/platform-browser';
+import { of} from 'rxjs';
+import { mockUser} from '../mock/user.mock';
+import { NO_ERRORS_SCHEMA} from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
   let fixture: ComponentFixture<UserProfileComponent>;
-  let store: MockStore<UserState>;
   const initialState = {user: {isLoggedIn: false}};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UserProfileComponent ],
       imports: [
-        HttpClientTestingModule,
+        HttpClientTestingModule, MatTableModule
       ],
       providers: [
         UserFacade,
@@ -32,7 +30,6 @@ describe('UserProfileComponent', () => {
   }));
 
   beforeEach( () => {
-    store = TestBed.get(Store);
     fixture = TestBed.createComponent(UserProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
