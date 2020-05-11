@@ -46,13 +46,13 @@ describe('SettingsService', () => {
     });
   });
 
-  it('should return user settings from db', () => {
+  it('should return user settings from db', (done) => {
     const service: SettingsService = TestBed.inject(SettingsService);
     service.getUserData('werwfsdfsdf0d8sfsd').subscribe(userData => {
       expect(userData.settings).toEqual(mockSettings);
+      done();
     });
   });
-
 
   it('should set new settings for user', () => {
     const service: SettingsService = TestBed.inject(SettingsService);

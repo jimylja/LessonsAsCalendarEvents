@@ -15,7 +15,7 @@ import * as moment from 'moment';
 })
 export class UserSettingsComponent implements OnInit {
   settings$ = this.userFacade.settings$;
-  form: FormGroup;
+  // form: FormGroup;
 
   constructor(private userFacade: UserFacade, private fb: FormBuilder) {
   }

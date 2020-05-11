@@ -40,4 +40,31 @@ describe('UserSettingsComponent', () => {
     component = fixture.componentInstance;
     component.settings$ = of(initialState.user.settings);
   }));
+
+  it('should mark settings form with durationError and orderError errors', fakeAsync(() => {
+    component.form$.subscribe(
+      form => {
+        component.lessonDuration.patchValue(60);
+        component.lessonsStartControls.controls[0].patchValue('9:00');
+        expect(form.errors.hasOwnProperty('durationError')).toEqual(true);
+        expect(form.errors.hasOwnProperty('orderError')).toEqual(true);
+      }
+    );
+  }));
+
+  it('should add new lesson into form', fakeAsync(() => {
+    const initialLessonsQuantity = initialState.user.settings.lessonsStartSchedule.length;
+    component.form$.subscribe(
+      form => {
+        component.addLesson();
+        fixture.whenStable();
+        expect(component.lessonsStartControls.getRawValue().length).toEqual(initialLessonsQuantity + 1);
+        fixture.whenStable();
+        component.removeLesson();
+        expect(component.lessonsStartControls.getRawValue().length).toEqual(initialLessonsQuantity);
+        console.log(component.lessonsStartControls.getRawValue());
+      }
+    );
+  }));
+
 });

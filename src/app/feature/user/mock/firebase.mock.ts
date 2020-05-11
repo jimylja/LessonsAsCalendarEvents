@@ -6,6 +6,12 @@ export class FirebaseMock {
    return {
      doc(id: string) {
        return {
+        get() {
+          return of({
+            exists: Object.keys(mockDb[collection]).includes(id),
+            data() { return mockDb[collection][id]; }
+          });
+        },
         valueChanges() {
           return of(mockDb[collection][id]);
         },

@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {map, switchMap, tap, take, pluck} from 'rxjs/operators';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {map, switchMap, tap, take, pluck, catchError} from 'rxjs/operators';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {LessonsSettings} from '../../models/lessonsSettings';
 import {UserFacade} from './user.facade';
 import {UserState} from './state/user.reducer';
@@ -46,17 +46,19 @@ export class SettingsService {
    * @returns - user data
    */
   getUserData(id): Observable<UserState> {
-    return this.db.collection('users').doc(id).valueChanges().pipe(
-      take(1),
-      tap(data => {console.log('user data', data); }),
-      map((userData: UserState) => {
-        if (!userData) {
+    return this.db.collection('users').doc(id).get().pipe(
+      map(doc => {
+        let userData: UserState = doc.data() as UserState;
+        if (!doc.exists) {
+          console.log('not exist');
           this.messageService.showMessage(this.firstVisitMessage);
-          this.createUserProfile().subscribe(data => {userData = data; });
+          this.createUserProfile().subscribe(data => { userData = data; });
         }
         this.updateStatistics({lastVisit: firestore.Timestamp.now()}).pipe(take(1)).subscribe();
+        console.log('user data', userData);
         return userData;
-      })
+      }),
+      catchError((err) => { console.log('error', err); return throwError(err); })
     );
   }
 
@@ -98,6 +100,7 @@ export class SettingsService {
   private updateUserData(data?: UserData): Observable<any> {
     this.userFacade = this.inj.get(UserFacade);
     return this.userFacade.user$.pipe(
+      take(1),
       tap(profile => {if (!data) { data = {profile, settings: environment.settings}; }}),
       switchMap(profile => this.db.collection('users')
         .doc(profile.id)
