@@ -68,7 +68,7 @@ export class SpreadsheetService {
    */
   private initParseMethod() {
     if (typeof Worker !== 'undefined') {
-      this.worker = new Worker('./spreadsheet.worker', { type: 'module' });
+      this.worker = new Worker(new URL('./spreadsheet.worker', import.meta.url), { type: 'module' });
       this.parseSpreadsheet = this.parseViaWorker;
 
       this.worker.onerror = err => {
