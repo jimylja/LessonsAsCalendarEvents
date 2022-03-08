@@ -1,5 +1,4 @@
 import {Injectable, Injector} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
 import {map, switchMap, tap, take, pluck, catchError} from 'rxjs/operators';
 import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {LessonsSettings} from '../../models/lessonsSettings';
@@ -7,8 +6,9 @@ import {UserFacade} from './user.facade';
 import {UserState} from './state/user.reducer';
 import {User, UserStats} from '../../models/user';
 import {MessageService} from '../../core/message.service';
-import {firestore} from 'firebase';
 import {environment} from '../../../environments/environment';
+import {AngularFirestore} from '@angular/fire/compat/firestore';
+import { Timestamp } from 'firebase/firestore';
 
 export interface UserData {
   profile?: User;
@@ -54,7 +54,7 @@ export class SettingsService {
           this.messageService.showMessage(this.firstVisitMessage);
           this.createUserProfile().subscribe(data => { userData = data; });
         }
-        this.updateStatistics({lastVisit: firestore.Timestamp.now()}).pipe(take(1)).subscribe();
+        this.updateStatistics({lastVisit: Timestamp.now()}).pipe(take(1)).subscribe();
         console.log('user data', userData);
         return userData;
       }),
