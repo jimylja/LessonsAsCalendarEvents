@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormControl, ReactiveFormsModule} from '@angular/forms';
 import { LessonsTabComponent } from './lessons-tab.component';
 import { MatMenuModule } from '@angular/material/menu';
@@ -10,7 +10,7 @@ xdescribe('LessonsTabComponent', () => {
   let fixture: ComponentFixture<LessonsTabComponent>;
   const fb: FormBuilder = new FormBuilder();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [LessonsTabComponent],
       imports: [ReactiveFormsModule, MatMenuModule, MatTableModule],

@@ -16,12 +16,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { environment } from '../environments/environment';
 
 // Firebase
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 // GoogleApi
 import { GoogleApiModule, NgGapiClientConfig, NG_GAPI_CONFIG } from 'ng-gapi';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
 const gApiClientConfig: NgGapiClientConfig = {
   ...environment.gApiClient,
   ux_mode: 'popup'

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FeatureWidgetComponent } from './feature-widget.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,7 +8,7 @@ describe('FeatureWidgetComponent', () => {
   let component: FeatureWidgetComponent;
   let fixture: ComponentFixture<FeatureWidgetComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FeatureWidgetComponent ],
       imports: [MatCardModule],

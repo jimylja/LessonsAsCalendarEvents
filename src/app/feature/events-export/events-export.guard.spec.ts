@@ -1,4 +1,4 @@
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { EventsExportGuard } from './events-export.guard';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -41,7 +41,7 @@ describe('EventsExportGuard', () => {
     expect(guard).toBeTruthy();
   }));
 
-  it('should redirect an unauthenticated user to the shell', async(
+  it('should redirect an unauthenticated user to the shell', waitForAsync(
     inject([Router, EventsExportGuard], (router: Router, guard: EventsExportGuard) => {
       store.refreshState();
       spyOn(router, 'navigate').and.stub();

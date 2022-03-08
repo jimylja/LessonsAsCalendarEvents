@@ -1,4 +1,4 @@
-import {TestBed, inject, async} from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import {AuthGuard} from './auth.guard';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -40,7 +40,7 @@ describe('AuthGuard', () => {
     })
   );
 
-  it('should allow the authenticated user to access app', async(
+  it('should allow the authenticated user to access app', waitForAsync(
     inject([AuthGuard, AuthService], (guard: AuthGuard, authService ) => {
       spyOnProperty(authService, 'refreshToken').and.returnValue('some token');
       expect(guard.canActivate(routeMock, routeStateMock)).toEqual(true);

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UserSettingsComponent } from './user-settings.component';
 import { LessonEndPipe} from '../lesson-end.pipe';
@@ -15,7 +15,7 @@ describe('UserSettingsComponent', () => {
   let component: UserSettingsComponent;
   let fixture: ComponentFixture<UserSettingsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UserSettingsComponent, LessonEndPipe ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -54,14 +54,17 @@ describe('UserSettingsComponent', () => {
 
   it('should add new lesson into form', fakeAsync(() => {
     const initialLessonsQuantity = initialState.user.settings.lessonsStartSchedule.length;
-    component.form$.subscribe( () => {
-      component.addLesson();
-      fixture.whenStable();
-      expect(component.lessonsStartControls.getRawValue().length).toEqual(initialLessonsQuantity + 1);
-      fixture.whenStable();
-      component.removeLesson();
-      expect(component.lessonsStartControls.getRawValue().length).toEqual(initialLessonsQuantity);
-    });
+    component.form$.subscribe(
+      form => {
+        component.addLesson();
+        fixture.whenStable();
+        expect(component.lessonsStartControls.getRawValue().length).toEqual(initialLessonsQuantity + 1);
+        fixture.whenStable();
+        component.removeLesson();
+        expect(component.lessonsStartControls.getRawValue().length).toEqual(initialLessonsQuantity);
+        console.log(component.lessonsStartControls.getRawValue());
+      }
+    );
   }));
 
 });

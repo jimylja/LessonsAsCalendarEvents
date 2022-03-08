@@ -16,50 +16,49 @@ import { RouterModule } from '@angular/router';
 import { ItemIconDirective } from './directives/item-icon.directive';
 import { InViewportDirective } from './directives/in-viewport.directive';
 import { MenuListComponent } from './components/menu-list/menu-list.component';
-import { MatListModule } from '@angular/material';
+import { MatListModule } from '@angular/material/list';
 import { SpreadsheetButtonDirective } from './directives/spreadsheet-button.directive';
 import { MenuItemComponent } from './components/menu-list/menu-item/menu-item.component';
 
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    FooterComponent,
-    SnackbarMessageComponent,
-    AvatarComponent,
-    ItemIconDirective,
-    InViewportDirective,
-    MenuListComponent,
-    SpreadsheetButtonDirective,
-    MenuItemComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    MatButtonModule,
-    RouterModule,
-    MatCardModule,
-    MatListModule,
-  ],
-  exports: [
-    CommonModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatMenuModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTooltipModule,
-    HeaderComponent,
-    FooterComponent,
-    AvatarComponent,
-    SnackbarMessageComponent,
-    ItemIconDirective,
-    InViewportDirective,
-    MenuListComponent,
-    SpreadsheetButtonDirective,
-  ],
-  entryComponents: [SnackbarMessageComponent],
+    declarations: [
+        HeaderComponent,
+        FooterComponent,
+        SnackbarMessageComponent,
+        AvatarComponent,
+        ItemIconDirective,
+        InViewportDirective,
+        MenuListComponent,
+        SpreadsheetButtonDirective,
+        MenuItemComponent,
+    ],
+    imports: [
+        CommonModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        MatButtonModule,
+        RouterModule,
+        MatCardModule,
+        MatListModule,
+    ],
+    exports: [
+        CommonModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatMenuModule,
+        MatCardModule,
+        MatButtonModule,
+        MatTooltipModule,
+        HeaderComponent,
+        FooterComponent,
+        AvatarComponent,
+        SnackbarMessageComponent,
+        ItemIconDirective,
+        InViewportDirective,
+        MenuListComponent,
+        SpreadsheetButtonDirective,
+    ]
 })
 export class SharedModule { }

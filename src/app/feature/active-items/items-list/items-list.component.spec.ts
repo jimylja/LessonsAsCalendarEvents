@@ -1,4 +1,4 @@
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {ItemsListComponent } from './items-list.component';
@@ -25,7 +25,7 @@ describe('ItemsListComponent', () => {
     itemsList: dummyUserCalendars
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ItemsListComponent, ItemComponent ],
       providers: [

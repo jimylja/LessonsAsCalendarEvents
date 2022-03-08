@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import {LoginComponent} from './login.component';
@@ -19,7 +19,7 @@ describe('LoginComponent', () => {
   const initialState = {user: {isLoggedIn: false}};
   const routeStateMock: any = { snapshot: {}, url: 'user/login'};
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LoginComponent, ShellComponent ],
       imports: [RouterTestingModule.withRoutes(

@@ -12,6 +12,9 @@ export class FirebaseMock {
             data() { return mockDb[collection][id]; }
           });
         },
+        valueChanges() {
+          return of(mockDb[collection][id]);
+        },
         set(user) {
           return {
             then() {
