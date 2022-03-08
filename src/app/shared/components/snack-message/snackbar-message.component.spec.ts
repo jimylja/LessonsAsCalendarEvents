@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SnackbarMessageComponent } from './snackbar-message.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -9,7 +9,7 @@ describe('SnackbarMessageComponent', () => {
   let component: SnackbarMessageComponent;
   let fixture: ComponentFixture<SnackbarMessageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SnackbarMessageComponent ],
       imports: [MatProgressSpinnerModule, MatSnackBarModule],

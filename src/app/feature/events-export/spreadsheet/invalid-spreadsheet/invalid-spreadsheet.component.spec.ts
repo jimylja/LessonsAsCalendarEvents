@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { InvalidSpreadsheetComponent } from './invalid-spreadsheet.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
@@ -16,7 +16,7 @@ describe('InvalidSpreadsheetComponent', () => {
     validationError: {}
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ InvalidSpreadsheetComponent ],
       schemas: [NO_ERRORS_SCHEMA]

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UserSettingsComponent } from './user-settings.component';
 import { LessonEndPipe} from '../lesson-end.pipe';
@@ -15,7 +15,7 @@ describe('UserSettingsComponent', () => {
   let component: UserSettingsComponent;
   let fixture: ComponentFixture<UserSettingsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UserSettingsComponent, LessonEndPipe ],
       schemas: [NO_ERRORS_SCHEMA],

@@ -1,4 +1,4 @@
-import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AvatarComponent } from './avatar.component';
 import {mockUser} from '../../../feature/user/mock/user.mock';
@@ -8,7 +8,7 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AvatarComponent>;
   const avatar = mockUser.avatar;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
