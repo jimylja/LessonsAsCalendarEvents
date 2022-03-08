@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
 import { ItemIconDirective } from './directives/item-icon.directive';
 import { InViewportDirective } from './directives/in-viewport.directive';
 import { MenuListComponent } from './components/menu-list/menu-list.component';
-import { MatListModule } from '@angular/material';
+import { MatListModule } from '@angular/material/list';
 import { SpreadsheetButtonDirective } from './directives/spreadsheet-button.directive';
 import { MenuItemComponent } from './components/menu-list/menu-item/menu-item.component';
 
