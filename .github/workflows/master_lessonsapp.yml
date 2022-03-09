@@ -50,6 +50,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'LessonsApp'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F278F16E40AB4D53A7EC27C0BF9F516F }}
-          package: ./dist/lessons-schedule
+          package: ./dist/lessons-shedule
