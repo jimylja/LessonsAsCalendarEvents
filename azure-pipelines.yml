@@ -20,3 +20,11 @@ steps:
     npm install
     ng build --prod
   displayName: 'npm install and build'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(40d5d71f-ad58-4e78-a578-737ab2568db4)'
+    appType: 'webAppLinux'
+    WebAppName: 'LessonsCalendar'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'NODE|12-lts'
