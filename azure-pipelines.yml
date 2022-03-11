@@ -1,13 +1,6 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
-- master
-
-pool:
-  vmImage: ubuntu-latest
+- master # or the name of your main branch
+- feature/*
 
 steps:
 # Prepare Analysis Configuration task
@@ -25,21 +18,3 @@ steps:
 - task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
-
-- script: |
-    npm install -g @angular/cli
-    npm install
-    ng build --prod
-  displayName: 'npm install and build'
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(40d5d71f-ad58-4e78-a578-737ab2568db4)'
-    appType: 'webAppLinux'
-    WebAppName: 'LessonsCalendar'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    RuntimeStack: 'NODE|12-lts'
