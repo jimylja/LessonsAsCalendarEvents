@@ -10,6 +10,21 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+# Prepare Analysis Configuration task
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: SonarLessonsApp
+    scannerMode: CLI
+    configMode: manual
+    cliProjectKey: volodimirskripnik
+
+# Run Code Analysis task
+- task: SonarQubeAnalyze@5
+
+# Publish Quality Gate Result task
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
