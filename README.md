@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/jimylja/test.svg?branch=master)](https://travis-ci.com/jimylja/test)
+[![codecov](https://codecov.io/gh/jimylja/test/branch/master/graph/badge.svg)](https://codecov.io/gh/jimylja/test)
 # LessonsShedule
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
