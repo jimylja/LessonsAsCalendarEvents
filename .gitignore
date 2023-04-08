@@ -49,5 +49,5 @@ Thumbs.db
 #Enviromnments
 /src/environments/environment.prod.ts
 /.firebase/
-/.firebase/
 /src/environments/environment.dev.ts
+/.env
